@@ -1,0 +1,1752 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//apps.bdimg.com/libs/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="//cdn.staticfile.org/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="security," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="一个弱口令往往是入侵的突破口之一。拿IT从业者云集的CSDN600多万个密码统计出来的一个使用频次最高的密码列表，绝对是弱口令的佼佼者。 如下，弱口令不仅限于以下密码：    重复次数 密码 占比     235012 123456789 (5.82013097845522)   212749 12345678 (5.26878221339919)   76346 11111111 (1.8907">
+<meta name="keywords" content="security">
+<meta property="og:type" content="article">
+<meta property="og:title" content="密码的管理和使用">
+<meta property="og:url" content="https://uublog.com/article/20170326/security-password-level/index.html">
+<meta property="og:site_name" content="UU Blog">
+<meta property="og:description" content="一个弱口令往往是入侵的突破口之一。拿IT从业者云集的CSDN600多万个密码统计出来的一个使用频次最高的密码列表，绝对是弱口令的佼佼者。 如下，弱口令不仅限于以下密码：    重复次数 密码 占比     235012 123456789 (5.82013097845522)   212749 12345678 (5.26878221339919)   76346 11111111 (1.8907">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-16T15:04:31.543Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="密码的管理和使用">
+<meta name="twitter:description" content="一个弱口令往往是入侵的突破口之一。拿IT从业者云集的CSDN600多万个密码统计出来的一个使用频次最高的密码列表，绝对是弱口令的佼佼者。 如下，弱口令不仅限于以下密码：    重复次数 密码 占比     235012 123456789 (5.82013097845522)   212749 12345678 (5.26878221339919)   76346 11111111 (1.8907">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '9131895',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uublog.com/article/20170326/security-password-level/"/>
+
+
+
+
+
+  <title> 密码的管理和使用 | UU Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1261151756&web_id=1261151756" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">UU Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <h1 class="site-subtitle" itemprop="description">UU Blog</h1>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170326/security-password-level/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Onecer">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="UU Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                密码的管理和使用
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-26T22:56:06+08:00">
+                2017-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/security/" itemprop="url" rel="index">
+                    <span itemprop="name">security</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/article/20170326/security-password-level/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170326/security-password-level/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>一个弱口令往往是入侵的突破口之一。<br>拿IT从业者云集的CSDN600多万个密码统计出来的一个使用频次最高的密码列表，绝对是弱口令的佼佼者。</p>
+<p>如下，弱口令不仅限于以下密码：</p>
+<table>
+<thead>
+<tr>
+<th>重复次数</th>
+<th>密码</th>
+<th>占比</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>235012</td>
+<td>123456789</td>
+<td>(5.82013097845522)</td>
+</tr>
+<tr>
+<td>212749</td>
+<td>12345678</td>
+<td>(5.26878221339919)</td>
+</tr>
+<tr>
+<td>76346</td>
+<td>11111111</td>
+<td>(1.89072779126658)</td>
+</tr>
+<tr>
+<td>46053</td>
+<td>dearbook</td>
+<td>(1.14051406715741)</td>
+</tr>
+<tr>
+<td>34952</td>
+<td>00000000</td>
+<td>(0.865595024760297)</td>
+</tr>
+<tr>
+<td>19986</td>
+<td>123123123</td>
+<td>(0.494958290365624)</td>
+</tr>
+<tr>
+<td>17790</td>
+<td>1234567890</td>
+<td>(0.440573800940881)</td>
+</tr>
+<tr>
+<td>15033</td>
+<td>88888888</td>
+<td>(0.372296006157632)</td>
+</tr>
+<tr>
+<td>6995</td>
+<td>111111111</td>
+<td>(0.173232925102949)</td>
+</tr>
+<tr>
+<td>5965</td>
+<td>147258369</td>
+<td>(0.14772471740373)</td>
+</tr>
+<tr>
+<td>5553</td>
+<td>987654321</td>
+<td>(0.137521434324042)</td>
+</tr>
+<tr>
+<td>5459</td>
+<td>aaaaaaaa</td>
+<td>(0.135193500805861)</td>
+</tr>
+<tr>
+<td>5145</td>
+<td>1111111111</td>
+<td>(0.127417212245128)</td>
+</tr>
+<tr>
+<td>5025</td>
+<td>66666666</td>
+<td>(0.124445382221918)</td>
+</tr>
+<tr>
+<td>4435</td>
+<td>a123456789</td>
+<td>(0.109833884607803)</td>
+</tr>
+<tr>
+<td>4096</td>
+<td>11223344</td>
+<td>(0.101438464792234)</td>
+</tr>
+<tr>
+<td>3667</td>
+<td>1qaz2wsx</td>
+<td>(0.0908141724592587)</td>
+</tr>
+<tr>
+<td>3649</td>
+<td>xiazhili</td>
+<td>(0.0903683979557772)</td>
+</tr>
+<tr>
+<td>3610</td>
+<td>789456123</td>
+<td>(0.0894025531982339)</td>
+</tr>
+<tr>
+<td>3501</td>
+<td>password</td>
+<td>(0.0867031409271515)</td>
+</tr>
+<tr>
+<td>3281</td>
+<td>87654321</td>
+<td>(0.0812547858845999)</td>
+</tr>
+<tr>
+<td>3277</td>
+<td>qqqqqqqq</td>
+<td>(0.0811557248838262)</td>
+</tr>
+<tr>
+<td>3175</td>
+<td>000000000</td>
+<td>(0.0786296693640977)</td>
+</tr>
+<tr>
+<td>3143</td>
+<td>qwertyuiop</td>
+<td>(0.0778371813579084)</td>
+</tr>
+<tr>
+<td>3094</td>
+<td>qq123456</td>
+<td>(0.076623684098431)</td>
+</tr>
+<tr>
+<td>3080</td>
+<td>iloveyou</td>
+<td>(0.0762769705957231)</td>
+</tr>
+<tr>
+<td>3061</td>
+<td>31415926</td>
+<td>(0.0758064308420482)</td>
+</tr>
+<tr>
+<td>2985</td>
+<td>12344321</td>
+<td>(0.0739242718273486)</td>
+</tr>
+<tr>
+<td>2885</td>
+<td>0000000000</td>
+<td>(0.0714477468080069)</td>
+</tr>
+<tr>
+<td>2826</td>
+<td>asdfghjkl</td>
+<td>(0.0699865970465953)</td>
+</tr>
+<tr>
+<td>2796</td>
+<td>1q2w3e4r</td>
+<td>(0.0692436395407928)</td>
+</tr>
+<tr>
+<td>2580</td>
+<td>123456abc</td>
+<td>(0.0638943454990148)</td>
+</tr>
+<tr>
+<td>2578</td>
+<td>0123456789</td>
+<td>(0.063844814998628)</td>
+</tr>
+<tr>
+<td>2573</td>
+<td>123654789</td>
+<td>(0.0637209887476609)</td>
+</tr>
+<tr>
+<td>2540</td>
+<td>12121212</td>
+<td>(0.0629037354912782)</td>
+</tr>
+<tr>
+<td>2515</td>
+<td>qazwsxedc</td>
+<td>(0.0622846042364428)</td>
+</tr>
+<tr>
+<td>2396</td>
+<td>abcd1234</td>
+<td>(0.0593375394634262)</td>
+</tr>
+<tr>
+<td>2380</td>
+<td>12341234</td>
+<td>(0.0589412954603315)</td>
+</tr>
+<tr>
+<td>2348</td>
+<td>110110110</td>
+<td>(0.0581488074541422)</td>
+</tr>
+<tr>
+<td>2296</td>
+<td>asdasdasd</td>
+<td>(0.0568610144440845)</td>
+</tr>
+<tr>
+<td>2243</td>
+<td>22222222</td>
+<td>(0.0555484561838334)</td>
+</tr>
+<tr>
+<td>2166</td>
+<td>123321123</td>
+<td>(0.0536415319189404)</td>
+</tr>
+<tr>
+<td>2160</td>
+<td>abc123456</td>
+<td>(0.0534929404177799)</td>
+</tr>
+<tr>
+<td>2138</td>
+<td>a12345678</td>
+<td>(0.0529481049135247)</td>
+</tr>
+<tr>
+<td>2131</td>
+<td>123456</td>
+<td>(0.0527747481621708)</td>
+</tr>
+<tr>
+<td>2113</td>
+<td>123456123</td>
+<td>(0.0523289736586893)</td>
+</tr>
+<tr>
+<td>2106</td>
+<td>a1234567</td>
+<td>(0.0521556169073354)</td>
+</tr>
+<tr>
+<td>2100</td>
+<td>1234qwer</td>
+<td>(0.0520070254061749)</td>
+</tr>
+<tr>
+<td>1989</td>
+<td>qwertyui</td>
+<td>(0.0492580826347056)</td>
+</tr>
+<tr>
+<td>1986</td>
+<td>123456789a</td>
+<td>(0.0491837868841254)</td>
+</tr>
+<tr>
+<td>1971</td>
+<td>aa123456</td>
+<td>(0.0488123081312241)</td>
+</tr>
+<tr>
+<td>1918</td>
+<td>asdfasdf</td>
+<td>(0.047499749870973)</td>
+</tr>
+<tr>
+<td>1891</td>
+<td>99999999</td>
+<td>(0.0468310881157508)</td>
+</tr>
+<tr>
+<td>1859</td>
+<td>123456aa</td>
+<td>(0.0460386001095615)</td>
+</tr>
+<tr>
+<td>1859</td>
+<td>999999999</td>
+<td>(0.0460386001095615)</td>
+</tr>
+<tr>
+<td>1854</td>
+<td>123456123456</td>
+<td>(0.0459147738585944)</td>
+</tr>
+<tr>
+<td>1699</td>
+<td>520520520</td>
+<td>(0.0420761600786148)</td>
+</tr>
+<tr>
+<td>1656</td>
+<td>963852741</td>
+<td>(0.0410112543202979)</td>
+</tr>
+<tr>
+<td>1652</td>
+<td>55555555</td>
+<td>(0.0409121933195242)</td>
+</tr>
+<tr>
+<td>1652</td>
+<td>741852963</td>
+<td>(0.0409121933195242)</td>
+</tr>
+<tr>
+<td>1589</td>
+<td>33333333</td>
+<td>(0.039351982557339)</td>
+</tr>
+<tr>
+<td>1480</td>
+<td>qwer1234</td>
+<td>(0.0366525702862566)</td>
+</tr>
+<tr>
+<td>1384</td>
+<td>asd123456</td>
+<td>(0.0342751062676886)</td>
+</tr>
+<tr>
+<td>1339</td>
+<td>77777777</td>
+<td>(0.0331606700089848)</td>
+</tr>
+<tr>
+<td>1316</td>
+<td>qweasdzxc</td>
+<td>(0.0325910692545363)</td>
+</tr>
+<tr>
+<td>1285</td>
+<td>code8925</td>
+<td>(0.0318233464985403)</td>
+</tr>
+<tr>
+<td>1273</td>
+<td>11112222</td>
+<td>(0.0315261634962193)</td>
+</tr>
+<tr>
+<td>1268</td>
+<td>ms0083jxj</td>
+<td>(0.0314023372452523)</td>
+</tr>
+<tr>
+<td>1245</td>
+<td>zzzzzzzz</td>
+<td>(0.0308327364908037)</td>
+</tr>
+<tr>
+<td>1214</td>
+<td>111222333</td>
+<td>(0.0300650137348078)</td>
+</tr>
+<tr>
+<td>1206</td>
+<td>qweqweqwe</td>
+<td>(0.0298668917332604)</td>
+</tr>
+<tr>
+<td>1200</td>
+<td>3.1415926</td>
+<td>(0.0297183002320999)</td>
+</tr>
+<tr>
+<td>1183</td>
+<td>123456qq</td>
+<td>(0.0292972909788118)</td>
+</tr>
+<tr>
+<td>1148</td>
+<td>147852369</td>
+<td>(0.0284305072220423)</td>
+</tr>
+<tr>
+<td>1136</td>
+<td>521521521</td>
+<td>(0.0281333242197213)</td>
+</tr>
+<tr>
+<td>1119</td>
+<td>asdf1234</td>
+<td>(0.0277123149664332)</td>
+</tr>
+<tr>
+<td>1111</td>
+<td>123698745</td>
+<td>(0.0275141929648858)</td>
+</tr>
+<tr>
+<td>1109</td>
+<td>1123581321</td>
+<td>(0.027464662464499)</td>
+</tr>
+<tr>
+<td>1058</td>
+<td>asdfghjk</td>
+<td>(0.0262016347046348)</td>
+</tr>
+<tr>
+<td>1054</td>
+<td>q1w2e3r4</td>
+<td>(0.0261025737038611)</td>
+</tr>
+<tr>
+<td>1037</td>
+<td>12345678a</td>
+<td>(0.025681564450573)</td>
+</tr>
+<tr>
+<td>1003</td>
+<td>woaini1314</td>
+<td>(0.0248395459439969)</td>
+</tr>
+<tr>
+<td>991</td>
+<td>1234abcd</td>
+<td>(0.0245423629416759)</td>
+</tr>
+<tr>
+<td>988</td>
+<td>123qweasd</td>
+<td>(0.0244680671910956)</td>
+</tr>
+<tr>
+<td>975</td>
+<td>1qazxsw2</td>
+<td>(0.0241461189385812)</td>
+</tr>
+<tr>
+<td>967</td>
+<td>woaiwojia</td>
+<td>(0.0239479969370339)</td>
+</tr>
+<tr>
+<td>920</td>
+<td>321321321</td>
+<td>(0.0227840301779433)</td>
+</tr>
+<tr>
+<td>910</td>
+<td>05962514787</td>
+<td>(0.0225363776760091)</td>
+</tr>
+<tr>
+<td>894</td>
+<td>123456987</td>
+<td>(0.0221401336729144)</td>
+</tr>
+<tr>
+<td>892</td>
+<td>kingcom5</td>
+<td>(0.0220906031725276)</td>
+</tr>
+<tr>
+<td>882</td>
+<td>5845201314</td>
+<td>(0.0218429506705934)</td>
+</tr>
+<tr>
+<td>882</td>
+<td>zxcvbnm123</td>
+<td>(0.0218429506705934)</td>
+</tr>
+<tr>
+<td>852</td>
+<td>0987654321</td>
+<td>(0.0210999931647909)</td>
+</tr>
+<tr>
+<td>847</td>
+<td>wwwwwwww</td>
+<td>(0.0209761669138239)</td>
+</tr>
+<tr>
+<td>835</td>
+<td>11111111111111111111</td>
+<td>(0.0206789839115029)</td>
+</tr>
+<tr>
+<td>805</td>
+<td>12345600</td>
+<td>(0.0199360264057004)</td>
+</tr>
+<tr>
+<td>783</td>
+<td>11235813</td>
+<td>(0.0193911909014452)</td>
+</tr>
+<tr>
+<td>777</td>
+<td>1q2w3e4r5t</td>
+<td>(0.0192425994002847)</td>
+</tr>
+<tr>
+<td>772</td>
+<td>10101010</td>
+<td>(0.0191187731493176)</td>
+</tr>
+<tr>
+<td>770</td>
+<td>123456asd</td>
+<td>(0.0190692426489308)</td>
+</tr>
+<tr>
+<td>765</td>
+<td>lilylily</td>
+<td>(0.0189454163979637)</td>
+</tr>
+<tr>
+<td>744</td>
+<td>12345612</td>
+<td>(0.018425346143902)</td>
+</tr>
+<tr>
+<td>741</td>
+<td>5201314520</td>
+<td>(0.0183510503933217)</td>
+</tr>
+<tr>
+<td>740</td>
+<td>1234554321</td>
+<td>(0.0183262851431283)</td>
+</tr>
+<tr>
+<td>732</td>
+<td>12301230</td>
+<td>(0.018128163141581)</td>
+</tr>
+<tr>
+<td>729</td>
+<td>woshishui</td>
+<td>(0.0180538673910007)</td>
+</tr>
+<tr>
+<td>727</td>
+<td>123456654321</td>
+<td>(0.0180043368906139)</td>
+</tr>
+<tr>
+<td>726</td>
+<td>xiaoxiao</td>
+<td>(0.0179795716404205)</td>
+</tr>
+<tr>
+<td>713</td>
+<td>qwe123456</td>
+<td>(0.017657623387906)</td>
+</tr>
+<tr>
+<td>708</td>
+<td>woaini123</td>
+<td>(0.017533797136939)</td>
+</tr>
+<tr>
+<td>702</td>
+<td>111111</td>
+<td>(0.0173852056357785)</td>
+</tr>
+<tr>
+<td>693</td>
+<td>1122334455</td>
+<td>(0.0171623183840377)</td>
+</tr>
+<tr>
+<td>685</td>
+<td>12369874</td>
+<td>(0.0169641963824904)</td>
+</tr>
+<tr>
+<td>680</td>
+<td>12345679</td>
+<td>(0.0168403701315233)</td>
+</tr>
+<tr>
+<td>669</td>
+<td>100200300</td>
+<td>(0.0165679523793957)</td>
+</tr>
+<tr>
+<td>657</td>
+<td>ffffffff</td>
+<td>(0.0162707693770747)</td>
+</tr>
+<tr>
+<td>651</td>
+<td>buzhidao</td>
+<td>(0.0161221778759142)</td>
+</tr>
+<tr>
+<td>650</td>
+<td>44444444</td>
+<td>(0.0160974126257208)</td>
+</tr>
+<tr>
+<td>649</td>
+<td>woainima</td>
+<td>(0.0160726473755274)</td>
+</tr>
+<tr>
+<td>642</td>
+<td>z123456789</td>
+<td>(0.0158992906241735)</td>
+</tr>
+<tr>
+<td>623</td>
+<td>1234567a</td>
+<td>(0.0154287508704985)</td>
+</tr>
+<tr>
+<td>621</td>
+<td>123456aaa</td>
+<td>(0.0153792203701117)</td>
+</tr>
+<tr>
+<td>618</td>
+<td>qazwsx123</td>
+<td>(0.0153049246195315)</td>
+</tr>
+<tr>
+<td>616</td>
+<td>ssssssss</td>
+<td>(0.0152553941191446)</td>
+</tr>
+<tr>
+<td>608</td>
+<td>wojiushiwo</td>
+<td>(0.0150572721175973)</td>
+</tr>
+<tr>
+<td>601</td>
+<td>25257758</td>
+<td>(0.0148839153662434)</td>
+</tr>
+<tr>
+<td>592</td>
+<td>123321aa</td>
+<td>(0.0146610281145026)</td>
+</tr>
+<tr>
+<td>589</td>
+<td>1357924680</td>
+<td>(0.0145867323639224)</td>
+</tr>
+<tr>
+<td>585</td>
+<td>aaa123456</td>
+<td>(0.0144876713631487)</td>
+</tr>
+<tr>
+<td>578</td>
+<td>369258147</td>
+<td>(0.0143143146117948)</td>
+</tr>
+<tr>
+<td>572</td>
+<td>321654987</td>
+<td>(0.0141657231106343)</td>
+</tr>
+<tr>
+<td>571</td>
+<td>q123456789</td>
+<td>(0.0141409578604409)</td>
+</tr>
+<tr>
+<td>570</td>
+<td>qaz123456</td>
+<td>(0.0141161926102475)</td>
+</tr>
+<tr>
+<td>567</td>
+<td>1233211234567</td>
+<td>(0.0140418968596672)</td>
+</tr>
+<tr>
+<td>567</td>
+<td>9876543210</td>
+<td>(0.0140418968596672)</td>
+</tr>
+<tr>
+<td>565</td>
+<td>wocaonima</td>
+<td>(0.0139923663592804)</td>
+</tr>
+<tr>
+<td>562</td>
+<td>1234567b</td>
+<td>(0.0139180706087001)</td>
+</tr>
+<tr>
+<td>562</td>
+<td>zhang123</td>
+<td>(0.0139180706087001)</td>
+</tr>
+<tr>
+<td>561</td>
+<td>woaini520</td>
+<td>(0.0138933053585067)</td>
+</tr>
+<tr>
+<td>559</td>
+<td>csdncsdn</td>
+<td>(0.0138437748581199)</td>
+</tr>
+<tr>
+<td>559</td>
+<td>google250</td>
+<td>(0.0138437748581199)</td>
+</tr>
+<tr>
+<td>556</td>
+<td>yangyang</td>
+<td>(0.0137694791075396)</td>
+</tr>
+<tr>
+<td>553</td>
+<td>5845211314</td>
+<td>(0.0136951833569594)</td>
+</tr>
+<tr>
+<td>536</td>
+<td>369369369</td>
+<td>(0.0132741741036713)</td>
+</tr>
+<tr>
+<td>535</td>
+<td>20082008</td>
+<td>(0.0132494088534779)</td>
+</tr>
+<tr>
+<td>532</td>
+<td>135792468</td>
+<td>(0.0131751131028976)</td>
+</tr>
+<tr>
+<td>525</td>
+<td>299792458</td>
+<td>(0.0130017563515437)</td>
+</tr>
+<tr>
+<td>521</td>
+<td>dddddddd</td>
+<td>(0.0129026953507701)</td>
+</tr>
+<tr>
+<td>519</td>
+<td>zxczxczxc</td>
+<td>(0.0128531648503832)</td>
+</tr>
+<tr>
+<td>504</td>
+<td>computer</td>
+<td>(0.012481686097482)</td>
+</tr>
+<tr>
+<td>501</td>
+<td>qwerasdf</td>
+<td>(0.0124073903469017)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="为什么我们要使用弱口令"><a href="#为什么我们要使用弱口令" class="headerlink" title="为什么我们要使用弱口令"></a>为什么我们要使用弱口令</h2><p>还有比方便和便于记忆这个更好的理由吗？</p>
+<p>弱口令戳中了哪些痛点？</p>
+<ul>
+<li>便于记忆</li>
+<li>便于输入</li>
+</ul>
+<p>弱口令就不能使用吗？这倒未必，看使用场景吧。</p>
+<p>比如一些安全性较低的网站，而你注册后，可能又不会登记敏感的资料，这就可以使用弱口令。</p>
+<p>从而避免网站被入侵后，黑客获取你的密码，社工渗透到你其它敏感的账户。</p>
+<p>那么问题来了，应该在怎样的网站使用怎样的密码呢？</p>
+<p>这里我说说我个人管理密码的一些策略吧。</p>
+<h2 id="密码的使用场景和应用"><a href="#密码的使用场景和应用" class="headerlink" title="密码的使用场景和应用"></a>密码的使用场景和应用</h2><ol>
+<li>高频次使用，可以记录密码</li>
+<li>高频次使用，不能记录密码，要手动输入</li>
+<li>低频次密码，可以记录密码</li>
+<li>低频次密码，要手动输入</li>
+</ol>
+<p>1、 3、 4这种情况，建议还是使用生成的密码，无规律，很大程度可以防止被社工出密码，然后在登录的时候选择记住密码就可以了，现在基本浏览器、app大多都支持记住密码。再配合密码管理工具防止遗忘密码，基本不会与什么问题。</p>
+<p>一次麻烦长久受益！</p>
+<p>我觉得问题最大这种是高频次使用，但是不能记录密码的。</p>
+<p>举个栗子：支付宝等支付密码、keepassx</p>
+<p>建议使用比较强壮的密码，可以的话，大小写数字特殊符号混合，长度不小于8位。</p>
+<p>这类密码自己可以设计多几套，按场景使用。</p>
+<h2 id="密码管理工具"><a href="#密码管理工具" class="headerlink" title="密码管理工具"></a>密码管理工具</h2><p>个人是强烈建议使用<code>Keepass</code>的,如果配合<code>TrueCrypt</code>，那就安全性大大增强了。</p>
+<p><a href="http://keepass.info/" target="_blank" rel="noopener">KeePass官方网站</a></p>
+<p>它有如下优点：</p>
+<ul>
+<li>跨平台 windows mac linux Android iPhone 均可以使用</li>
+<li>自动输入密码</li>
+<li>密码生成</li>
+<li>密码记录</li>
+<li>密码分类管理</li>
+</ul>
+<p>你还会因为怕输入麻烦和忘记密码而使用弱口令吗？</p>
+<p>其它密码生成网站推荐：</p>
+<ul>
+<li><a href="http://www.atool.org/password.php" target="_blank" rel="noopener">在线随机密码生成工具</a></li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://www.guokr.com/post/81206/" target="_blank" rel="noopener">CSDN杯我最喜欢的CSDN密码评选</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>给作者打一针鸡血</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="//ojz2jzr09.bkt.clouddn.com/profile/wechat-pay.jpg" alt="Onecer WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="//ojz2jzr09.bkt.clouddn.com/profile/alipay--pay.jpg" alt="Onecer Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/security/" rel="tag"># security</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/article/20170325/screen-record-on-linux/" rel="next" title="Linux下不错的Gif录制工具推荐">
+                <i class="fa fa-chevron-left"></i> Linux下不错的Gif录制工具推荐
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/article/20170327/nginx-logfile-rotate/" rel="prev" title="nginx日志分割处理">
+                nginx日志分割处理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="article/20170326/security-password-level/"
+           data-title="密码的管理和使用" data-url="https://uublog.com/article/20170326/security-password-level/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif"
+               alt="Onecer" />
+          <p class="site-author-name" itemprop="name">Onecer</p>
+          <p class="site-description motion-element" itemprop="description">记录日记之类的</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">86</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">98</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/yinyongyou" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/MichaelJScofield" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-codepen"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么我们要使用弱口令"><span class="nav-number">1.</span> <span class="nav-text">为什么我们要使用弱口令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#密码的使用场景和应用"><span class="nav-number">2.</span> <span class="nav-text">密码的使用场景和应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#密码管理工具"><span class="nav-number">3.</span> <span class="nav-text">密码管理工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Onecer</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="powered-by">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+<div class="theme-info">
+ Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="//apps.bdimg.com/libs/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/velocity/1.2.1/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/velocity/1.2.1/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="//apps.bdimg.com/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"uublog"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      
+      <script src="//cdn.staticfile.org/UAParser.js/0.7.9/ua-parser.min.js"></script>
+      <script src="/js/src/hook-duoshuo.js?v=5.1.0"></script>
+    
+    
+    <script src="//cdn.staticfile.org/UAParser.js/0.7.9/ua-parser.min.js"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.staticfile.org/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

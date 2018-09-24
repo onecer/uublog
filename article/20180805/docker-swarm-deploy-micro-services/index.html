@@ -1,0 +1,1032 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//apps.bdimg.com/libs/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="//cdn.staticfile.org/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="consul,docker swarm,microservice,spring cloud," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="[TOC] 在Docker Swarm中部署Spring Cloud的服务. 本来服务注册是由Eureka做的,但是Eureka团队停止对该项目支持.于是我们转而转向consul. 经实践,最终定下来新的微服务部署用到的技术如下. Docker+Consul+Registrator 实验环境三台机：  node1：192.168.99.100  node2：192.168.99.101  node">
+<meta name="keywords" content="consul,docker swarm,microservice,spring cloud">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker Swarm Mode中部署SpringCloud微服务">
+<meta property="og:url" content="https://uublog.com/article/20180805/docker-swarm-deploy-micro-services/index.html">
+<meta property="og:site_name" content="UU Blog">
+<meta property="og:description" content="[TOC] 在Docker Swarm中部署Spring Cloud的服务. 本来服务注册是由Eureka做的,但是Eureka团队停止对该项目支持.于是我们转而转向consul. 经实践,最终定下来新的微服务部署用到的技术如下. Docker+Consul+Registrator 实验环境三台机：  node1：192.168.99.100  node2：192.168.99.101  node">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-16T15:04:31.547Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker Swarm Mode中部署SpringCloud微服务">
+<meta name="twitter:description" content="[TOC] 在Docker Swarm中部署Spring Cloud的服务. 本来服务注册是由Eureka做的,但是Eureka团队停止对该项目支持.于是我们转而转向consul. 经实践,最终定下来新的微服务部署用到的技术如下. Docker+Consul+Registrator 实验环境三台机：  node1：192.168.99.100  node2：192.168.99.101  node">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '9131895',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uublog.com/article/20180805/docker-swarm-deploy-micro-services/"/>
+
+
+
+
+
+  <title> Docker Swarm Mode中部署SpringCloud微服务 | UU Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1261151756&web_id=1261151756" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">UU Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <h1 class="site-subtitle" itemprop="description">UU Blog</h1>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180805/docker-swarm-deploy-micro-services/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Onecer">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="UU Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                Docker Swarm Mode中部署SpringCloud微服务
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-05T15:12:56+08:00">
+                2018-08-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/microservice/" itemprop="url" rel="index">
+                    <span itemprop="name">microservice</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/article/20180805/docker-swarm-deploy-micro-services/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180805/docker-swarm-deploy-micro-services/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>[TOC]</p>
+<p>在Docker Swarm中部署Spring Cloud的服务.</p>
+<p>本来服务注册是由Eureka做的,但是Eureka团队停止对该项目支持.于是我们转而转向consul.</p>
+<p>经实践,最终定下来新的微服务部署用到的技术如下.</p>
+<p><code>Docker+Consul+Registrator</code></p>
+<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><p>三台机：</p>
+<ul>
+<li><p>node1：192.168.99.100</p>
+</li>
+<li><p>node2：192.168.99.101</p>
+</li>
+<li><p>node3：192.168.99.102</p>
+</li>
+</ul>
+<p>规划如下：</p>
+<blockquote>
+<pre><code>node1: Consul Server,Docker Swarm master
+
+node2: Consul Server,Docker Swarm node
+
+node3: Consul Client,Docker Swarm node
+</code></pre></blockquote>
+<p>一般建议consul server数量为3~5个，做高可用，但是由于是演示，机器也比较渣，就不启用多台作为实验。</p>
+<a id="more"></a>
+<h2 id="创建一个Overlay网络"><a href="#创建一个Overlay网络" class="headerlink" title="创建一个Overlay网络"></a>创建一个Overlay网络</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Usage:	docker network create [OPTIONS] NETWORK</span><br><span class="line"></span><br><span class="line">Create a network</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">      --attachable           Enable manual container attachment</span><br><span class="line">      --aux-address map      Auxiliary IPv4 or IPv6 addresses used by Network driver (default map[])</span><br><span class="line">      --config-from string   The network from which copying the configuration</span><br><span class="line">      --config-only          Create a configuration only network</span><br><span class="line">  -d, --driver string        Driver to manage the Network (default &quot;bridge&quot;)</span><br><span class="line">      --gateway strings      IPv4 or IPv6 Gateway for the master subnet</span><br><span class="line">      --ingress              Create swarm routing-mesh network</span><br><span class="line">      --internal             Restrict external access to the network</span><br><span class="line">      --ip-range strings     Allocate container ip from a sub-range</span><br><span class="line">      --ipam-driver string   IP Address Management Driver (default &quot;default&quot;)</span><br><span class="line">      --ipam-opt map         Set IPAM driver specific options (default map[])</span><br><span class="line">      --ipv6                 Enable IPv6 networking</span><br><span class="line">      --label list           Set metadata on a network</span><br><span class="line">  -o, --opt map              Set driver specific options (default map[])</span><br><span class="line">      --scope string         Control the network&apos;s scope</span><br><span class="line">      --subnet strings       Subnet in CIDR format that represents a network segment</span><br></pre></td></tr></table></figure>
+<p>在node1上执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network create --attachable --driver overlay micro-service</span><br></pre></td></tr></table></figure>
+<p>创建一个可被普通容器附加的overlay网络，名字为micro-service。</p>
+<p><em>用swarm默认的ingress不支持服务发现,会出现服务无法被调用的情况。所以另行创建了一个网络。</em></p>
+<p>现在node1的网络如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker@node1:~$ docker network ls</span><br><span class="line">NETWORK ID          NAME                DRIVER              SCOPE</span><br><span class="line">64c3669ce14f        bridge              bridge              <span class="built_in">local</span></span><br><span class="line">176814588fd1        docker_gwbridge     bridge              <span class="built_in">local</span></span><br><span class="line">52b2424b81ec        host                host                <span class="built_in">local</span></span><br><span class="line">qmkx8kk9j9ic        ingress             overlay             swarm</span><br><span class="line">5kjkaxmaw2ei        micro-service       overlay             swarm</span><br></pre></td></tr></table></figure>
+<p><em>由于我没有清空实验环境，之前搭建过，所以这里还看到有一个创建docker swarm后默认的ingress网络</em></p>
+<h2 id="搭建Consul集群和server高可用"><a href="#搭建Consul集群和server高可用" class="headerlink" title="搭建Consul集群和server高可用"></a>搭建Consul集群和server高可用</h2><p>官方建议是docker容器方式运行的时候,用<code>host</code>网络模式,因为一致性和gossip对延迟比较敏感.</p>
+<p>但是如此一来,在调用consul的时候,负载均衡还要用nginx之类的实现,我打算加入routing mesh网络,然后用服务名来调用,让routing mesh实现负载均衡.</p>
+<p>node1上执行,安装consul server</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 8500:8500 -p 8300-8302:8300-8302 -p 8600:8600 \</span><br><span class="line">--restart=always \</span><br><span class="line">-h node1 \</span><br><span class="line">--name consul  \</span><br><span class="line">--network micro-service \</span><br><span class="line">-v /data/consul:/consul/data \</span><br><span class="line">consul agent \</span><br><span class="line">-server \</span><br><span class="line">-bootstrap-expect=2 \</span><br><span class="line">-node=node1 \</span><br><span class="line">-rejoin \</span><br><span class="line">-client 0.0.0.0 \</span><br><span class="line">-advertise 192.168.99.100 \</span><br><span class="line">-ui</span><br></pre></td></tr></table></figure>
+<p>在node2上执行，安装consul server,和第一条有点区别，没有UI</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 8500:8500 -p 8300-8302:8300-8302 -p 8600:8600 \</span><br><span class="line">--restart=always \</span><br><span class="line">-h node2 \</span><br><span class="line">--name consul  \</span><br><span class="line">--network micro-service \</span><br><span class="line">consul agent \</span><br><span class="line">-server \</span><br><span class="line">-node=node2 \</span><br><span class="line">-rejoin \</span><br><span class="line">-client 0.0.0.0 \</span><br><span class="line">-join 192.168.99.100 \</span><br><span class="line">-advertise 192.168.99.101</span><br></pre></td></tr></table></figure>
+<p>在node3上执行，安装consul client</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 8500:8500 -p 8300-8302:8300-8302 -p 8600:8600 \</span><br><span class="line">--restart=always \</span><br><span class="line">-h node3 \</span><br><span class="line">--name consul  \</span><br><span class="line">--network micro-service \</span><br><span class="line">consul agent \</span><br><span class="line">-node=node3 \</span><br><span class="line">-rejoin \</span><br><span class="line">-client 0.0.0.0 \</span><br><span class="line">-join 192.168.99.100 \</span><br><span class="line">-advertise 192.168.99.102</span><br></pre></td></tr></table></figure>
+<p>现在在node1容器里面执行consul的命令是可以看到有三个节点信息，其中两个server 一个client，如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker@node1:~$ docker <span class="built_in">exec</span> consul consul members</span><br><span class="line">Node   Address              Status  Type    Build  Protocol  DC   Segment</span><br><span class="line">node1  192.168.99.100:8301  alive   server  1.2.2  2         dc1  &lt;all&gt;</span><br><span class="line">node2  192.168.99.101:8301  alive   server  1.2.2  2         dc1  &lt;all&gt;</span><br><span class="line">node3  192.168.99.102:8301  alive   client  1.2.2  2         dc1  &lt;default&gt;</span><br></pre></td></tr></table></figure>
+<p>这里只是测试，很多参数都没特别带上，有些还蛮重要的，比如配置和数据目录，广域网宣告IP，建议去consul官方文档看看，或者看我整理的信息，如下</p>
+<h3 id="consul-agent命令可选参数"><a href="#consul-agent命令可选参数" class="headerlink" title="consul agent命令可选参数"></a>consul agent命令可选参数</h3><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br></pre></td><td class="code"><pre><span class="line">Usage: consul agent [options]</span><br><span class="line"></span><br><span class="line">  Starts the Consul agent and runs until an interrupt is received. The</span><br><span class="line">  agent represents a single node in a cluster.</span><br><span class="line"></span><br><span class="line">HTTP API Options</span><br><span class="line"></span><br><span class="line">  -datacenter=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Datacenter of the agent.</span></span><br><span class="line"></span><br><span class="line">Command Options</span><br><span class="line"></span><br><span class="line">  -advertise=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     设置的主机IP，不设置，通过容器运行的话，获取的是容器里面的IP</span></span><br><span class="line"></span><br><span class="line">  -advertise-wan=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Sets address to advertise on WAN instead of -advertise address.</span></span><br><span class="line"><span class="code">     设置广域网IP，一般跨局域网的话 要指定这个。</span></span><br><span class="line"></span><br><span class="line">  -bind=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Sets the bind address for cluster communication.</span></span><br><span class="line"><span class="code">     集群中绑定的IP，默认0.0.0.0</span></span><br><span class="line"></span><br><span class="line">  -bootstrap</span><br><span class="line"><span class="code">     Sets server to bootstrap mode.</span></span><br><span class="line"><span class="code">     引导模式，自动选择为raft领导者。多个节点指定这个参数将导致一致性不能保证。</span></span><br><span class="line"><span class="code">     属于遗留的参数。</span></span><br><span class="line"></span><br><span class="line">  -bootstrap-expect=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Sets server to expect bootstrap mode.</span></span><br><span class="line"><span class="code">     预期服务器的数量，达到预期数量后，自动选举领导者。一般不建议指定。</span></span><br><span class="line"></span><br><span class="line">  -client=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Sets the address to bind for client access. This includes RPC, DNS,</span></span><br><span class="line"><span class="code">     HTTP and HTTPS (if configured).</span></span><br><span class="line"><span class="code">     绑定的客户端地址，绑定才能访问。</span></span><br><span class="line"></span><br><span class="line">  -config-dir=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Path to a directory to read configuration files from. This</span></span><br><span class="line"><span class="code">     will read every file ending in '.json' as configuration in this</span></span><br><span class="line"><span class="code">     directory in alphabetical order. Can be specified multiple times.</span></span><br><span class="line"><span class="code">    配置目录</span></span><br><span class="line"></span><br><span class="line">  -config-file=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Path to a JSON file to read configuration from. Can be specified</span></span><br><span class="line"><span class="code">     multiple times.</span></span><br><span class="line"><span class="code">     配置文件</span></span><br><span class="line"></span><br><span class="line">  -config-format=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Config files are in this format irrespective of their extension.</span></span><br><span class="line"><span class="code">     Must be 'hcl' or 'json'</span></span><br><span class="line"><span class="code">     配置格式</span></span><br><span class="line"></span><br><span class="line">  -data-dir=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Path to a data directory to store agent state.</span></span><br><span class="line"><span class="code">     数据卷目录</span></span><br><span class="line"></span><br><span class="line">  -dev</span><br><span class="line"><span class="code">     Starts the agent in development mode.</span></span><br><span class="line"><span class="code">     开发模式，数据将不写入磁盘</span></span><br><span class="line"></span><br><span class="line">  -disable-host-node-id</span><br><span class="line"><span class="code">     Setting this to true will prevent Consul from using information</span></span><br><span class="line"><span class="code">     from the host to generate a node ID, and will cause Consul to</span></span><br><span class="line"><span class="code">     generate a random node ID instead.</span></span><br><span class="line"><span class="code">     关闭后，Consul不使用节点信息来生成确定性标示，并随机生成标示。挺有有的，可以在一台机运行多个实例的情况避免了node id冲突。当然如果用docker swarm应该是没这方面担忧的，因为它本身就生成了随机的id作为hostname</span></span><br><span class="line"></span><br><span class="line">  -disable-keyring-file</span><br><span class="line"><span class="code">     Disables the backing up of the keyring to a file.</span></span><br><span class="line"></span><br><span class="line">  -dns-port=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     DNS port to use.</span></span><br><span class="line"><span class="code">     监听的dns端口，默认是8600</span></span><br><span class="line"></span><br><span class="line">  -domain=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Domain to use for DNS interface.</span></span><br><span class="line"><span class="code">     接管解析改域，不会递归查询</span></span><br><span class="line"></span><br><span class="line">  -enable-script-checks</span><br><span class="line"><span class="code">     Enables health check scripts.</span></span><br><span class="line"><span class="code">     开启健康检查脚本</span></span><br><span class="line"></span><br><span class="line">  -encrypt=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Provides the gossip encryption key.</span></span><br><span class="line"><span class="code">     解密consul流量的key，base64编码的16字节，创建方法是consul keygen</span></span><br><span class="line"></span><br><span class="line">  -hcl=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     hcl config fragment. Can be specified multiple times.</span></span><br><span class="line"></span><br><span class="line">  -http-port=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Sets the HTTP API port to listen on.</span></span><br><span class="line"><span class="code">     绑定的http api端口 默认是8500</span></span><br><span class="line"></span><br><span class="line">  -join=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Address of an agent to join at start time. Can be specified</span></span><br><span class="line"><span class="code">     multiple times.</span></span><br><span class="line"><span class="code">     启动时加入其它节点</span></span><br><span class="line"></span><br><span class="line">  -join-wan=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Address of an agent to join -wan at start time. Can be specified</span></span><br><span class="line"><span class="code">     multiple times.</span></span><br><span class="line"><span class="code">     加入其它局域网节点时用这个。</span></span><br><span class="line"></span><br><span class="line">  -log-level=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Log level of the agent.</span></span><br><span class="line"><span class="code">     日志等级，可以看consul moniter获取更多信息。</span></span><br><span class="line"></span><br><span class="line">  -node=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Name of this node. Must be unique in the cluster.</span></span><br><span class="line"><span class="code">     节点名字，必须在集群中唯一。</span></span><br><span class="line"></span><br><span class="line">  -node-id=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     A unique ID for this node across space and time. Defaults to a</span></span><br><span class="line"><span class="code">     randomly-generated ID that persists in the data-dir.</span></span><br><span class="line"><span class="code">     如果不指定，则自动生成，这个ID会被保存在数据目录中，以便重启后，还能获取到它信息。</span></span><br><span class="line"></span><br><span class="line">  -node-meta=<span class="xml"><span class="tag">&lt;<span class="name">key:value</span>&gt;</span></span></span><br><span class="line"><span class="code">     An arbitrary metadata key/value pair for this node, of the format</span></span><br><span class="line"><span class="code">     `key:value`. Can be specified multiple times.</span></span><br><span class="line"></span><br><span class="line">  -non-voting-server</span><br><span class="line"><span class="code">     (Enterprise-only) This flag is used to make the server not</span></span><br><span class="line"><span class="code">     participate in the Raft quorum, and have it only receive the data</span></span><br><span class="line"><span class="code">     replication stream. This can be used to add read scalability to</span></span><br><span class="line"><span class="code">     a cluster in cases where a high volume of reads to servers are</span></span><br><span class="line"><span class="code">     needed.</span></span><br><span class="line"><span class="code">     企业版独有。不参与raft仲裁</span></span><br><span class="line"></span><br><span class="line">  -pid-file=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Path to file to store agent PID.</span></span><br><span class="line"><span class="code">     代理启动的pid文件路径，如果指定可以方便找到代理pid，方便其进程管理。</span></span><br><span class="line"></span><br><span class="line">  -protocol=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Sets the protocol version. Defaults to latest.</span></span><br><span class="line"><span class="code">     设置consul协议版本，默认最新。consul -v可看</span></span><br><span class="line"></span><br><span class="line">  -raft-protocol=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Sets the Raft protocol version. Defaults to latest.</span></span><br><span class="line"><span class="code">     设置raft协议版本</span></span><br><span class="line"></span><br><span class="line">  -recursor=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Address of an upstream DNS server. Can be specified multiple times.</span></span><br><span class="line"><span class="code">     设置上游DNS服务，用于递归查询一般。</span></span><br><span class="line"></span><br><span class="line">  -rejoin</span><br><span class="line"><span class="code">     Ignores a previous leave and attempts to rejoin the cluster.</span></span><br><span class="line"><span class="code">     在服务器暂时断开后，重连重新加入集群</span></span><br><span class="line"></span><br><span class="line">  -retry-interval=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Time to wait between join attempts.</span></span><br><span class="line"><span class="code">     尝试重连的间隔</span></span><br><span class="line"></span><br><span class="line">  -retry-interval-wan=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Time to wait between join -wan attempts.</span></span><br><span class="line"></span><br><span class="line">  -retry-join=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Address of an agent to join at start time with retries enabled. Can</span></span><br><span class="line"><span class="code">     be specified multiple times.</span></span><br><span class="line"></span><br><span class="line">  -retry-join-wan=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Address of an agent to join -wan at start time with retries</span></span><br><span class="line"><span class="code">     enabled. Can be specified multiple times.</span></span><br><span class="line"></span><br><span class="line">  -retry-max=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Maximum number of join attempts. Defaults to 0, which will retry</span></span><br><span class="line"><span class="code">     indefinitely.</span></span><br><span class="line"></span><br><span class="line">  -retry-max-wan=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Maximum number of join -wan attempts. Defaults to 0, which will</span></span><br><span class="line"><span class="code">     retry indefinitely.</span></span><br><span class="line"></span><br><span class="line">  -segment=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     (Enterprise-only) Sets the network segment to join.777 </span></span><br><span class="line">  -serf-lan-bind=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Address to bind Serf LAN listeners to.</span></span><br><span class="line"></span><br><span class="line">  -serf-lan-port=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Sets the Serf LAN port to listen on.</span></span><br><span class="line"></span><br><span class="line">  -serf-wan-bind=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Address to bind Serf WAN listeners to.</span></span><br><span class="line"></span><br><span class="line">  -serf-wan-port=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Sets the Serf WAN port to listen on.</span></span><br><span class="line"></span><br><span class="line">  -server</span><br><span class="line"><span class="code">     Switches agent to server mode.</span></span><br><span class="line"><span class="code">     启用server模式</span></span><br><span class="line"></span><br><span class="line">  -server-port=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Sets the server port to listen on.</span></span><br><span class="line"><span class="code">     设置server端口</span></span><br><span class="line"></span><br><span class="line">  -syslog</span><br><span class="line"><span class="code">     Enables logging to syslog.</span></span><br><span class="line"><span class="code">     记录日志去syslog，windows系统不可用</span></span><br><span class="line"></span><br><span class="line">  -ui</span><br><span class="line"><span class="code">     Enables the built-in static web UI server.</span></span><br><span class="line"><span class="code">     启用内置UI面板，不能和下面那个同时启用。</span></span><br><span class="line"></span><br><span class="line">  -ui-dir=<span class="xml"><span class="tag">&lt;<span class="name">value</span>&gt;</span></span></span><br><span class="line"><span class="code">     Path to directory containing the web UI resources.</span></span><br></pre></td></tr></table></figure>
+<h2 id="搭建Docker-Swarm-Mode集群"><a href="#搭建Docker-Swarm-Mode集群" class="headerlink" title="搭建Docker Swarm Mode集群"></a>搭建Docker Swarm Mode集群</h2><p>为了方便进行服务扩缩容，我决定将服务运行在docker swarm上。</p>
+<p>下面就搭建一下docker swarm mode集群。</p>
+<p>控制节点，初始化docker swarm</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm init --advertise-addr 192.168.99.100</span><br></pre></td></tr></table></figure>
+<p>可选参数</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Usage:	docker swarm init [OPTIONS]</span><br><span class="line"></span><br><span class="line">Initialize a swarm</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line"><span class="code">      --advertise-addr string           Advertised address (format: &lt;ip|interface&gt;[:port])</span></span><br><span class="line"><span class="code">      --autolock                        Enable manager autolocking (requiring an unlock key to start a stopped manager)</span></span><br><span class="line"><span class="code">      --availability string             Availability of the node ("active"|"pause"|"drain") (default "active")</span></span><br><span class="line"><span class="code">      --cert-expiry duration            Validity period for node certificates (ns|us|ms|s|m|h) (default 2160h0m0s)</span></span><br><span class="line"><span class="code">      --data-path-addr string           Address or interface to use for data path traffic (format: &lt;ip|interface&gt;)</span></span><br><span class="line"><span class="code">      --dispatcher-heartbeat duration   Dispatcher heartbeat period (ns|us|ms|s|m|h) (default 5s)</span></span><br><span class="line"><span class="code">      --external-ca external-ca         Specifications of one or more certificate signing endpoints</span></span><br><span class="line"><span class="code">      --force-new-cluster               Force create a new cluster from current state</span></span><br><span class="line"><span class="code">      --listen-addr node-addr           Listen address (format: &lt;ip|interface&gt;[:port]) (default 0.0.0.0:2377)</span></span><br><span class="line"><span class="code">      --max-snapshots uint              Number of additional Raft snapshots to retain</span></span><br><span class="line"><span class="code">      --snapshot-interval uint          Number of log entries between Raft snapshots (default 10000)</span></span><br><span class="line"><span class="code">      --task-history-limit int          Task history retention limit (default 5)</span></span><br></pre></td></tr></table></figure>
+<p>增加docker swarm节点</p>
+<p>在其它机器(node2,node3)上执行命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm join --token SWMTKN-1-4oz1xnoqi9psb9aty5zfjkeyw2wkq2ziyursfas1eo563dxwpp-1nmwsqsm9l3wsyqkyus8075y0 192.168.99.100:2377</span><br></pre></td></tr></table></figure>
+<p>这个命令是你在docker swarm init后生成的。如果你忘记保存了，没关系，在控制节点上用<code>docker swarm join-token</code>可以找到它</p>
+<blockquote>
+<pre><code>Usage:  docker swarm join-token [OPTIONS] (worker|manager)
+</code></pre></blockquote>
+<p>如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker@node1:~$ docker swarm join-token worker</span><br><span class="line">To add a worker to this swarm, run the following <span class="built_in">command</span>:</span><br><span class="line"></span><br><span class="line">    docker swarm join --token SWMTKN-1-4oz1xnoqi9psb9aty5zfjkeyw2wkq2ziyursfas1eo563dxwpp-8vdgujjb6dp1i7jxv6nlm4r70 192.168.99.100:2377</span><br></pre></td></tr></table></figure>
+<p>执行完毕后，在node1（控制节点）应该可以看到有三个节点</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker@node1:~$ docker node ls</span><br><span class="line">ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION</span><br><span class="line">qx9075p5x2ipteiikkccgqfqp *   node1               Ready               Active              Leader              18.06.0-ce</span><br><span class="line">hwkh4iajbtuv6gxto9gpdpe42     node2               Ready               Active                                  18.06.0-ce</span><br><span class="line">k709bftfox5vyannyj3py0hya     node3               Ready               Active                                  18.06.0-ce</span><br></pre></td></tr></table></figure>
+<h2 id="Consul服务发现注册"><a href="#Consul服务发现注册" class="headerlink" title="Consul服务发现注册"></a>Consul服务发现注册</h2><p>Consul服务发现与注册我是选用了，Registrator来完成的,至于为什么用它，可以看前面我发过的文章。</p>
+<p>在每台机上执行这个</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">    --restart=always \</span><br><span class="line">    --name=registrator \</span><br><span class="line">    --net=host \</span><br><span class="line">    --volume=/var/run/docker.sock:/tmp/docker.sock \</span><br><span class="line">    gliderlabs/registrator:latest \</span><br><span class="line">    -cleanup \</span><br><span class="line">    -internal \</span><br><span class="line">    -ip &lt;NODE_IP&gt; \</span><br><span class="line">      consul://&lt;NODE_IP&gt;:8500</span><br></pre></td></tr></table></figure>
+<p>至此，整个搭建就告一段落了。</p>
+<p>重点是<code>-internal</code>和<code>-ip</code>参数。</p>
+<p>开始我用的是默认的，采用根据暴露到外部的端口来自动注册服务，但是很快发现这种方式不适用docker swarm方式运行的服务。</p>
+<p>因为它无法识别到routing mesh方式暴露的端口。后来改为用内部暴露的端口注册，这样我们用docker swarm部署的也可以注册上consul了。</p>
+<p>这个很多百度谷歌来的文章没提到，一度差点放弃registrator，后来还是老老实实看官方文档发现了这个参数。</p>
+<p>另外我觉得你们肯定也会遇到多网络多IP注册的问题的</p>
+<p>建议运行的时候用我修改过的registrator吧。详情看这里</p>
+<p>《<a href="https://uublog.com/article/20180812/docker-swarm-mode-registrator-problem-with-multi-network/">Docker Swarm Mode中容器多网络多IP registrator注册服务IP的问题</a>》</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">    --restart=always \</span><br><span class="line">    --name=registrator \</span><br><span class="line">    --net=host \</span><br><span class="line">    --volume=/var/run/docker.sock:/tmp/docker.sock \</span><br><span class="line">    doubleshit/registrator:v7 \</span><br><span class="line">    -cleanup \</span><br><span class="line">    -internal \</span><br><span class="line">    -ip &lt;NODE_IP&gt; \</span><br><span class="line">    -useIpFromNetworkName=micro-service \</span><br><span class="line">      consul://&lt;NODE_IP&gt;:8500</span><br></pre></td></tr></table></figure>
+<p><strong>因为注册上去的是根据内部端口，为了能正确访问到，所以在运行的时候，<code>-p &lt;extenal_port&gt;:&lt;internal_ip&gt;</code> 暴露的端口必须一致！！！</strong></p>
+<h2 id="部署微服务"><a href="#部署微服务" class="headerlink" title="部署微服务"></a>部署微服务</h2><p>主要注意两点：</p>
+<ol>
+<li><p>暴露的端口和内部端口号必须一样。</p>
+</li>
+<li><p>网络必须指定一样的如我们创建的：<code>--network overlay</code></p>
+</li>
+</ol>
+<p>其它没什么好讲的了，运行服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Usage:	docker service create [OPTIONS] IMAGE [COMMAND] [ARG...]</span><br><span class="line"></span><br><span class="line">Create a new service</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">      --config config                      Specify configurations to expose to the service</span><br><span class="line">      --constraint list                    Placement constraints</span><br><span class="line">      --container-label list               Container labels</span><br><span class="line">      --credential-spec credential-spec    Credential spec for managed service account (Windows only)</span><br><span class="line">  -d, --detach                             Exit immediately instead of waiting for the service to converge</span><br><span class="line">      --dns list                           Set custom DNS servers</span><br><span class="line">      --dns-option list                    Set DNS options</span><br><span class="line">      --dns-search list                    Set custom DNS search domains</span><br><span class="line">      --endpoint-mode string               Endpoint mode (vip or dnsrr) (default &quot;vip&quot;)</span><br><span class="line">      --entrypoint command                 Overwrite the default ENTRYPOINT of the image</span><br><span class="line">  -e, --env list                           Set environment variables</span><br><span class="line">      --env-file list                      Read in a file of environment variables</span><br><span class="line">      --generic-resource list              User defined resources</span><br><span class="line">      --group list                         Set one or more supplementary user groups for the container</span><br><span class="line">      --health-cmd string                  Command to run to check health</span><br><span class="line">      --health-interval duration           Time between running the check (ms|s|m|h)</span><br><span class="line">      --health-retries int                 Consecutive failures needed to report unhealthy</span><br><span class="line">      --health-start-period duration       Start period for the container to initialize before counting retries towards unstable (ms|s|m|h)</span><br><span class="line">      --health-timeout duration            Maximum time to allow one check to run (ms|s|m|h)</span><br><span class="line">      --host list                          Set one or more custom host-to-IP mappings (host:ip)</span><br><span class="line">      --hostname string                    Container hostname</span><br><span class="line">      --init                               Use an init inside each service container to forward signals and reap processes</span><br><span class="line">      --isolation string                   Service container isolation mode</span><br><span class="line">  -l, --label list                         Service labels</span><br><span class="line">      --limit-cpu decimal                  Limit CPUs</span><br><span class="line">      --limit-memory bytes                 Limit Memory</span><br><span class="line">      --log-driver string                  Logging driver for service</span><br><span class="line">      --log-opt list                       Logging driver options</span><br><span class="line">      --mode string                        Service mode (replicated or global) (default &quot;replicated&quot;)</span><br><span class="line">      --mount mount                        Attach a filesystem mount to the service</span><br><span class="line">      --name string                        Service name</span><br><span class="line">      --network network                    Network attachments</span><br><span class="line">      --no-healthcheck                     Disable any container-specified HEALTHCHECK</span><br><span class="line">      --no-resolve-image                   Do not query the registry to resolve image digest and supported platforms</span><br><span class="line">      --placement-pref pref                Add a placement preference</span><br><span class="line">  -p, --publish port                       Publish a port as a node port</span><br><span class="line">  -q, --quiet                              Suppress progress output</span><br><span class="line">      --read-only                          Mount the container&apos;s root filesystem as read only</span><br><span class="line">      --replicas uint                      Number of tasks</span><br><span class="line">      --reserve-cpu decimal                Reserve CPUs</span><br><span class="line">      --reserve-memory bytes               Reserve Memory</span><br><span class="line">      --restart-condition string           Restart when condition is met (&quot;none&quot;|&quot;on-failure&quot;|&quot;any&quot;) (default &quot;any&quot;)</span><br><span class="line">      --restart-delay duration             Delay between restart attempts (ns|us|ms|s|m|h) (default 5s)</span><br><span class="line">      --restart-max-attempts uint          Maximum number of restarts before giving up</span><br><span class="line">      --restart-window duration            Window used to evaluate the restart policy (ns|us|ms|s|m|h)</span><br><span class="line">      --rollback-delay duration            Delay between task rollbacks (ns|us|ms|s|m|h) (default 0s)</span><br><span class="line">      --rollback-failure-action string     Action on rollback failure (&quot;pause&quot;|&quot;continue&quot;) (default &quot;pause&quot;)</span><br><span class="line">      --rollback-max-failure-ratio float   Failure rate to tolerate during a rollback (default 0)</span><br><span class="line">      --rollback-monitor duration          Duration after each task rollback to monitor for failure (ns|us|ms|s|m|h) (default 5s)</span><br><span class="line">      --rollback-order string              Rollback order (&quot;start-first&quot;|&quot;stop-first&quot;) (default &quot;stop-first&quot;)</span><br><span class="line">      --rollback-parallelism uint          Maximum number of tasks rolled back simultaneously (0 to roll back all at once) (default 1)</span><br><span class="line">      --secret secret                      Specify secrets to expose to the service</span><br><span class="line">      --stop-grace-period duration         Time to wait before force killing a container (ns|us|ms|s|m|h) (default 10s)</span><br><span class="line">      --stop-signal string                 Signal to stop the container</span><br><span class="line">  -t, --tty                                Allocate a pseudo-TTY</span><br><span class="line">      --update-delay duration              Delay between updates (ns|us|ms|s|m|h) (default 0s)</span><br><span class="line">      --update-failure-action string       Action on update failure (&quot;pause&quot;|&quot;continue&quot;|&quot;rollback&quot;) (default &quot;pause&quot;)</span><br><span class="line">      --update-max-failure-ratio float     Failure rate to tolerate during an update (default 0)</span><br><span class="line">      --update-monitor duration            Duration after each task update to monitor for failure (ns|us|ms|s|m|h) (default 5s)</span><br><span class="line">      --update-order string                Update order (&quot;start-first&quot;|&quot;stop-first&quot;) (default &quot;stop-first&quot;)</span><br><span class="line">      --update-parallelism uint            Maximum number of tasks updated simultaneously (0 to update all at once) (default 1)</span><br><span class="line">  -u, --user string                        Username or UID (format: &lt;name|uid&gt;[:&lt;group|gid&gt;])</span><br><span class="line">      --with-registry-auth                 Send registry authentication details to swarm agents</span><br><span class="line">  -w, --workdir string                     Working directory inside the container</span><br></pre></td></tr></table></figure>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>给作者打一针鸡血</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="//ojz2jzr09.bkt.clouddn.com/profile/wechat-pay.jpg" alt="Onecer WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="//ojz2jzr09.bkt.clouddn.com/profile/alipay--pay.jpg" alt="Onecer Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/consul/" rel="tag"># consul</a>
+          
+            <a href="/tags/docker-swarm/" rel="tag"># docker swarm</a>
+          
+            <a href="/tags/microservice/" rel="tag"># microservice</a>
+          
+            <a href="/tags/spring-cloud/" rel="tag"># spring cloud</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/article/20180802/consul-cluster/" rel="next" title="Centos7+Docker部署Consul集群">
+                <i class="fa fa-chevron-left"></i> Centos7+Docker部署Consul集群
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/article/20180805/python-generate-calendar/" rel="prev" title="Python根据指定日期生成日历">
+                Python根据指定日期生成日历 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="article/20180805/docker-swarm-deploy-micro-services/"
+           data-title="Docker Swarm Mode中部署SpringCloud微服务" data-url="https://uublog.com/article/20180805/docker-swarm-deploy-micro-services/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif"
+               alt="Onecer" />
+          <p class="site-author-name" itemprop="name">Onecer</p>
+          <p class="site-description motion-element" itemprop="description">记录日记之类的</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">86</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">98</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/yinyongyou" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/MichaelJScofield" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-codepen"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#实验环境"><span class="nav-number">1.</span> <span class="nav-text">实验环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个Overlay网络"><span class="nav-number">2.</span> <span class="nav-text">创建一个Overlay网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建Consul集群和server高可用"><span class="nav-number">3.</span> <span class="nav-text">搭建Consul集群和server高可用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#consul-agent命令可选参数"><span class="nav-number">3.1.</span> <span class="nav-text">consul agent命令可选参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建Docker-Swarm-Mode集群"><span class="nav-number">4.</span> <span class="nav-text">搭建Docker Swarm Mode集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Consul服务发现注册"><span class="nav-number">5.</span> <span class="nav-text">Consul服务发现注册</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署微服务"><span class="nav-number">6.</span> <span class="nav-text">部署微服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">7.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Onecer</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="powered-by">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+<div class="theme-info">
+ Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="//apps.bdimg.com/libs/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/velocity/1.2.1/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/velocity/1.2.1/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="//apps.bdimg.com/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"uublog"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      
+      <script src="//cdn.staticfile.org/UAParser.js/0.7.9/ua-parser.min.js"></script>
+      <script src="/js/src/hook-duoshuo.js?v=5.1.0"></script>
+    
+    
+    <script src="//cdn.staticfile.org/UAParser.js/0.7.9/ua-parser.min.js"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.staticfile.org/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

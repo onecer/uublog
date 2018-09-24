@@ -1,0 +1,977 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//apps.bdimg.com/libs/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="//cdn.staticfile.org/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Scrapy,IPProxy,Python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="这个东西写有半个月了，最近工作忙没空理会，看了下数据，跑得还不错。 用各种框架和开源项目配合，站在巨人的肩膀上，轻轻松松完成一个麻雀虽小五脏俱全的爬虫。 采集URL，大规模URL去重，分类，入库，反爬虫。而完成这些，只需要寥寥不到三百行代码。 Scrapy工程目录如下123456789101112131415161718192021222324252627282930313233343536373">
+<meta name="keywords" content="Scrapy,IPProxy,Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python基于Scrapy框架写个麻雀虽小五脏俱全的爬虫">
+<meta property="og:url" content="https://uublog.com/article/20170328/python-scrapy-ipproxy/index.html">
+<meta property="og:site_name" content="UU Blog">
+<meta property="og:description" content="这个东西写有半个月了，最近工作忙没空理会，看了下数据，跑得还不错。 用各种框架和开源项目配合，站在巨人的肩膀上，轻轻松松完成一个麻雀虽小五脏俱全的爬虫。 采集URL，大规模URL去重，分类，入库，反爬虫。而完成这些，只需要寥寥不到三百行代码。 Scrapy工程目录如下123456789101112131415161718192021222324252627282930313233343536373">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-16T15:04:31.543Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python基于Scrapy框架写个麻雀虽小五脏俱全的爬虫">
+<meta name="twitter:description" content="这个东西写有半个月了，最近工作忙没空理会，看了下数据，跑得还不错。 用各种框架和开源项目配合，站在巨人的肩膀上，轻轻松松完成一个麻雀虽小五脏俱全的爬虫。 采集URL，大规模URL去重，分类，入库，反爬虫。而完成这些，只需要寥寥不到三百行代码。 Scrapy工程目录如下123456789101112131415161718192021222324252627282930313233343536373">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '9131895',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uublog.com/article/20170328/python-scrapy-ipproxy/"/>
+
+
+
+
+
+  <title> Python基于Scrapy框架写个麻雀虽小五脏俱全的爬虫 | UU Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1261151756&web_id=1261151756" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">UU Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <h1 class="site-subtitle" itemprop="description">UU Blog</h1>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170328/python-scrapy-ipproxy/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Onecer">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="UU Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                Python基于Scrapy框架写个麻雀虽小五脏俱全的爬虫
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-28T00:46:19+08:00">
+                2017-03-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/article/20170328/python-scrapy-ipproxy/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170328/python-scrapy-ipproxy/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这个东西写有半个月了，最近工作忙没空理会，看了下数据，跑得还不错。</p>
+<p>用各种框架和开源项目配合，站在巨人的肩膀上，轻轻松松完成一个麻雀虽小五脏俱全的爬虫。</p>
+<p>采集URL，大规模URL去重，分类，入库，反爬虫。而完成这些，只需要寥寥不到三百行代码。</p>
+<p>Scrapy工程目录如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">./</span><br><span class="line">├── crawls # 开启持久化会产生一些记录文件</span><br><span class="line">├── sbdspider</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   ├── __init__.pyc</span><br><span class="line">│   ├── items.py     # 定义要采集的字段</span><br><span class="line">│   ├── items.pyc</span><br><span class="line">│   ├── middlewares  # 中间件 主要是随机选择 UserAgent和代理IP 主要用来反爬虫</span><br><span class="line">│   │   ├── __init__.py</span><br><span class="line">│   │   ├── __init__.pyc</span><br><span class="line">│   │   ├── RandomProxy.py</span><br><span class="line">│   │   ├── RandomProxy.pyc</span><br><span class="line">│   │   ├── RandomUserAgent.py</span><br><span class="line">│   │   └── RandomUserAgent.pyc</span><br><span class="line">│   ├── middlewares.py</span><br><span class="line">│   ├── pipelines.py  # 入库MySQL</span><br><span class="line">│   ├── pipelines.pyc</span><br><span class="line">│   ├── scrapy_redis  # 用的九茶的模块 用Bloomfilter+redis去重</span><br><span class="line">│   │   ├── BloomfilterOnRedis.py</span><br><span class="line">│   │   ├── BloomfilterOnRedis.pyc</span><br><span class="line">│   │   ├── connection.py</span><br><span class="line">│   │   ├── connection.pyc</span><br><span class="line">│   │   ├── dupefilter.py</span><br><span class="line">│   │   ├── dupefilter.pyc</span><br><span class="line">│   │   ├── __init__.py</span><br><span class="line">│   │   ├── __init__.pyc</span><br><span class="line">│   │   ├── isExists.py</span><br><span class="line">│   │   ├── pipelines.py</span><br><span class="line">│   │   ├── queue.py</span><br><span class="line">│   │   ├── queue.pyc</span><br><span class="line">│   │   ├── scheduler.py</span><br><span class="line">│   │   ├── scheduler.pyc</span><br><span class="line">│   │   ├── spiders.py</span><br><span class="line">│   │   ├── spiders.pyc</span><br><span class="line">│   │   └── tests.py</span><br><span class="line">│   ├── settings.py  # 配置 pipeline、middlewares的引用声明主要在这里</span><br><span class="line">│   ├── settings.pyc</span><br><span class="line">│   └── spiders</span><br><span class="line">│       ├── __init__.py</span><br><span class="line">│       ├── __init__.pyc</span><br><span class="line">│       ├── sobaidupan.py # 爬虫主体 主要是提取数据 分类</span><br><span class="line">│       └── sobaidupan.pyc</span><br><span class="line">└── scrapy.cfg</span><br></pre></td></tr></table></figure></p>
+<p>首先是字段的定义，我需要保存哪些信息<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SbdspiderItem</span><span class="params">(scrapy.Item)</span>:</span></span><br><span class="line">    <span class="comment"># define the fields for your item here like:</span></span><br><span class="line">    <span class="comment"># name = scrapy.Field()</span></span><br><span class="line">    tid = scrapy.Field()    <span class="comment"># 网盘类型ID</span></span><br><span class="line">    cid = scrapy.Field()    <span class="comment"># 资源分类ID</span></span><br><span class="line">    uid = scrapy.Field()    <span class="comment"># 资源用户ID</span></span><br><span class="line">    name = scrapy.Field()</span><br><span class="line">    avatar = scrapy.Field()</span><br><span class="line">    title = scrapy.Field()  <span class="comment"># 资源标题</span></span><br><span class="line">    size = scrapy.Field()   <span class="comment"># 资源大小</span></span><br><span class="line">    url = scrapy.Field()    <span class="comment"># 资源URL</span></span><br><span class="line">    pwd = scrapy.Field()    <span class="comment"># 资源密码</span></span><br><span class="line">    description = scrapy.Field() <span class="comment"># 资源描述</span></span><br><span class="line">    available = scrapy.Field()   <span class="comment"># 是否可用</span></span><br><span class="line">    sharetime = scrapy.Field()   <span class="comment"># 分享时间</span></span><br></pre></td></tr></table></figure></p>
+<p>然后我设计了这样的数据库表来保存它们：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- phpMyAdmin SQL Dump</span></span><br><span class="line"><span class="comment">-- version 4.6.6</span></span><br><span class="line"><span class="comment">-- https://www.phpmyadmin.net/</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- Host: localhost</span></span><br><span class="line"><span class="comment">-- Generation Time: 2017-03-10 05:44:53</span></span><br><span class="line"><span class="comment">-- 服务器版本： 5.5.53-log</span></span><br><span class="line"><span class="comment">-- PHP Version: 5.5.38</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span> SQL_MODE = <span class="string">"NO_AUTO_VALUE_ON_ZERO"</span>;</span><br><span class="line"><span class="keyword">SET</span> <span class="keyword">time_zone</span> = <span class="string">"+00:00"</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */</span>;</span><br><span class="line"><span class="comment">/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */</span>;</span><br><span class="line"><span class="comment">/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */</span>;</span><br><span class="line"><span class="comment">/*!40101 SET NAMES utf8mb4 */</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- Database: `yzy_data`</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- --------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- 表的结构 `yzy_class`</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`yzy_class`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`cname`</span> <span class="built_in">varchar</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=MyISAM <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8mb4;</span><br><span class="line"></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- 转存表中的数据 `yzy_class`</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- 这样我以后保存分类ID就够了，避免重复字段太多，占用太多数据库，也不方便数据大后索引</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`yzy_class`</span> (<span class="string">`id`</span>, <span class="string">`cname`</span>) <span class="keyword">VALUES</span></span><br><span class="line">(<span class="number">1</span>, <span class="string">'其它'</span>),</span><br><span class="line">(<span class="number">2</span>, <span class="string">'音乐'</span>),</span><br><span class="line">(<span class="number">3</span>, <span class="string">'图片'</span>),</span><br><span class="line">(<span class="number">4</span>, <span class="string">'电子书'</span>),</span><br><span class="line">(<span class="number">5</span>, <span class="string">'文档'</span>),</span><br><span class="line">(<span class="number">6</span>, <span class="string">'种子'</span>),</span><br><span class="line">(<span class="number">7</span>, <span class="string">'手机APP'</span>),</span><br><span class="line">(<span class="number">8</span>, <span class="string">'影视'</span>),</span><br><span class="line">(<span class="number">9</span>, <span class="string">'无损音乐'</span>),</span><br><span class="line">(<span class="number">10</span>, <span class="string">'教程'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- --------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- 表的结构 `yzy_resources`</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- 这个表才是重点 基本Items.py定义的都是保存到这里来</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`yzy_resources`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`tid`</span> tinyint(<span class="number">3</span>) <span class="keyword">UNSIGNED</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`cid`</span> tinyint(<span class="number">3</span>) <span class="keyword">UNSIGNED</span> <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`uid`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`title`</span> <span class="built_in">varchar</span>(<span class="number">80</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`size`</span> <span class="built_in">varchar</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`url`</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`pwd`</span> <span class="built_in">varchar</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`description`</span> <span class="built_in">varchar</span>(<span class="number">100</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`available`</span> tinyint(<span class="number">1</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=MyISAM <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8mb4;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- --------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- 表的结构 `yzy_type`</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- 留一个表保存资源类别，为以后多个类型网盘资源采集打下基础</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`yzy_type`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`name`</span> <span class="built_in">char</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`ename`</span> <span class="built_in">char</span>(<span class="number">10</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`shortname`</span> <span class="built_in">char</span>(<span class="number">4</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`url`</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=MyISAM <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8mb4;</span><br><span class="line"></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- 转存表中的数据 `yzy_type`</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`yzy_type`</span> (<span class="string">`id`</span>, <span class="string">`name`</span>, <span class="string">`ename`</span>, <span class="string">`shortname`</span>, <span class="string">`url`</span>) <span class="keyword">VALUES</span></span><br><span class="line">(<span class="number">1</span>, <span class="string">'百度网盘'</span>, <span class="string">'dupan'</span>, <span class="string">'度盘'</span>, <span class="string">'https:/pan.baidu.com/'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- --------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- 表的结构 `yzy_users`</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- 保存网盘用户信息</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`yzy_users`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`tid`</span> tinyint(<span class="number">4</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`uid`</span> <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`uname`</span> <span class="built_in">varchar</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`avatar`</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=MyISAM <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8mb4;</span><br><span class="line"></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- Indexes for dumped tables</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- Indexes for table `yzy_class`</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="string">`yzy_class`</span></span><br><span class="line">  <span class="keyword">ADD</span> PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- Indexes for table `yzy_resources`</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="string">`yzy_resources`</span></span><br><span class="line">  <span class="keyword">ADD</span> PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- Indexes for table `yzy_type`</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="string">`yzy_type`</span></span><br><span class="line">  <span class="keyword">ADD</span> PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- Indexes for table `yzy_users`</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="string">`yzy_users`</span></span><br><span class="line">  <span class="keyword">ADD</span> PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- 在导出的表使用AUTO_INCREMENT</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- 使用表AUTO_INCREMENT `yzy_class`</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="string">`yzy_class`</span></span><br><span class="line">  <span class="keyword">MODIFY</span> <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT, AUTO_INCREMENT=<span class="number">11</span>;</span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- 使用表AUTO_INCREMENT `yzy_resources`</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="string">`yzy_resources`</span></span><br><span class="line">  <span class="keyword">MODIFY</span> <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT;</span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- 使用表AUTO_INCREMENT `yzy_type`</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="string">`yzy_type`</span></span><br><span class="line">  <span class="keyword">MODIFY</span> <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT, AUTO_INCREMENT=<span class="number">2</span>;</span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="comment">-- 使用表AUTO_INCREMENT `yzy_users`</span></span><br><span class="line"><span class="comment">--</span></span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> <span class="string">`yzy_users`</span></span><br><span class="line">  <span class="keyword">MODIFY</span> <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT;</span><br><span class="line"><span class="comment">/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */</span>;</span><br><span class="line"><span class="comment">/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */</span>;</span><br><span class="line"><span class="comment">/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */</span>;</span><br></pre></td></tr></table></figure></p>
+<p>注意看注释，还是很好理解这些表干嘛用的。</p>
+<p><code>pipelines.py</code>获取到的Items怎么处理</p>
+<p>这里有两个类，其实是两种处理方式，一种是默认的，我改了一下，采集到的数据，以JSON的形式保存。</p>
+<p><code>sobaiduPipeline</code>才是重点，主要有两次插入数据，一次是插入用户数据，一次获取到用户ID后，插入到<code>yzy_resources</code>表。</p>
+<p>数据库的定义在 <code>settings.py</code> 里面</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json  </span><br><span class="line"><span class="keyword">import</span> MySQLdb</span><br><span class="line"><span class="keyword">from</span> scrapy.exceptions <span class="keyword">import</span> DropItem</span><br><span class="line"><span class="keyword">import</span> settings</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SbdspiderPipeline</span><span class="params">(object)</span>:</span>  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span>  </span><br><span class="line">        self.file = open(<span class="string">'items.jl'</span>, <span class="string">'wb'</span>)  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_item</span><span class="params">(self, item, spider)</span>:</span>  </span><br><span class="line">        line = json.dumps(dict(item)) + <span class="string">"\n"</span>  </span><br><span class="line">        self.file.write(line)  </span><br><span class="line">        <span class="keyword">return</span> item</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 入库到MySQL</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">sobaiduPipeline</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="comment"># 初始化连接</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.conn=MySQLdb.connect(host=settings.MYSQL_HOST,</span><br><span class="line">                                  user=settings.MYSQL_USER,</span><br><span class="line">                                  passwd=settings.MYSQL_PASS,</span><br><span class="line">                                  db=settings.MYSQL_NAME,</span><br><span class="line">                                  charset=<span class="string">'utf8'</span>,</span><br><span class="line">                                  use_unicode=<span class="keyword">True</span>)</span><br><span class="line">        self.curosr = self.conn.cursor()</span><br><span class="line">    <span class="comment"># 处理item</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_item</span><span class="params">(self,item,spider)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            userid = self.insert_user(item[<span class="string">'uid'</span>],item[<span class="string">'name'</span>],item[<span class="string">'avatar'</span>])</span><br><span class="line">            sql=<span class="string">"""INSERT INTO</span></span><br><span class="line"><span class="string">                                yzy_resources(tid,cid,uid,title,size,url,pwd,description,available,sharetime)</span></span><br><span class="line"><span class="string">                                VALUES('%d','%d','%d','%s','%s','%s','%s','%s','%d','%s')</span></span><br><span class="line"><span class="string">                                """</span>%(item[<span class="string">'tid'</span>],item[<span class="string">'cid'</span>],userid,item[<span class="string">'title'</span>],item[<span class="string">'size'</span>],item[<span class="string">'url'</span>],item[<span class="string">'pwd'</span>],item[<span class="string">'description'</span>],item[<span class="string">'available'</span>],item[<span class="string">'sharetime'</span>])</span><br><span class="line">            vsql=sql.encode(<span class="string">'utf8'</span>)</span><br><span class="line">            self.curosr.execute(vsql)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">except</span> MySQLdb.Error,e:</span><br><span class="line">            <span class="keyword">print</span> <span class="string">"Error:%d:%s"</span> % (e.args[<span class="number">0</span>],e.args[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> item</span><br><span class="line">    <span class="comment"># 插入用户数据</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">insert_user</span><span class="params">(self,uid,name,pic)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            userid=<span class="number">0</span></span><br><span class="line">            bSginal=self.curosr.execute(<span class="string">"SELECT * FROM yzy_users WHERE uid='%s'"</span>%(uid))</span><br><span class="line">            <span class="keyword">if</span> bSginal==<span class="number">1</span>:</span><br><span class="line">                results=self.curosr.fetchone()</span><br><span class="line">                userid=results[<span class="number">0</span>]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                sql = <span class="string">"""INSERT INTO yzy_users(uid,uname,avatar)</span></span><br><span class="line"><span class="string">                                    VALUES('%s','%s','%s')"""</span>%(uid,name,pic)</span><br><span class="line">                vsql = sql.encode(<span class="string">'utf8'</span>)</span><br><span class="line">                <span class="keyword">if</span> self.curosr.execute(vsql)==<span class="number">1</span>:</span><br><span class="line">                    userid=self.curosr.lastrowid</span><br><span class="line"></span><br><span class="line">        <span class="keyword">except</span> MySQLdb.Error,e:</span><br><span class="line">            <span class="keyword">print</span> <span class="string">"Error:%d:%s"</span> % (e.args[<span class="number">0</span>], e.args[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> userid</span><br></pre></td></tr></table></figure>
+<p><code>sobaidupan.py</code> 蜘蛛的主体<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> sbdspider.scrapy_redis.spiders <span class="keyword">import</span> RedisSpider</span><br><span class="line"><span class="comment"># 这里我引入的是九茶的模块 RedisSpider</span></span><br><span class="line"><span class="keyword">from</span> scrapy.http <span class="keyword">import</span> Request</span><br><span class="line"><span class="keyword">from</span> sbdspider.items <span class="keyword">import</span> SbdspiderItem</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SobaidupanSpider</span><span class="params">(RedisSpider)</span>:</span></span><br><span class="line">    name = <span class="string">"sobaidu"</span></span><br><span class="line">    <span class="comment"># class type keymap</span></span><br><span class="line">    ckm_music=(<span class="string">'mp3'</span>,<span class="string">'wav'</span>,<span class="string">'mid'</span>,<span class="string">'wma'</span>,<span class="string">'cda'</span>,<span class="string">'acc'</span>)</span><br><span class="line">    <span class="comment"># id 2</span></span><br><span class="line">    ckm_picture=(<span class="string">'jpg'</span>,<span class="string">'jpeg'</span>,<span class="string">'png'</span>,<span class="string">'gif'</span>,<span class="string">'psd'</span>,<span class="string">'bmp'</span>,<span class="string">'svg'</span>,<span class="string">'tga'</span>)</span><br><span class="line">    <span class="comment"># id 3</span></span><br><span class="line">    ckm_ebook=(<span class="string">'txt'</span>,<span class="string">'pdf'</span>,<span class="string">'mobi'</span>,<span class="string">'azw'</span>,<span class="string">'mbp'</span>,<span class="string">'ebx'</span>)</span><br><span class="line">    <span class="comment"># id 4</span></span><br><span class="line">    ckm_docfile=(<span class="string">'doc'</span>,<span class="string">'docx'</span>,<span class="string">'wps'</span>,<span class="string">'ppt'</span>,<span class="string">'xls'</span>,<span class="string">'xlsx'</span>)</span><br><span class="line">    <span class="comment"># id 5</span></span><br><span class="line">    ckm_app=(<span class="string">'apk'</span>,<span class="string">'ipa'</span>,<span class="string">'sis'</span>,<span class="string">'sisx'</span>,<span class="string">'xap'</span>)</span><br><span class="line">    <span class="comment"># id 6</span></span><br><span class="line">    ckm_torrent=(<span class="string">'torrent'</span>)</span><br><span class="line">    <span class="comment"># id 7</span></span><br><span class="line">    ckm_movie=(<span class="string">'mkv'</span>,<span class="string">'rmvb'</span>,<span class="string">'mp4'</span>,<span class="string">'rm'</span>,<span class="string">'avi'</span>,<span class="string">'wmv'</span>,<span class="string">'asf'</span>,<span class="string">'asx'</span>,<span class="string">'mpg'</span>,<span class="string">'mpeg'</span>,<span class="string">'mpe'</span>,<span class="string">'3gp'</span>,<span class="string">'flv'</span>,<span class="string">'f4v'</span>,<span class="string">'vob'</span>,<span class="string">'mov'</span>) </span><br><span class="line">    <span class="comment"># id 8 </span></span><br><span class="line">    ckm_apeflac=(<span class="string">'ape'</span>,<span class="string">'flac'</span>)</span><br><span class="line">    <span class="comment"># id 9</span></span><br><span class="line">    ckm_teach=(<span class="string">u'教程'</span>,<span class="string">u'入门'</span>,<span class="string">u'精讲'</span>,<span class="string">u'详解'</span>,<span class="string">u'课程'</span>)</span><br><span class="line">    <span class="comment"># id 10</span></span><br><span class="line">    allowed_domains = [<span class="string">"www.sobaidupan.com"</span>]</span><br><span class="line">    redis_key = <span class="string">"sobaidupan:start_urls"</span></span><br><span class="line">    start_urls = [<span class="string">'http://www.sobaidupan.com/'</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">start_requests</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> u <span class="keyword">in</span> self.start_urls:</span><br><span class="line">            <span class="keyword">yield</span> Request(u,callback=self.parse,</span><br><span class="line">                                    errback=self.errback)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="keyword">yield</span> self.parse_item(response)</span><br><span class="line">        <span class="keyword">for</span> a <span class="keyword">in</span> response.css(<span class="string">'a::attr(href)'</span>).extract():</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> a:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            next_url = response.urljoin(a)</span><br><span class="line">            <span class="keyword">yield</span> Request(next_url,callback=self.parse)</span><br><span class="line">    <span class="comment"># 匹配字段    </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_item</span><span class="params">(self,response)</span>:</span></span><br><span class="line">        uid = re.search(<span class="string">'user-(\d*)-1\.html'</span>,response.text)</span><br><span class="line">        name = re.search(<span class="string">u'&lt;div align="center"&gt;用户名：(.+?)&lt;/div&gt;&lt;/td&gt;'</span>,response.text)</span><br><span class="line">        avatar = re.search(<span class="string">'&lt;img src="(.+?)" width="100" height="100" border="0"&gt;'</span>,response.text)</span><br><span class="line">        title = re.search(<span class="string">'&lt;h1&gt;(.+?)&lt;/h1&gt;'</span>,response.text)</span><br><span class="line">        ressize = re.search(<span class="string">u'&lt;B&gt;资源大小：&lt;/B&gt;(.+?)&amp;nbsp;&lt;b&gt;'</span>,response.text)</span><br><span class="line">        description = re.search(<span class="string">u'&lt;B&gt;资源类别：&lt;/B&gt;(.+?)&lt;/div&gt;'</span>,response.text)</span><br><span class="line">        sharetime = re.search(<span class="string">u'&lt;b&gt;分享日期：&lt;/b&gt;(.+?)&lt;/div&gt;'</span>,response.text)</span><br><span class="line">        res = re.search(<span class="string">'href="(http://sbdp\.baidudaquan\.com/down\.asp\?id=.+?)"'</span>,response.text)</span><br><span class="line">        <span class="keyword">if</span> res <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span> <span class="keyword">and</span> title <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            ssource = requests.get(res.group(<span class="number">1</span>))</span><br><span class="line">            ssource.encoding = <span class="string">'utf-8'</span></span><br><span class="line">            resurl = re.search(<span class="string">"URL=(.+?)'"</span>,ssource.text)</span><br><span class="line">            <span class="comment"># re.search("URL=(http://pan\.baidu\.com/share/link\?shareid=.+?)'",ssource.text)</span></span><br><span class="line">            <span class="keyword">if</span> resurl <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">                item = SbdspiderItem()</span><br><span class="line">                item[<span class="string">'tid'</span>] = <span class="number">1</span></span><br><span class="line">                item[<span class="string">'cid'</span>] = self.classifyRes(title.group(<span class="number">1</span>))</span><br><span class="line">                item[<span class="string">'uid'</span>] = uid.group(<span class="number">1</span>)</span><br><span class="line">                item[<span class="string">'name'</span>] = name.group(<span class="number">1</span>)</span><br><span class="line">                item[<span class="string">'avatar'</span>] = avatar.group(<span class="number">1</span>)</span><br><span class="line">                item[<span class="string">'title'</span>] = title.group(<span class="number">1</span>)</span><br><span class="line">                <span class="keyword">if</span> ressize <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">                    item[<span class="string">'size'</span>] = ressize.group(<span class="number">1</span>)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    item[<span class="string">'size'</span>] = <span class="string">'未知'</span></span><br><span class="line">                item[<span class="string">'url'</span>] = resurl.group(<span class="number">1</span>)</span><br><span class="line">                item[<span class="string">'pwd'</span>] = <span class="string">''</span></span><br><span class="line">                <span class="keyword">if</span> description <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">                    item[<span class="string">'description'</span>] = description.group(<span class="number">1</span>)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    item[<span class="string">'description'</span>] = <span class="string">''</span></span><br><span class="line">                item[<span class="string">'available'</span>] = <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> sharetime <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">                    item[<span class="string">'sharetime'</span>] = sharetime.group(<span class="number">1</span>)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    dt = datetime.datetime.now().strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>)</span><br><span class="line">                    item[<span class="string">'sharetime'</span>] = dt</span><br><span class="line">                <span class="keyword">return</span> item</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 大致给数据分类    </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">classifyRes</span><span class="params">(self,title)</span>:</span></span><br><span class="line">        ext_title=<span class="string">''</span></span><br><span class="line">        classid=<span class="number">1</span>   <span class="comment"># 初始化ID为1</span></span><br><span class="line">        <span class="comment"># 尝试提取后缀</span></span><br><span class="line">        <span class="keyword">if</span> len(title.split(<span class="string">'.'</span>))&gt;=<span class="number">2</span>:</span><br><span class="line">            ext_title = title.split(<span class="string">'.'</span>)[<span class="number">-1</span>]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            ext_title = title</span><br><span class="line">            ext_title.encoding = <span class="string">'utf-8'</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 按keymap分类</span></span><br><span class="line">        <span class="keyword">if</span>   ext_title <span class="keyword">in</span> self.ckm_music:   </span><br><span class="line">            classid = <span class="number">2</span></span><br><span class="line">        <span class="keyword">elif</span> ext_title <span class="keyword">in</span> self.ckm_picture:</span><br><span class="line">            classid = <span class="number">3</span></span><br><span class="line">        <span class="keyword">elif</span> ext_title <span class="keyword">in</span> self.ckm_ebook:</span><br><span class="line">            classid = <span class="number">4</span></span><br><span class="line">        <span class="keyword">elif</span> ext_title <span class="keyword">in</span> self.ckm_docfile:</span><br><span class="line">            classid = <span class="number">5</span></span><br><span class="line">        <span class="keyword">elif</span> ext_title <span class="keyword">in</span> self.ckm_torrent:</span><br><span class="line">            classid = <span class="number">6</span></span><br><span class="line">        <span class="keyword">elif</span> ext_title <span class="keyword">in</span> self.ckm_app:</span><br><span class="line">            classid = <span class="number">7</span></span><br><span class="line">        <span class="keyword">elif</span> ext_title <span class="keyword">in</span> self.ckm_movie:</span><br><span class="line">            classid = <span class="number">8</span></span><br><span class="line">        <span class="keyword">elif</span> ext_title <span class="keyword">in</span> self.ckm_apeflac:</span><br><span class="line">            classid = <span class="number">9</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">for</span> s <span class="keyword">in</span> self.ckm_teach:</span><br><span class="line">                <span class="keyword">if</span> s <span class="keyword">in</span> ext_title:</span><br><span class="line">                    classid = <span class="number">10</span></span><br><span class="line">        <span class="keyword">return</span> classid</span><br><span class="line">            </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">errback</span><span class="params">(self, failure)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure></p>
+<p>多IP代理采集反爬虫 IPProxys+RandomUserAgent</p>
+<p>先下载安装这个 <a href="https://github.com/qiyeboy/IPProxyPool" target="_blank" rel="noopener">IPProxyPool</a> 。</p>
+<p>搭建成功后，运行有采集到数据的话，<code>curl http://127.0.0.1:8000/?types=0&amp;count=5&amp;country=国内</code> 可以看到返回json格式的数据。这样就成功一半了。</p>
+<p>主要调用接口和随机切换代码 <code>RandomProxy.py</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RandomProxy</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span>  </span><br><span class="line">        self.r = requests.get(<span class="string">u'http://127.0.0.1:8000/?types=0&amp;count=&amp;country=国内'</span>)</span><br><span class="line">        self.ip_ports=json.loads(self.r.text)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_request</span><span class="params">(self, request, spider)</span>:</span></span><br><span class="line">        <span class="comment"># 数组中随机取一个</span></span><br><span class="line">        ip_port=random.choice(self.ip_ports)</span><br><span class="line">        <span class="comment"># 拼接起来</span></span><br><span class="line">        http_proxy=<span class="string">"http://%s:%s"</span>%(ip_port[<span class="number">0</span>],ip_port[<span class="number">1</span>])</span><br><span class="line">        <span class="comment"># 设置代理</span></span><br><span class="line">        request.meta[<span class="string">'proxy'</span>] = http_proxy</span><br></pre></td></tr></table></figure></p>
+<p>最后怎么在服务器上挂机采集，爬虫持久化</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup scrapy crawl sobaidu -s JOBDIR=crawls/sobaidu-1 1&gt;/dev/null 2&gt;logfile.log &amp;</span><br></pre></td></tr></table></figure>
+<p>数据样本，5天28万的数据，主要是代理IP质量不高，否则速度还能上一个台阶，还不是分布式。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line">MariaDB [yzy_data]&gt; select count(*) from yzy_resources;</span><br><span class="line">+<span class="comment">----------+</span></span><br><span class="line">| count(*) |</span><br><span class="line">+<span class="comment">----------+</span></span><br><span class="line">|   283888 |</span><br><span class="line">+<span class="comment">----------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line">MariaDB [yzy_data]&gt; <span class="keyword">select</span> * <span class="keyword">from</span> yzy_resources <span class="keyword">limit</span> <span class="number">10</span> \G;</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">         id: 1</span><br><span class="line">        tid: 1</span><br><span class="line">        cid: 1</span><br><span class="line">        uid: 0</span><br><span class="line">      title: 《帝王师刘伯温[精品]》.epub</span><br><span class="line">       size: 2.65 MB</span><br><span class="line">        url: http://pan.baidu.com/share/link?shareid=2676964745&amp;uk=4194551491&amp;fid=646837282049387</span><br><span class="line">        pwd: </span><br><span class="line">description: 人物传记</span><br><span class="line">  available: 1</span><br><span class="line">  sharetime: 2015-11-17 04:59:00</span><br><span class="line">*************************** 2. row ***************************</span><br><span class="line">         id: 2</span><br><span class="line">        tid: 1</span><br><span class="line">        cid: 4</span><br><span class="line">        uid: 0</span><br><span class="line">      title: 余念.txt</span><br><span class="line">       size: 338.77 KB</span><br><span class="line">        url: http://pan.baidu.com/s/1jIRZs7W</span><br><span class="line">        pwd: </span><br><span class="line">description: /</span><br><span class="line">  available: 1</span><br><span class="line">  sharetime: 2017-02-14 07:37:00</span><br><span class="line">*************************** 3. row ***************************</span><br><span class="line">         id: 3</span><br><span class="line">        tid: 1</span><br><span class="line">        cid: 4</span><br><span class="line">        uid: 0</span><br><span class="line">      title: 《千山记》石头与水（晋江金牌推荐超高积分01-13更新至完结）.txt</span><br><span class="line">       size: 4.07 MB</span><br><span class="line">        url: http://pan.baidu.com/s/1geJHGll</span><br><span class="line">        pwd: </span><br><span class="line">description: /</span><br><span class="line">  available: 1</span><br><span class="line">  sharetime: 2017-02-14 07:37:00</span><br><span class="line">*************************** 4. row ***************************</span><br><span class="line">         id: 4</span><br><span class="line">        tid: 1</span><br><span class="line">        cid: 8</span><br><span class="line">        uid: 0</span><br><span class="line">      title: （微博：小小精灵玩家520）政宗くんのリベンジ 09.mp4</span><br><span class="line">       size: 195.44 MB</span><br><span class="line">        url: http://pan.baidu.com/s/1c13Bcp6</span><br><span class="line">        pwd: </span><br><span class="line">description: 高清动漫下载区/2017年1月新番/政宗君的复仇/（微博：小小精灵玩家520）政宗くんのリベンジ 09.mp4</span><br><span class="line">  available: 1</span><br><span class="line">  sharetime: 2017-03-04 05:31:00</span><br><span class="line">*************************** 5. row ***************************</span><br><span class="line">         id: 5</span><br><span class="line">        tid: 1</span><br><span class="line">        cid: 1</span><br><span class="line">        uid: 0</span><br><span class="line">      title: 04 Take It （Previously Unreleased）.m4a</span><br><span class="line">       size: 5.71 MB</span><br><span class="line">        url: http://pan.baidu.com/s/1ntAxIZJ</span><br><span class="line">        pwd: </span><br><span class="line">description: /</span><br><span class="line">  available: 1</span><br><span class="line">  sharetime: 2017-03-12 17:16:00</span><br><span class="line">*************************** 6. row ***************************</span><br><span class="line">         id: 6</span><br><span class="line">        tid: 1</span><br><span class="line">        cid: 1</span><br><span class="line">        uid: 0</span><br><span class="line">      title: 表情.zip</span><br><span class="line">       size: 4.96 MB</span><br><span class="line">        url: http://pan.baidu.com/s/1gdd1XYV</span><br><span class="line">        pwd: </span><br><span class="line">description: /</span><br><span class="line">  available: 1</span><br><span class="line">  sharetime: 2017-03-12 17:16:00</span><br><span class="line">*************************** 7. row ***************************</span><br><span class="line">         id: 7</span><br><span class="line">        tid: 1</span><br><span class="line">        cid: 1</span><br><span class="line">        uid: 0</span><br><span class="line">      title: 【艾薇儿饭团】07年Flare杂志.rar</span><br><span class="line">       size: 563.13 KB</span><br><span class="line">        url: http://pan.baidu.com/share/link?shareid=3408670202&amp;uk=1042245391</span><br><span class="line">        pwd: </span><br><span class="line">description: /</span><br><span class="line">  available: 1</span><br><span class="line">  sharetime: 2017-03-12 17:16:00</span><br><span class="line">*************************** 8. row ***************************</span><br><span class="line">         id: 8</span><br><span class="line">        tid: 1</span><br><span class="line">        cid: 1</span><br><span class="line">        uid: 0</span><br><span class="line">      title: 【艾薇儿饭团】2003滚石杂志.rar</span><br><span class="line">       size: 3 MB</span><br><span class="line">        url: http://pan.baidu.com/share/link?shareid=424894405&amp;uk=1042245391</span><br><span class="line">        pwd: </span><br><span class="line">description: /</span><br><span class="line">  available: 1</span><br><span class="line">  sharetime: 2017-03-12 17:16:00</span><br><span class="line">*************************** 9. row ***************************</span><br><span class="line">         id: 9</span><br><span class="line">        tid: 1</span><br><span class="line">        cid: 1</span><br><span class="line">        uid: 0</span><br><span class="line">      title: 【饭团资源】致敬艾薇儿.rar</span><br><span class="line">       size: 75.64 MB</span><br><span class="line">        url: http://pan.baidu.com/share/link?shareid=1371654997&amp;uk=1042245391</span><br><span class="line">        pwd: </span><br><span class="line">description: /</span><br><span class="line">  available: 1</span><br><span class="line">  sharetime: 2017-03-12 17:16:00</span><br><span class="line">*************************** 10. row ***************************</span><br><span class="line">         id: 10</span><br><span class="line">        tid: 1</span><br><span class="line">        cid: 1</span><br><span class="line">        uid: 0</span><br><span class="line">      title: AVRIL.Candy.zip</span><br><span class="line">       size: 4.33 MB</span><br><span class="line">        url: http://pan.baidu.com/s/1ntCy8sx</span><br><span class="line">        pwd: </span><br><span class="line">description: /</span><br><span class="line">  available: 1</span><br><span class="line">  sharetime: 2017-03-12 17:16:00</span><br><span class="line">10 rows in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+<h2 id="项目下载地址"><a href="#项目下载地址" class="headerlink" title="项目下载地址"></a>项目下载地址</h2><ul>
+<li><a href="https://github.com/onecer/sbdspider.git" target="_blank" rel="noopener">sbdspider</a></li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://scrapy-chs.readthedocs.io/zh_CN/0.24/intro/tutorial.html" target="_blank" rel="noopener">Scrapy入门教程</a></li>
+<li><a href="https://github.com/LiuXingMing/Scrapy_Redis_Bloomfilter" target="_blank" rel="noopener">基于Redis的Bloomfilter去重</a></li>
+<li><a href="https://github.com/qiyeboy/IPProxyPool" target="_blank" rel="noopener">IPProxyPool</a></li>
+<li><a href="http://www.cnblogs.com/qiyeboy/p/5693128.html" target="_blank" rel="noopener">python开源IP代理池–IPProxys</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>给作者打一针鸡血</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="//ojz2jzr09.bkt.clouddn.com/profile/wechat-pay.jpg" alt="Onecer WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="//ojz2jzr09.bkt.clouddn.com/profile/alipay--pay.jpg" alt="Onecer Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Scrapy/" rel="tag"># Scrapy</a>
+          
+            <a href="/tags/IPProxy/" rel="tag"># IPProxy</a>
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/article/20170327/nginx-logfile-rotate/" rel="next" title="nginx日志分割处理">
+                <i class="fa fa-chevron-left"></i> nginx日志分割处理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/article/20170329/ubuntu-dockerce-installation/" rel="prev" title="Ubuntu16.04LTS Centos7 安装Docker CE">
+                Ubuntu16.04LTS Centos7 安装Docker CE <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="article/20170328/python-scrapy-ipproxy/"
+           data-title="Python基于Scrapy框架写个麻雀虽小五脏俱全的爬虫" data-url="https://uublog.com/article/20170328/python-scrapy-ipproxy/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif"
+               alt="Onecer" />
+          <p class="site-author-name" itemprop="name">Onecer</p>
+          <p class="site-description motion-element" itemprop="description">记录日记之类的</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">86</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">98</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/yinyongyou" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/MichaelJScofield" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-codepen"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#项目下载地址"><span class="nav-number">1.</span> <span class="nav-text">项目下载地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Onecer</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="powered-by">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+<div class="theme-info">
+ Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="//apps.bdimg.com/libs/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/velocity/1.2.1/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/velocity/1.2.1/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="//apps.bdimg.com/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"uublog"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      
+      <script src="//cdn.staticfile.org/UAParser.js/0.7.9/ua-parser.min.js"></script>
+      <script src="/js/src/hook-duoshuo.js?v=5.1.0"></script>
+    
+    
+    <script src="//cdn.staticfile.org/UAParser.js/0.7.9/ua-parser.min.js"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.staticfile.org/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

@@ -1,0 +1,991 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//apps.bdimg.com/libs/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="//cdn.staticfile.org/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="python,spider," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="前言 获取内容，比较纠结是用BeautifulSoup还是直接用正则匹配好。BeautifulSoup简单清晰，但是不够灵活。正则则相反。  正文信息位置的分析像网盘，我们要提取的信息主要有共享者ID、资源名、网盘URL、资源大小、创建时间等等。搞清楚这些信息的位置，不是本文的重点，所以这里假设已经清楚了信息的位置，然后提取就行了。用共享者ID、资源名、网盘URL做个示范。 举个栗子，比如莽荒纪.">
+<meta name="keywords" content="python,spider">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python从零写一个采集器:获取网页信息">
+<meta property="og:url" content="https://uublog.com/article/20170216/python-extarct-html-info/index.html">
+<meta property="og:site_name" content="UU Blog">
+<meta property="og:description" content="前言 获取内容，比较纠结是用BeautifulSoup还是直接用正则匹配好。BeautifulSoup简单清晰，但是不够灵活。正则则相反。  正文信息位置的分析像网盘，我们要提取的信息主要有共享者ID、资源名、网盘URL、资源大小、创建时间等等。搞清楚这些信息的位置，不是本文的重点，所以这里假设已经清楚了信息的位置，然后提取就行了。用共享者ID、资源名、网盘URL做个示范。 举个栗子，比如莽荒纪.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-16T15:04:31.543Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python从零写一个采集器:获取网页信息">
+<meta name="twitter:description" content="前言 获取内容，比较纠结是用BeautifulSoup还是直接用正则匹配好。BeautifulSoup简单清晰，但是不够灵活。正则则相反。  正文信息位置的分析像网盘，我们要提取的信息主要有共享者ID、资源名、网盘URL、资源大小、创建时间等等。搞清楚这些信息的位置，不是本文的重点，所以这里假设已经清楚了信息的位置，然后提取就行了。用共享者ID、资源名、网盘URL做个示范。 举个栗子，比如莽荒纪.">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '9131895',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uublog.com/article/20170216/python-extarct-html-info/"/>
+
+
+
+
+
+  <title> python从零写一个采集器:获取网页信息 | UU Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1261151756&web_id=1261151756" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">UU Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <h1 class="site-subtitle" itemprop="description">UU Blog</h1>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170216/python-extarct-html-info/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Onecer">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="UU Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                python从零写一个采集器:获取网页信息
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-16T18:35:58+08:00">
+                2017-02-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/article/20170216/python-extarct-html-info/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170216/python-extarct-html-info/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><blockquote>
+<p>获取内容，比较纠结是用BeautifulSoup还是直接用正则匹配好。BeautifulSoup简单清晰，但是不够灵活。<br>正则则相反。</p>
+</blockquote>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="信息位置的分析"><a href="#信息位置的分析" class="headerlink" title="信息位置的分析"></a>信息位置的分析</h2><p>像网盘，我们要提取的信息主要有共享者ID、资源名、网盘URL、资源大小、创建时间等等。搞清楚这些信息的位置，不是本文的重点，所以这里假设已经清楚了信息的位置，然后提取就行了。用共享者ID、资源名、网盘URL做个示范。</p>
+<p>举个栗子，比如<code>莽荒纪.zip</code>的资源，URL是：<code>http://www.sobaidupan.com/file-106010793.html</code>从HTML中我们可以获得如下信息:</p>
+<ul>
+<li>资源名：<code>莽荒纪.zip</code></li>
+<li>共享者ID： <a href="http://www.sobaidupan.com/user-2082813876-1.html" target="_blank" rel="noopener">http://www.sobaidupan.com/user-2082813876-1.html</a></li>
+<li>网盘URL： <a href="http://sbdp.baidudaquan.com/down.asp?id=106010793&amp;token=c4e0d8de4bf94fe0d86a6b4f675fe176" target="_blank" rel="noopener">http://sbdp.baidudaquan.com/down.asp?id=106010793&amp;token=c4e0d8de4bf94fe0d86a6b4f675fe176</a></li>
+</ul>
+<p>而 <code>2082813876</code>是sobaidupan.com的站内ID，也是百度云盘的用户ID。这就好办了。<br>但是资源的URL还要进一步加载<code>http://sbdp.baidudaquan.com/down.asp?id=16166237&amp;token=301efbbe2c138d150b41b5813a3d4077</code>才能知道。<br>源码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;</span><br><span class="line">&lt;div style=&quot;margin:0 auto;margin-top:10%;width:600px;border: 1px solid #ff0000;line-height:30px;padding:10px 10px 10px 10px; &quot;&gt;提示:亲,正在为您跳转,请稍等2秒..... </span><br><span class="line">&lt;meta http-equiv=&apos;refresh&apos; content=&apos;2;URL=http://pan.baidu.com/share/link?shareid=3994307345&amp;uk=2755655514&amp;fid=45639734040097&apos;&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<p>源码里的<code>http://pan.baidu.com/share/link?shareid=3994307345&amp;uk=2755655514&amp;fid=45639734040097</code>正是我们要的资源。</p>
+<p>也就是说，要提取莽荒纪的资源名称，至少得加载两次URL，才能将信息提取全。</p>
+<ul>
+<li><p>第一次加载：<code>http://www.sobaidupan.com/user-2082813876-1.html</code><br>得到资源名、共享者ID和网盘的站内地址<code>http://sbdp.baidudaquan.com/down.asp?id=106010793&amp;token=c4e0d8de4bf94fe0d86a6b4f675fe176</code></p>
+</li>
+<li><p>第二次加载： <code>http://sbdp.baidudaquan.com/down.asp?id=106010793&amp;token=c4e0d8de4bf94fe0d86a6b4f675fe176</code>提取出网盘的真实地址。</p>
+</li>
+</ul>
+<h2 id="提取信息"><a href="#提取信息" class="headerlink" title="提取信息"></a>提取信息</h2><h3 id="获取网站源码"><a href="#获取网站源码" class="headerlink" title="获取网站源码"></a><a href="https://uublog.com/article/20170206/python-get-web-source/">获取网站源码</a></h3><p>上一篇日志提到如何提取源码。我把它放到一个叫<code>yzyPublic.py</code>文件里。所以等下得先导入这个文件再使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import yzyPublic</span><br><span class="line"></span><br><span class="line">res = yzyPublic.get_web_source(&apos;http://www.sobaidupan.com/file-106010793.html&apos;)</span><br><span class="line">print res</span><br></pre></td></tr></table></figure>
+<p>res内容如下：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">xmlns</span>=<span class="string">http://www.w3.org/1999/xhtml</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">X-UA-Compatible</span> <span class="attr">content</span>=<span class="string">"IE=edge,chrome=1"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Type"</span> <span class="attr">content</span>=<span class="string">"text/html; charset=utf-8"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">type</span>=<span class="string">"text/css"</span> <span class="attr">href</span>=<span class="string">"style.css"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>莽荒纪.zip_zgh*****1617_百度云盘下载 - 搜百度盘<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"keywords"</span> <span class="attr">content</span>=<span class="string">"莽荒纪.zip"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"description"</span> <span class="attr">content</span>=<span class="string">"小说/修真/莽荒纪.zip"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">&lt;!--</span></span><br><span class="line"><span class="undefined">.f_color &#123;</span></span><br><span class="line"><span class="undefined">	color: #FFFFFF;</span></span><br><span class="line"><span class="undefined">	font-weight: bold;</span></span><br><span class="line"><span class="undefined">&#125;</span></span><br><span class="line"><span class="undefined">--&gt;	</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"headtop"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"headtop_f"</span>&gt;</span><span class="tag">&lt;<span class="name">B</span>&gt;</span>搜百度盘（SoBaiduPan.com）<span class="tag">&lt;/<span class="name">B</span>&gt;</span>&amp;nbsp;是基于百度云搜索，最大的百度云盘资源搜索中心，千万级大数据量，让您一网打尽所有的百度网盘资源.<span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"site_head w c"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"sitelogo"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"image/logo.gif"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">title</span>=<span class="string">"SoBaiduPan.com"</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"top_allsite"</span> <span class="attr">id</span>=<span class="string">"top_allsite"</span>&gt;</span><span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"top_txtad.asp"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">ul</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"menu w c"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://www.sobaidupan.com"</span>&gt;</span>首 页<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-1-1.html"</span>&gt;</span>最新资源<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"zhuan-1-1.html"</span>&gt;</span>影视目录<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"zhuan-2-1.html"</span>&gt;</span>小说目录<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-28-1.html"</span>&gt;</span>影视资源<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-30-1.html"</span>&gt;</span>动漫资源<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-29-1.html"</span>&gt;</span>小说资源<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"zhuan-3-1.html"</span>&gt;</span>综合资源<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://soft.sobaidupan.com"</span> <span class="attr">target</span>=<span class="string">"_blank"</span> <span class="attr">title</span>=<span class="string">"百度云下载器"</span>&gt;</span>云下载器<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"m.asp"</span> <span class="attr">title</span>=<span class="string">"移动端访问"</span>&gt;</span>手机专版<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://weipan.sobaidupan.com"</span> <span class="attr">title</span>=<span class="string">"新浪微盘资源搜索"</span> <span class="attr">target</span>=<span class="string">"_blank"</span>&gt;</span>新浪微盘<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"about.asp?id=2"</span> <span class="attr">title</span>=<span class="string">"在线发布共享资源"</span>&gt;</span>发布资源<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://bbs.sobaidupan.com"</span> <span class="attr">title</span>=<span class="string">"建议留言"</span> <span class="attr">target</span>=<span class="string">"_blank"</span>&gt;</span><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">"#FFFF00"</span>&gt;</span>建议留言<span class="tag">&lt;/<span class="name">font</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"smenu c"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"smenu_nav"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-3-1.html"</span>&gt;</span>torrent<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-5-1.html"</span>&gt;</span>rmvb<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-4-1.html"</span>&gt;</span>mp4<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-7-1.html"</span>&gt;</span>mp3<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-9-1.html"</span>&gt;</span>avi<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-8-1.html"</span>&gt;</span>epub<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-10-1.html"</span>&gt;</span>mkv<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-11-1.html"</span>&gt;</span>flv<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-12-1.html"</span>&gt;</span>pdf<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-13-1.html"</span>&gt;</span>pps<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-15-1.html"</span>&gt;</span>psd<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-16-1.html"</span>&gt;</span>iso<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-17-1.html"</span>&gt;</span>ghost<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-19-1.html"</span>&gt;</span>exe<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-20-1.html"</span>&gt;</span>txt<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-21-1.html"</span>&gt;</span>apk<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-22-1.html"</span>&gt;</span>ipa<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-24-1.html"</span>&gt;</span>wps<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-25-1.html"</span>&gt;</span>rtf<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-26-1.html"</span>&gt;</span>vob<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-13-1.html"</span>&gt;</span>ppt/pptx<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-27-1.html"</span>&gt;</span>xls/xlsx<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-14-1.html"</span>&gt;</span>doc/docx<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"list-18-1.html"</span>&gt;</span>rar/zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"search w c"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">table</span> <span class="attr">width</span>=<span class="string">"100%"</span> <span class="attr">height</span>=<span class="string">"90"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">align</span>=<span class="string">"center"</span> <span class="attr">cellpadding</span>=<span class="string">"0"</span> <span class="attr">cellspacing</span>=<span class="string">"1"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">	</span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"ad/top1_580x90.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	</span><br><span class="line"><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"adgo.asp?id=30"</span> <span class="attr">target</span>=<span class="string">"_blank"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"ad/ad2.jpg"</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"fgx"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">"form1"</span> <span class="attr">name</span>=<span class="string">"form1"</span> <span class="attr">method</span>=<span class="string">"get"</span> <span class="attr">action</span>=<span class="string">"search.asp"</span> &gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"image/s.png"</span> <span class="attr">width</span>=<span class="string">"32"</span> <span class="attr">height</span>=<span class="string">"32"</span> <span class="attr">align</span>=<span class="string">"absmiddle"</span>&gt;</span>&amp;nbsp;请您输入搜索内容：</span><br><span class="line">		<span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">"wd"</span> <span class="attr">id</span>=<span class="string">"wd"</span> <span class="attr">placeholder</span>=<span class="string">"共108,789,857个资源，今日已更新2382..."</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">size</span>=<span class="string">"30"</span> <span class="attr">value</span>=<span class="string">""</span> <span class="attr">autocomplete</span>=<span class="string">"off"</span> /&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">id</span>=<span class="string">"Su"</span> <span class="attr">tabindex</span>=<span class="string">"2"</span> <span class="attr">value</span>=<span class="string">"网盘搜索"</span> <span class="attr">style</span>=<span class="string">"cursor:hand;"</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"image/soso.gif"</span> <span class="attr">width</span>=<span class="string">"23"</span> <span class="attr">height</span>=<span class="string">"21"</span> <span class="attr">align</span>=<span class="string">"absmiddle"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"about.asp?id=1"</span> <span class="attr">target</span>=<span class="string">"_blank"</span>&gt;</span><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">"red"</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>点击打赏本站<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span>&amp;nbsp;&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://koubei.baidu.com/s/www.sobaidupan.com"</span> <span class="attr">target</span>=<span class="string">"_blank"</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>点击支持本站<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"image/new.gif"</span> <span class="attr">width</span>=<span class="string">"22"</span> <span class="attr">height</span>=<span class="string">"14"</span> <span class="attr">align</span>=<span class="string">"absmiddle"</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://soft.sobaidupan.com"</span> <span class="attr">target</span>=<span class="string">"_blank"</span>&gt;</span><span class="tag">&lt;<span class="name">font</span> <span class="attr">color</span>=<span class="string">"red"</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>百度云搜索器<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">font</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">charset</span>=<span class="string">"gbk"</span> <span class="attr">src</span>=<span class="string">"opensug.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">var txtObj = document.getElementById("alertSpan");</span></span><br><span class="line"><span class="undefined">function show(str)&#123;</span></span><br><span class="line"><span class="undefined">window.location.href="search.asp?r=0&amp;wd="+encodeURIComponent(str);</span></span><br><span class="line"><span class="undefined">&#125;</span></span><br><span class="line"><span class="undefined">var params = &#123;</span></span><br><span class="line"><span class="undefined">"XOffset":0,</span></span><br><span class="line"><span class="undefined">"YOffset":0,</span></span><br><span class="line"><span class="undefined">"width":204,</span></span><br><span class="line"><span class="undefined">"fontColor":"#f70",</span></span><br><span class="line"><span class="undefined">"fontColorHI":"#FFF",</span></span><br><span class="line"><span class="undefined">"fontSize":"15px",</span></span><br><span class="line"><span class="undefined">"fontFamily":"宋体",</span></span><br><span class="line"><span class="undefined">"borderColor":"gray",</span></span><br><span class="line"><span class="undefined">"bgcolorHI":"#03c",</span></span><br><span class="line"><span class="undefined">"sugSubmit":false</span></span><br><span class="line"><span class="undefined">&#125;;</span></span><br><span class="line"><span class="undefined">BaiduSuggestion.bind("wd",params,show);</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">	</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"main w c"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"art_bt_box w c"</span>&gt;</span><span class="tag">&lt;<span class="name">ul</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">h1</span>&gt;</span>莽荒纪.zip<span class="tag">&lt;/<span class="name">h1</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;/<span class="name">ul</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"art_box"</span>&gt;</span></span><br><span class="line">	      <span class="tag">&lt;<span class="name">table</span> <span class="attr">border</span>=<span class="string">"0"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">td</span> <span class="attr">width</span>=<span class="string">"250"</span> <span class="attr">valign</span>=<span class="string">"top"</span> &gt;</span><span class="tag">&lt;<span class="name">table</span> <span class="attr">width</span>=<span class="string">"250"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">cellpadding</span>=<span class="string">"0"</span> <span class="attr">cellspacing</span>=<span class="string">"1"</span> <span class="attr">bordercolor</span>=<span class="string">"#3E92CF"</span> <span class="attr">bgcolor</span>=<span class="string">"#3E92CF"</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">td</span> <span class="attr">width</span>=<span class="string">"250"</span> <span class="attr">height</span>=<span class="string">"119"</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">"center"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"user-2082813876-1.html"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://himg.bdimg.com/sys/portrait/item/797c6b21.jpg"</span> <span class="attr">width</span>=<span class="string">"100"</span> <span class="attr">height</span>=<span class="string">"100"</span> <span class="attr">border</span>=<span class="string">"0"</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">td</span> <span class="attr">height</span>=<span class="string">"40"</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">"center"</span>&gt;</span>用户名：zgh*****1617<span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">td</span> <span class="attr">height</span>=<span class="string">"40"</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">"center"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"user-2082813876-1.html"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"image/jrzy.gif"</span> <span class="attr">width</span>=<span class="string">"89"</span> <span class="attr">height</span>=<span class="string">"24"</span> <span class="attr">border</span>=<span class="string">"0"</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				  <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">td</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"ad/250x250.js"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">td</span> <span class="attr">height</span>=<span class="string">"35"</span> <span class="attr">bgcolor</span>=<span class="string">"#3E92CF"</span> &gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"f_color"</span>&gt;</span>Ta 分享的其它资源：<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">td</span> <span class="attr">height</span>=<span class="string">"40"</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-1266183.html"</span> <span class="attr">title</span>=<span class="string">网游——屠龙巫师.zip</span>&gt;</span>网游——屠龙巫师.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-1266216.html"</span> <span class="attr">title</span>=<span class="string">网游-梦幻现实.zip</span>&gt;</span>网游-梦幻现实.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-1266234.html"</span> <span class="attr">title</span>=<span class="string">神也玩转网游.zip</span>&gt;</span>神也玩转网游.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-1668670.html"</span> <span class="attr">title</span>=<span class="string">魔兽英雄.zip</span>&gt;</span>魔兽英雄.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-1668832.html"</span> <span class="attr">title</span>=<span class="string">阿亚罗克年代记.zip</span>&gt;</span>阿亚罗克年代记.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-1668883.html"</span> <span class="attr">title</span>=<span class="string">重生之福星道士.zip</span>&gt;</span>重生之福星道士.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-1668930.html"</span> <span class="attr">title</span>=<span class="string">重生之极限风流.zip</span>&gt;</span>重生之极限风流.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-1669255.html"</span> <span class="attr">title</span>=<span class="string">英雄无敌之大航海时代.zip</span>&gt;</span>英雄无敌之大航海时代.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-1674467.html"</span> <span class="attr">title</span>=<span class="string">网游之霸世神偷.zip</span>&gt;</span>网游之霸世神偷.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-2013963.html"</span> <span class="attr">title</span>=<span class="string">霸王怒.zip</span>&gt;</span>霸王怒.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">						<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">td</span>  <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"ad/250x250-2.js"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				  <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">td</span> <span class="attr">height</span>=<span class="string">"35"</span> <span class="attr">bgcolor</span>=<span class="string">"#3E92CF"</span> &gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"f_color"</span>&gt;</span>其它网友正在下载的资源：<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				  <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">td</span>  <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-830.html"</span> <span class="attr">title</span>=<span class="string">橄榄油</span> <span class="attr">-</span> 副本<span class="attr">5.psd</span>&gt;</span>橄榄油 - 副本5.psd<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-829.html"</span> <span class="attr">title</span>=<span class="string">百度云管家</span> <span class="attr">v4.8.0</span> 绿色版 <span class="attr">i2i2.cn.rar</span>&gt;</span>百度云管家 v4.8.0 绿色版 i2i2.cn.rar<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-828.html"</span> <span class="attr">title</span>=<span class="string">百度云管家</span> <span class="attr">v4.8.0</span>  单文件版 <span class="attr">i2i2.cn.rar</span>&gt;</span>百度云管家 v4.8.0  单文件版 i2i2.cn.rar<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-827.html"</span> <span class="attr">title</span>=<span class="string">第1天上午.5.mp3</span>&gt;</span>第1天上午.5.mp3<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-826.html"</span> <span class="attr">title</span>=<span class="string">第2天下午.8.mp3</span>&gt;</span>第2天下午.8.mp3<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-825.html"</span> <span class="attr">title</span>=<span class="string">第2天上午.7.mp3</span>&gt;</span>第2天上午.7.mp3<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-824.html"</span> <span class="attr">title</span>=<span class="string">第1天下午.5.mp3</span>&gt;</span>第1天下午.5.mp3<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-823.html"</span> <span class="attr">title</span>=<span class="string">第1天上午.4.mp3</span>&gt;</span>第1天上午.4.mp3<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-822.html"</span> <span class="attr">title</span>=<span class="string">第2天下午.6.mp3</span>&gt;</span>第2天下午.6.mp3<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-821.html"</span> <span class="attr">title</span>=<span class="string">第1天下午.7.mp3</span>&gt;</span>第1天下午.7.mp3<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line">				</span><br><span class="line">			  <span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">td</span> <span class="attr">height</span>=<span class="string">"61"</span> <span class="attr">align</span>=<span class="string">"left"</span> <span class="attr">valign</span>=<span class="string">"top"</span> &gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">table</span> <span class="attr">width</span>=<span class="string">"100%"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">align</span>=<span class="string">"left"</span> <span class="attr">cellpadding</span>=<span class="string">"0"</span> <span class="attr">cellspacing</span>=<span class="string">"0"</span> <span class="attr">bordercolor</span>=<span class="string">"#3E92CF"</span> <span class="attr">bgcolor</span>=<span class="string">"#3E92CF"</span>&gt;</span></span><br><span class="line">				                <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">td</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span></span><br><span class="line">				  <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">'text/javascript'</span> <span class="attr">src</span>=<span class="string">'http://m1.sobaidupan.com/fr3a1ec292ffc2f63fdb146392acb024e057e3d4002ef230ec51322bda.js'</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">td</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"fgx"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">			     <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">td</span> <span class="attr">style</span>=<span class="string">"line-height: 30px"</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">"left"</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">B</span>&gt;</span>资源名称：<span class="tag">&lt;/<span class="name">B</span>&gt;</span>莽荒纪.zip<span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">td</span> <span class="attr">style</span>=<span class="string">"line-height: 30px"</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">"left"</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">B</span>&gt;</span>资源类别：<span class="tag">&lt;/<span class="name">B</span>&gt;</span>小说/修真<span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">td</span> <span class="attr">style</span>=<span class="string">"line-height: 30px"</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">"left"</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">B</span>&gt;</span>资源大小：<span class="tag">&lt;/<span class="name">B</span>&gt;</span>3.83 MB&amp;nbsp;<span class="tag">&lt;<span class="name">b</span>&gt;</span>资料扩展名：<span class="tag">&lt;/<span class="name">b</span>&gt;</span>.zip&amp;nbsp;<span class="tag">&lt;<span class="name">b</span>&gt;</span>访问/下载次数<span class="tag">&lt;/<span class="name">b</span>&gt;</span>：10/9&amp;nbsp;<span class="tag">&lt;<span class="name">b</span>&gt;</span>分享日期：<span class="tag">&lt;/<span class="name">b</span>&gt;</span>2016/9/5 11:13:00<span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;/<span class="name">tr</span>&gt;</span>          </span><br><span class="line">				 <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">td</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"fgx"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">td</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span></span><br><span class="line">				  <span class="tag">&lt;<span class="name">table</span> <span class="attr">width</span>=<span class="string">"100%"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">align</span>=<span class="string">"left"</span>&gt;</span></span><br><span class="line">				  <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">td</span> <span class="attr">width</span>=<span class="string">"155"</span>&gt;</span></span><br><span class="line">					</span><br><span class="line">						<span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">"center"</span>&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://sbdp.baidudaquan.com/down.asp?id=106010793&amp;token=c4e0d8de4bf94fe0d86a6b4f675fe176"</span> <span class="attr">title</span>=<span class="string">"莽荒纪.zip -百度网盘下载"</span> <span class="attr">target</span>=<span class="string">"_blank"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"image/wpdown.gif"</span> <span class="attr">width</span>=<span class="string">"137"</span> <span class="attr">height</span>=<span class="string">"34"</span> <span class="attr">border</span>=<span class="string">"0"</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					  <span class="tag">&lt;<span class="name">td</span> <span class="attr">width</span>=<span class="string">"152"</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">"center"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">onclick</span>=<span class="string">"javascript:alert('违法信息举报信箱：sobaidupan@126.com')"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"image/zaixjb.gif"</span> <span class="attr">width</span>=<span class="string">"137"</span> <span class="attr">height</span>=<span class="string">"34"</span> <span class="attr">border</span>=<span class="string">"0"</span> <span class="attr">title</span>=<span class="string">"举报资源"</span> <span class="attr">style</span>=<span class="string">"cursor:pointer"</span> <span class="attr">id</span>=<span class="string">"police"</span> &gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">					  <span class="tag">&lt;<span class="name">td</span> <span class="attr">width</span>=<span class="string">"497"</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span> <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"bdsharebuttonbox"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"bds_more"</span> <span class="attr">data-cmd</span>=<span class="string">"more"</span>&gt;</span>分享到：<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"bds_qzone"</span> <span class="attr">data-cmd</span>=<span class="string">"qzone"</span> <span class="attr">title</span>=<span class="string">"分享到QQ空间"</span>&gt;</span>QQ空间<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"bds_tieba"</span> <span class="attr">data-cmd</span>=<span class="string">"tieba"</span> <span class="attr">title</span>=<span class="string">"分享到百度贴吧"</span>&gt;</span>百度贴吧<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"bds_weixin"</span> <span class="attr">data-cmd</span>=<span class="string">"weixin"</span> <span class="attr">title</span>=<span class="string">"分享到微信"</span>&gt;</span>微信<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"bds_tsina"</span> <span class="attr">data-cmd</span>=<span class="string">"tsina"</span> <span class="attr">title</span>=<span class="string">"分享到新浪微博"</span>&gt;</span>新浪微博<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"bds_douban"</span> <span class="attr">data-cmd</span>=<span class="string">"douban"</span> <span class="attr">title</span>=<span class="string">"分享到豆瓣网"</span>&gt;</span>豆瓣网<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">					 </span><br><span class="line">					<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">				  <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">table</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">               </span><br><span class="line">                <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">td</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"fgx"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">					 <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"ad/728x90_2.js"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">td</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"hm_t_97521"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				</span><br><span class="line"><span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">td</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"fgx"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">align</span>=<span class="string">"left"</span>&gt;</span></span><br><span class="line">				  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"ad/336x280.js"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">				 <span class="tag">&lt;/<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">td</span> <span class="attr">height</span>=<span class="string">"35"</span> <span class="attr">bgcolor</span>=<span class="string">"#3E92CF"</span> &gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"f_color"</span>&gt;</span>相关资源：<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">td</span> <span class="attr">height</span>=<span class="string">"40"</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-12334474.html"</span> <span class="attr">title</span>=<span class="string">仙符问道.zip</span>&gt;</span>仙符问道.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-12335167.html"</span> <span class="attr">title</span>=<span class="string">随身副本闯仙界.zip</span>&gt;</span>随身副本闯仙界.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-12335453.html"</span> <span class="attr">title</span>=<span class="string">齐宇问道.zip</span>&gt;</span>齐宇问道.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-12335876.html"</span> <span class="attr">title</span>=<span class="string">猫行天下.zip</span>&gt;</span>猫行天下.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-12336124.html"</span> <span class="attr">title</span>=<span class="string">极品修真邪少.zip</span>&gt;</span>极品修真邪少.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-12424570.html"</span> <span class="attr">title</span>=<span class="string">极品丹师.zip</span>&gt;</span>极品丹师.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-12744895.html"</span> <span class="attr">title</span>=<span class="string">重生之唯我独仙.zip</span>&gt;</span>重生之唯我独仙.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-14281154.html"</span> <span class="attr">title</span>=<span class="string">仙缘五行.zip</span>&gt;</span>仙缘五行.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-15903276.html"</span> <span class="attr">title</span>=<span class="string">与狐仙双修的日子.zip</span>&gt;</span>与狐仙双修的日子.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-15903375.html"</span> <span class="attr">title</span>=<span class="string">修真之位面交易系统.zip</span>&gt;</span>修真之位面交易系统.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-15903925.html"</span> <span class="attr">title</span>=<span class="string">拜师八戒.zip</span>&gt;</span>拜师八戒.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-15904006.html"</span> <span class="attr">title</span>=<span class="string">重生在白蛇的世界里.zip</span>&gt;</span>重生在白蛇的世界里.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-15904154.html"</span> <span class="attr">title</span>=<span class="string">巫也是道.zip</span>&gt;</span>巫也是道.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-15979622.html"</span> <span class="attr">title</span>=<span class="string">僵尸问道.zip</span>&gt;</span>僵尸问道.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-16005591.html"</span> <span class="attr">title</span>=<span class="string">大地之皇.zip</span>&gt;</span>大地之皇.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-16484435.html"</span> <span class="attr">title</span>=<span class="string">猪八戒重生记.zip</span>&gt;</span>猪八戒重生记.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-16484613.html"</span> <span class="attr">title</span>=<span class="string">至神传说.zip</span>&gt;</span>至神传说.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-16484713.html"</span> <span class="attr">title</span>=<span class="string">星空战神.zip</span>&gt;</span>星空战神.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-16484798.html"</span> <span class="attr">title</span>=<span class="string">现代封神榜.zip</span>&gt;</span>现代封神榜.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-16735997.html"</span> <span class="attr">title</span>=<span class="string">仙侠世界之天才掌门.zip</span>&gt;</span>仙侠世界之天才掌门.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-16888626.html"</span> <span class="attr">title</span>=<span class="string">物理高材修仙记.zip</span>&gt;</span>物理高材修仙记.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-16889125.html"</span> <span class="attr">title</span>=<span class="string">灵枢.zip</span>&gt;</span>灵枢.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-17136845.html"</span> <span class="attr">title</span>=<span class="string">极品仙君.zip</span>&gt;</span>极品仙君.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-17175592.html"</span> <span class="attr">title</span>=<span class="string">将修仙进行到底.zip</span>&gt;</span>将修仙进行到底.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-17175765.html"</span> <span class="attr">title</span>=<span class="string">合成修仙传.zip</span>&gt;</span>合成修仙传.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-17257619.html"</span> <span class="attr">title</span>=<span class="string">我做许仙的日子.zip</span>&gt;</span>我做许仙的日子.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-17349180.html"</span> <span class="attr">title</span>=<span class="string">少年武仙在都市.zip</span>&gt;</span>少年武仙在都市.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-17349336.html"</span> <span class="attr">title</span>=<span class="string">超级修仙之旅.zip</span>&gt;</span>超级修仙之旅.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-17349557.html"</span> <span class="attr">title</span>=<span class="string">娇美仙妻爱上我.zip</span>&gt;</span>娇美仙妻爱上我.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-18057326.html"</span> <span class="attr">title</span>=<span class="string">极品仙商.zip</span>&gt;</span>极品仙商.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">					<span class="tag">&lt;/<span class="name">ul</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">td</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span></span><br><span class="line">				  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"fgx"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">					 <span class="comment">&lt;!-- UJian Button BEGIN --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"ujian-hook"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined">var ujian_config = &#123;num:16,target:1,picSize:72,textHeight:45,hoverTextColor:'#FA1B02'&#125;;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"http://v1.ujian.cc/code/ujian.js?uid=2087333"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://www.ujian.cc"</span> <span class="attr">style</span>=<span class="string">"border:0;"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://img.ujian.cc/pixel.png"</span> <span class="attr">alt</span>=<span class="string">"友荐云推荐"</span> <span class="attr">style</span>=<span class="string">"border:0;padding:0;margin:0;"</span> /&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- UJian Button END --&gt;</span></span><br><span class="line">					<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">								<span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">td</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span></span><br><span class="line">				  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"fgx"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">					 </span><br><span class="line">					<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">td</span> <span class="attr">height</span>=<span class="string">"40"</span> <span class="attr">bgcolor</span>=<span class="string">"#3E92CF"</span> &gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"f_color"</span>&gt;</span>相关说明：<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">td</span> <span class="attr">height</span>=<span class="string">"40"</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"art_foot"</span>&gt;</span>莽荒纪.zip为搜百度盘收集整理的结果，下载地址直接跳转到百度网盘进行下载，该文件的安全性和完整性需要您自行判断。感谢您对本站的支持.<span class="tag">&lt;/<span class="name">div</span>&gt;</span> <span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">                  <span class="tag">&lt;<span class="name">td</span> <span class="attr">height</span>=<span class="string">"80"</span> <span class="attr">bgcolor</span>=<span class="string">"#FFFFFF"</span> &gt;</span></span><br><span class="line">					&amp;nbsp;上一个：<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-106010792.html"</span> <span class="attr">title</span>=<span class="string">"netplan.zip"</span>&gt;</span>netplan.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">						<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"fgx"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">						&amp;nbsp;下一个：<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-106010794.html"</span> <span class="attr">title</span>=<span class="string">"斗战西游.zip"</span>&gt;</span>斗战西游.zip<span class="tag">&lt;/<span class="name">a</span>&gt;</span>				  <span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">				</span><br><span class="line">              <span class="tag">&lt;/<span class="name">table</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">td</span> <span class="attr">width</span>=<span class="string">"200"</span> <span class="attr">align</span>=<span class="string">"left"</span> <span class="attr">valign</span>=<span class="string">"top"</span> &gt;</span></span><br><span class="line">			  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"ad/200x200.js"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">			  </span><br><span class="line">			  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"art_left_bt"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"image/hot.gif"</span> <span class="attr">width</span>=<span class="string">"22"</span> <span class="attr">height</span>=<span class="string">"11"</span>&gt;</span>&amp;nbsp;您可能需要的资源：<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">		</span><br><span class="line">			  <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-23821718.html"</span> <span class="attr">title</span>=<span class="string">重生之婚后试爱.txt</span>&gt;</span>重生之婚后试爱.txt<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-23827473.html"</span> <span class="attr">title</span>=<span class="string">时光，浓淡相宜.txt</span>&gt;</span>时光，浓淡相宜.txt<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-25264047.html"</span> <span class="attr">title</span>=<span class="string">[书包网]亲爱的爱情（重生演艺圈）.txt</span>&gt;</span>[书包网]亲爱的爱情（重生演艺圈）.txt<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-25650524.html"</span> <span class="attr">title</span>=<span class="string">[古装言情]《二货娘子》作者：雾矢翊（晋江VIP2014-03-17完结）金牌高积分.txt</span>&gt;</span>[古装言情]《二货娘子》作者：雾矢翊（晋江VIP2014-03-17完结）金牌高积分.txt<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-25651309.html"</span> <span class="attr">title</span>=<span class="string">系统之宠妃.txt</span>&gt;</span>系统之宠妃.txt<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-25651440.html"</span> <span class="attr">title</span>=<span class="string">后宫翻身记（重生）</span> <span class="attr">.txt</span>&gt;</span>后宫翻身记（重生） .txt<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-29456136.html"</span> <span class="attr">title</span>=<span class="string">重生之汤圆儿.txt</span>&gt;</span>重生之汤圆儿.txt<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-29456254.html"</span> <span class="attr">title</span>=<span class="string">《重生之换我疼你》作者：森中一小妖.txt</span>&gt;</span>《重生之换我疼你》作者：森中一小妖.txt<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-29717792.html"</span> <span class="attr">title</span>=<span class="string">《宠妃》作者：月非娆.txt</span>&gt;</span>《宠妃》作者：月非娆.txt<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">li</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"file-30877984.html"</span> <span class="attr">title</span>=<span class="string">[网游]舍我娶谁.txt</span>&gt;</span>[网游]舍我娶谁.txt<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">				<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"ad/160x600.js"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">			  <span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">			</span><br><span class="line">          <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">charset</span>=<span class="string">'gbk'</span> <span class="attr">src</span>=<span class="string">'http://p.tanx.com/ex?i=mm_113468001_12740314_57802967'</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"cl"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"fgx"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"foot"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"image/wj.png"</span> <span class="attr">width</span>=<span class="string">"36"</span> <span class="attr">height</span>=<span class="string">"43"</span> <span class="attr">align</span>=<span class="string">"absmiddle"</span>&gt;</span>&amp;nbsp;&amp;nbsp;搜百度盘（<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://www.sobaidupan.com"</span> <span class="attr">title</span>=<span class="string">"搜百度盘"</span>&gt;</span>www.sobaidupan.com<span class="tag">&lt;/<span class="name">a</span>&gt;</span>）&amp;nbsp;2015-2018 All Rights Reserved&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"zhaoshang.asp"</span> <span class="attr">title</span>=<span class="string">"广告合作及投放"</span>&gt;</span>广告合作<span class="tag">&lt;/<span class="name">a</span>&gt;</span>&amp;nbsp;<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"about.asp"</span> <span class="attr">title</span>=<span class="string">"关于本站"</span>&gt;</span>关于本站<span class="tag">&lt;/<span class="name">a</span>&gt;</span> &amp;nbsp;QQ群：<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://jq.qq.com/?_wv=1027&amp;k=a2uzxT"</span> <span class="attr">target</span>=<span class="string">"_blank"</span>&gt;</span>385379281<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">p</span>&gt;</span>本站仅提供百度网盘资源搜索和百度网盘资源下载的网站，本站只抓取百度网盘的链接而不保存任何资源. <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">var _hmt = _hmt || [];</span></span><br><span class="line"><span class="undefined">(function() &#123;</span></span><br><span class="line"><span class="undefined">  var hm = document.createElement("script");</span></span><br><span class="line"><span class="undefined">  hm.src = "//hm.baidu.com/hm.js?f9d133598d63eabee77f59430aefa2ab";</span></span><br><span class="line"><span class="undefined">  var s = document.getElementsByTagName("script")[0]; </span></span><br><span class="line"><span class="undefined">  s.parentNode.insertBefore(hm, s);</span></span><br><span class="line"><span class="undefined">&#125;)();</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254604262'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/stat.php%3Fid%3D1254604262' type='text/javascript'%3E%3C/script%3E"));</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"setxml.asp"</span>&gt;</span>sitemap.xml<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">p</span>&gt;</span>本站所有资源均来自互联网，本站只负责技术收集和整理，均不承担任何法律责任，如有侵权违规等其它行为请联系我们. <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"image/e.jpg"</span> <span class="attr">width</span>=<span class="string">"163"</span> <span class="attr">height</span>=<span class="string">"20"</span> <span class="attr">align</span>=<span class="string">"absmiddle"</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">window._bd_share_config=&#123;"common":&#123;"bdSnsKey":&#123;&#125;,"bdText":"","bdMini":"2","bdMiniList":["mshare","qzone","tsina","bdysc","weixin","tieba","douban","sqq","qq","hi","baidu","share189","fx","mail","copy"],"bdPic":"","bdStyle":"0","bdSize":"16"&#125;,"share":&#123;"bdSize":16&#125;&#125;;with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"count.asp?id=106010793"</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="提取用户ID、资源名、网盘URL"><a href="#提取用户ID、资源名、网盘URL" class="headerlink" title="提取用户ID、资源名、网盘URL"></a>提取用户ID、资源名、网盘URL</h3><p>想了良久，还是决定使用BeautifulSoup和re正则共同完成信息的提取。<br>其实我个人是比较倾向于只使用正则提取，在以往我写的其它采集器基本都是用这个完成信息的提取。抱着学习的目的，加入了beautifulsoup。</p>
+<p>导入相关的模块: BeautifulSoup和re</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"><span class="keyword">import</span> re</span><br></pre></td></tr></table></figure>
+<h4 id="提取标题"><a href="#提取标题" class="headerlink" title="提取标题"></a>提取标题</h4><p>标题这里都是存在h1标签里面。提取如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">soup = BeautifulSoup(res,<span class="string">"html.parser"</span>)</span><br><span class="line"><span class="keyword">print</span> soup.h1.text</span><br></pre></td></tr></table></figure>
+<p>res是前面获取的网页源码’html.parser’解析，可以理解为让BeautifulSoup明白这个页面是什么语言写的。另外还有常用的lxml.</p>
+<h4 id="提取UID"><a href="#提取UID" class="headerlink" title="提取UID"></a>提取UID</h4><p>uid这里的提取，我用了正则，觉得会简单点。BeautifulSoup的话，我还是会用到正则，后面我把两种方法都贴出来。</p>
+<ul>
+<li><p>方法1 直接正则匹配</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">uid = re.search(&apos;user-(\d*)-1\.html&apos;,res)</span><br><span class="line">print  uid.group(1)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>方法2 BeautifulSoup配合正则找出符合的href属性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">uid2 = soup.find(href=re.compile(&apos;user-\d*-1\.html&apos;))[&apos;href&apos;]</span><br><span class="line">print uid2.split(&apos;-&apos;)[1]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="提取网盘URL"><a href="#提取网盘URL" class="headerlink" title="提取网盘URL"></a>提取网盘URL</h4><p>这里需要先提取出站内下载的地址，加载源码，再提取出百度网盘地址。文章前面有提到过了。</p>
+<p>提取站内下载URL</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rurl = re.search(&apos;href=&quot;(http://sbdp\.baidudaquan\.com/down\.asp\?id=.+?)&quot;&apos;,res)</span><br><span class="line"></span><br><span class="line">print rurl.group(1)</span><br></pre></td></tr></table></figure>
+<p>提取百度网盘地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dres = yzyPublic.get_web_source(rurl.group(1))</span><br><span class="line">purl = re.search(&quot;URL=(http://pan\.baidu\.com/share/link\?shareid=.+?)&apos;&quot;,dres)</span><br><span class="line">print purl.group(1)</span><br></pre></td></tr></table></figure>
+<h3 id="封装成函数提高代码复用"><a href="#封装成函数提高代码复用" class="headerlink" title="封装成函数提高代码复用"></a>封装成函数提高代码复用</h3><p>按自己习惯自己搞。不赘述。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html" target="_blank" rel="noopener">Beautiful Soup 4.2.0 文档</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>给作者打一针鸡血</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="//ojz2jzr09.bkt.clouddn.com/profile/wechat-pay.jpg" alt="Onecer WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="//ojz2jzr09.bkt.clouddn.com/profile/alipay--pay.jpg" alt="Onecer Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+            <a href="/tags/spider/" rel="tag"># spider</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/article/20170206/python-get-web-source/" rel="next" title="python从零写一个采集器:获取网页源码">
+                <i class="fa fa-chevron-left"></i> python从零写一个采集器:获取网页源码
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/article/20170218/issue-mysql-python-mysql-config-not-found/" rel="prev" title="安装MySQL-Python出错mysql_config not found">
+                安装MySQL-Python出错mysql_config not found <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="article/20170216/python-extarct-html-info/"
+           data-title="python从零写一个采集器:获取网页信息" data-url="https://uublog.com/article/20170216/python-extarct-html-info/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif"
+               alt="Onecer" />
+          <p class="site-author-name" itemprop="name">Onecer</p>
+          <p class="site-description motion-element" itemprop="description">记录日记之类的</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">86</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">98</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/yinyongyou" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/MichaelJScofield" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-codepen"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#信息位置的分析"><span class="nav-number">2.1.</span> <span class="nav-text">信息位置的分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提取信息"><span class="nav-number">2.2.</span> <span class="nav-text">提取信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取网站源码"><span class="nav-number">2.2.1.</span> <span class="nav-text">获取网站源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提取用户ID、资源名、网盘URL"><span class="nav-number">2.2.2.</span> <span class="nav-text">提取用户ID、资源名、网盘URL</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#提取标题"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">提取标题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#提取UID"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">提取UID</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#提取网盘URL"><span class="nav-number">2.2.2.3.</span> <span class="nav-text">提取网盘URL</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#封装成函数提高代码复用"><span class="nav-number">2.2.3.</span> <span class="nav-text">封装成函数提高代码复用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">2.3.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Onecer</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="powered-by">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+<div class="theme-info">
+ Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="//apps.bdimg.com/libs/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/velocity/1.2.1/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/velocity/1.2.1/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="//apps.bdimg.com/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"uublog"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      
+      <script src="//cdn.staticfile.org/UAParser.js/0.7.9/ua-parser.min.js"></script>
+      <script src="/js/src/hook-duoshuo.js?v=5.1.0"></script>
+    
+    
+    <script src="//cdn.staticfile.org/UAParser.js/0.7.9/ua-parser.min.js"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.staticfile.org/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
