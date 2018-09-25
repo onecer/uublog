@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Python异常处理]]></title>
+    <url>%2Farticle%2F20180926%2Fpython-exception%2F</url>
+    <content type="text"><![CDATA[环境： Python 3.6 Python异常处理和很多语言异常处理都差不多。 常见异常捕捉 try … except … finally 索性把一些极端的处理句式给出给来 举一反三。依然是如果有异常，异常如果没有被捕捉，中断执行，finally是不会被执行的。 另外值得一提的是，python2中 except语句使用有区别于python3 。 python2: exception ErrType, ErrInfopython3: exception ErrType as ErrInfo 一个用半角逗号隔开，一个用as隔开。后者更像其它的语言的异常处理。 1234567891011try: do_sthexcept ErrorType as e: handle_expcept_1 print("ErrorMessage:",e)except ErrorType2 as e: handle_expcept_2else: handle_other_errorfinally: colse_object with … as 对于支持该语句的对象来说，用这个语句比用try...finally更能保证对象在异常中得到期望的释放。 而支持该语句的对象必须内部实现两个方法 __enter__()和__exit__().而在刚执行with语句时会触发 enter方法，离开with语句代码块后触发exit。所以，对象只要把释放资源的代码写在__exit__()函数中就行了。 12with open('test.txt') as f: f.readlines() Exception 万能异常 如其名，可以用try…except Exception 捕获所有的异常 定义异常所有异常的基类都是BaseException，但是Python基于这个基类给我们提供了一些常见的异常错误类型，详情见文末参考资料。我们也可以基于这些内建的错误类型定义我们的错误类型。 比如一个自定义的错误类型。 简单版 12class MyIoErr(Exception): pass 标准版 1234567class MyIoErr(Exception): def __init__(self,msg): Exception.__init__(self) self.msg = msg def __str__(self): return self.msg 抛出异常抛出异常，并自己接收处理，举例上面的例子 在Python3中，上面简单和标准版的错误类型使用方法是一样的。python2的话，raise除了支持以下的写法，还支持raise ErrType, ErrInfo 这种写法。 所以推荐以下的写法，两种环境适用。 1234try: raise MyIoErr('file not found')except MyIoErr as e: print("ErrMsg:",e) 参考资料 Built-in Exceptions Exception hierarchy]]></content>
+      <categories>
+        <category>python</category>
+        <category>foundation</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[python装饰器]]></title>
     <url>%2Farticle%2F20180924%2Fpython-decorator%2F</url>
     <content type="text"><![CDATA[个人觉得装饰器就是Python对闭包的一种的语法糖。 可以灵活抽离出一些雷同代码，通过装饰器方便地调用，使得程序更加简单专注于逻辑的处理。 例子： 1234567891011121314151617def check_data(func): def check(*args, **kwargs): print('in decorator') print(args) print(kwargs) func(*args, **kwargs) return check@check_datadef echo_name(name): print(name)echo_name(name='jack')print('--------')echo_name(name='bob') 结果 123456789in decorator()&#123;&apos;name&apos;: &apos;jack&apos;&#125;jack--------in decorator(&apos;bob&apos;,)&#123;&#125;bob]]></content>
