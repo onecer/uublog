@@ -96,7 +96,7 @@
 <meta property="og:site_name" content="UU Blog">
 <meta property="og:description" content="已经经历两次开发环境磁盘占用满的情况的。 第一次是部署太频繁，然后有很多无用的images没有删除掉。 第二次是docker容器，某些服务写了很多日志，导致磁盘被写满。 撇开这些设置不当的问题，怎么清理掉一些“垃圾”，让docker占用空间变得小一点？ Docker占用磁盘的主要有以下几样东西：  Docker Images  Docker Containers  Docker Logs   对于">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-16T15:04:31.547Z">
+<meta property="og:updated_time" content="2018-12-14T17:28:10.960Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker清理">
 <meta name="twitter:description" content="已经经历两次开发环境磁盘占用满的情况的。 第一次是部署太频繁，然后有很多无用的images没有删除掉。 第二次是docker容器，某些服务写了很多日志，导致磁盘被写满。 撇开这些设置不当的问题，怎么清理掉一些“垃圾”，让docker占用空间变得小一点？ Docker占用磁盘的主要有以下几样东西：  Docker Images  Docker Containers  Docker Logs   对于">
@@ -429,7 +429,7 @@
 <p>删除所有关闭的容器</p>
 <p><code>docker ps -a | grep Exit | cut -d &#39; &#39; -f 1 | xargs docker rm</code></p>
 <p>删除所有dangling镜像(即无tag的镜像)：</p>
-<p><code>docker rmi $(docker images | grep &quot;^&lt;none&gt;&quot; | awk &quot;{print $3}&quot;)</code></p>
+<p><code>docker rmi $(docker images | grep &quot;&lt;none&gt;&quot; | awk &#39;{print $3}&#39;)</code></p>
 <p>删除所有dangling数据卷(即无用的volume)：</p>
 <p><code>docker volume rm $(docker volume ls -qf dangling=true)</code></p>
 <h1 id="清理容器内的垃圾"><a href="#清理容器内的垃圾" class="headerlink" title="清理容器内的垃圾"></a>清理容器内的垃圾</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker system df  -v</span><br></pre></td></tr></table></figure>
@@ -578,7 +578,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">87</span>
+                <span class="site-state-item-count">99</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -587,7 +587,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -596,7 +596,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">98</span>
+                <span class="site-state-item-count">105</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -678,7 +678,7 @@
         <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -698,8 +698,13 @@
 </div>
 
 <div class="theme-info">
- Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
+ Hosted by <a href="https://app.netlify.com/" style="font-weight: bold">Netlify</a>
 </div>
+
+<div class="theme-info">
+<a href="http://www.miibeian.gov.cn/" style="font-weight: bold">粤ICP备17061759号-1</a>
+</div>
+
 
         
 

@@ -96,7 +96,7 @@
 <meta property="og:site_name" content="UU Blog">
 <meta property="og:description" content="问题描述在这篇文章《Docker Swarm Mode中部署SpringCloud微服务》之后 遇到了点新问题。 在运行时指定自己网络的时候，容器里面多个网络，多个IP，但是注册的不是固定注册某个网卡的IP作为服务IP。 这就导致有时候注册的IP不是属于overlay网络的IP。服务访问就会出现问题。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-16T15:04:31.547Z">
+<meta property="og:updated_time" content="2018-12-09T03:03:56.527Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker Swarm Mode中容器多网络多IP registrator注册服务IP的问题">
 <meta name="twitter:description" content="问题描述在这篇文章《Docker Swarm Mode中部署SpringCloud微服务》之后 遇到了点新问题。 在运行时指定自己网络的时候，容器里面多个网络，多个IP，但是注册的不是固定注册某个网卡的IP作为服务IP。 这就导致有时候注册的IP不是属于overlay网络的IP。服务访问就会出现问题。">
@@ -412,7 +412,7 @@
 <p>如我前面运行docker的服务的时候指定<code>--network=micro-service</code></p>
 <p>那么我运行<code>registrator</code>的时候，用我修改过的镜像<code>doubleshit/registrator:v7</code>指定<code>-useIpFromNetworkName=micro-service</code>参数即可。</p>
 <p>如：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">    --restart=always \</span><br><span class="line">    --name=registrator \</span><br><span class="line">    --net=host \</span><br><span class="line">    --volume=/var/run/docker.sock:/tmp/docker.sock \</span><br><span class="line">    doubleshit/registrator:v7 \</span><br><span class="line">    -cleanup \</span><br><span class="line">    -internal \</span><br><span class="line">    -ip &lt;NODE_IP&gt; \</span><br><span class="line">    -useIpFromNetworkName=micro-service \</span><br><span class="line">      consul://&lt;NODE_IP&gt;:8500</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">    --restart=always \</span><br><span class="line">    --name=registrator \</span><br><span class="line">    --net=host \</span><br><span class="line">    --volume=/var/run/docker.sock:/tmp/docker.sock \</span><br><span class="line">    doubleshit/registrator:v7 \</span><br><span class="line">    -cleanup \</span><br><span class="line">    -internal \</span><br><span class="line">    -ip &lt;NODE_IP&gt; \</span><br><span class="line">    -useIpFromNetworkName=microservice \</span><br><span class="line">      consul://&lt;NODE_IP&gt;:8500</span><br></pre></td></tr></table></figure>
 <p>修改后的源码：<a href="https://github.com/onecer/registrator" target="_blank" rel="noopener">https://github.com/onecer/registrator</a></p>
 <p><em>commit的时候信息network写成了netword无视就好 哈哈</em></p>
 
@@ -554,7 +554,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">87</span>
+                <span class="site-state-item-count">99</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -563,7 +563,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -572,7 +572,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">98</span>
+                <span class="site-state-item-count">105</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -654,7 +654,7 @@
         <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -674,8 +674,13 @@
 </div>
 
 <div class="theme-info">
- Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
+ Hosted by <a href="https://app.netlify.com/" style="font-weight: bold">Netlify</a>
 </div>
+
+<div class="theme-info">
+<a href="http://www.miibeian.gov.cn/" style="font-weight: bold">粤ICP备17061759号-1</a>
+</div>
+
 
         
 

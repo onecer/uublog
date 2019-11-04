@@ -1,0 +1,1079 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  <link href="//apps.bdimg.com/libs/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+  
+
+<link href="//cdn.staticfile.org/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="graphql,python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="开始什么是 GraphQL?GraghQL的介绍,概览和概念,参考 官方介绍 让我们构建一个基本的GraphQL schema. 依赖 Python(2.7, 3.4, 3.5, 3.6, pypy) Graphene (2.0)  项目安装1pip install &quot;graphene&amp;gt;=2.0&quot; 创建一个基础的Schema一个描述你数据模型的GraphQL Schema,和提供GraphQ">
+<meta name="keywords" content="graphql,python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python的GraphQL库graphene-python的使用">
+<meta property="og:url" content="https://uublog.com/article/20190326/graphene-python-docs/index.html">
+<meta property="og:site_name" content="UU Blog">
+<meta property="og:description" content="开始什么是 GraphQL?GraghQL的介绍,概览和概念,参考 官方介绍 让我们构建一个基本的GraphQL schema. 依赖 Python(2.7, 3.4, 3.5, 3.6, pypy) Graphene (2.0)  项目安装1pip install &quot;graphene&amp;gt;=2.0&quot; 创建一个基础的Schema一个描述你数据模型的GraphQL Schema,和提供GraphQ">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-09-17T17:56:23.975Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python的GraphQL库graphene-python的使用">
+<meta name="twitter:description" content="开始什么是 GraphQL?GraghQL的介绍,概览和概念,参考 官方介绍 让我们构建一个基本的GraphQL schema. 依赖 Python(2.7, 3.4, 3.5, 3.6, pypy) Graphene (2.0)  项目安装1pip install &quot;graphene&amp;gt;=2.0&quot; 创建一个基础的Schema一个描述你数据模型的GraphQL Schema,和提供GraphQ">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '9131895',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://uublog.com/article/20190326/graphene-python-docs/"/>
+
+
+
+
+
+  <title> Python的GraphQL库graphene-python的使用 | UU Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1261151756&web_id=1261151756" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">UU Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <h1 class="site-subtitle" itemprop="description">UU Blog</h1>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20190326/graphene-python-docs/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Onecer">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="UU Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                Python的GraphQL库graphene-python的使用
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-26T14:11:34+08:00">
+                2019-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/article/20190326/graphene-python-docs/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20190326/graphene-python-docs/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><h3 id="什么是-GraphQL"><a href="#什么是-GraphQL" class="headerlink" title="什么是 GraphQL?"></a>什么是 GraphQL?</h3><p>GraghQL的介绍,概览和概念,参考 <a href="http://graphql.org/learn/" target="_blank" rel="noopener">官方介绍</a></p>
+<p>让我们构建一个基本的GraphQL schema.</p>
+<h3 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h3><ul>
+<li>Python(2.7, 3.4, 3.5, 3.6, pypy)</li>
+<li>Graphene (2.0)</li>
+</ul>
+<h3 id="项目安装"><a href="#项目安装" class="headerlink" title="项目安装"></a>项目安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install <span class="string">"graphene&gt;=2.0"</span></span><br></pre></td></tr></table></figure>
+<h3 id="创建一个基础的Schema"><a href="#创建一个基础的Schema" class="headerlink" title="创建一个基础的Schema"></a>创建一个基础的Schema</h3><p>一个描述你数据模型的GraphQL Schema,和提供GraphQL 服务,关联对应的解析方法,该方法知道怎样获取对应的数据.</p>
+<p>我们将创建一个非常简单的schema,一个<code>Query</code>,只有一个field:<code>hello</code>和输入名字.当我们查询它,它应当返回`”Hello {argument}”.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> graphene</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Query</span><span class="params">(graphene.ObjectType)</span>:</span></span><br><span class="line">    hello = graphene.String(argument=graphene.String(default_value=<span class="string">"stranger"</span>))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">resolve_hello</span><span class="params">(self, info, argument)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Hello '</span> + argument</span><br><span class="line"></span><br><span class="line">schema = graphene.Schema(query=Query)</span><br></pre></td></tr></table></figure>
+<h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><p>然后我们开始查询我们的schema:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">result = schema.execute(<span class="string">'&#123; hello &#125;'</span>)</span><br><span class="line">print(result.data[<span class="string">'hello'</span>]) <span class="comment"># "Hello stranger"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># or passing the argument in the query</span></span><br><span class="line">result = schema.execute(<span class="string">'&#123; hello (argument: "graph") &#125;'</span>)</span><br><span class="line">print(result.data[<span class="string">'hello'</span>]) <span class="comment"># "Hello graph"</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="类型参考-Types-Reference"><a href="#类型参考-Types-Reference" class="headerlink" title="类型参考 (Types Reference)"></a>类型参考 (Types Reference)</h2><h3 id="Enums-枚举型"><a href="#Enums-枚举型" class="headerlink" title="Enums 枚举型"></a>Enums 枚举型</h3><p><code>Enum</code>是一个特殊<code>GraphQL</code>类型,表示一组不重复的唯一的符号名,和它的常量值.</p>
+<h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><p>你可以使用类创建一个<code>Enum</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> graphene</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Episode</span><span class="params">(graphene.Enum)</span>:</span></span><br><span class="line">    NEWHOPE = <span class="number">4</span></span><br><span class="line">    EMPIRE = <span class="number">5</span></span><br><span class="line">    JEDI = <span class="number">6</span></span><br></pre></td></tr></table></figure>
+<p>也可以直接实例化一个<code>Enum</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Episode = graphene.Enum(<span class="string">'Episode'</span>, [(<span class="string">'NEWHOPE'</span>, <span class="number">4</span>), (<span class="string">'EMPIRE'</span>, <span class="number">5</span>), (<span class="string">'JEDI'</span>, <span class="number">6</span>)])</span><br></pre></td></tr></table></figure>
+<h4 id="Value-描述"><a href="#Value-描述" class="headerlink" title="Value 描述"></a>Value 描述</h4><p>如果需要对一个enume value添加描述,添加<code>description</code>属性.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Episode</span><span class="params">(graphene.Enum)</span>:</span></span><br><span class="line">    NEWHOPE = <span class="number">4</span></span><br><span class="line">    EMPIRE = <span class="number">5</span></span><br><span class="line">    JEDI = <span class="number">6</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">description</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self == Episode.NEWHOPE:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">'New Hope Episode'</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Other episode'</span></span><br></pre></td></tr></table></figure>
+<h4 id="Python-Enums-使用"><a href="#Python-Enums-使用" class="headerlink" title="Python Enums 使用"></a>Python Enums 使用</h4><p>如果Enums已经存在了,可以使用<code>Enum.from_enum</code> 函数重用它</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">graphene.Enum.from_enum(AlreadyExistingPyEnum)</span><br></pre></td></tr></table></figure>
+<p><code>Enum.from_enum</code> 支持<code>description</code>和<code>deprecation_reason</code> lambdas 作为你添加描述之类的.你可以不用改变原型:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">graphene.Enum.from_enum(AlreadyExistingPyEnum, description=<span class="keyword">lambda</span> value: <span class="keyword">return</span> <span class="string">'foo'</span> <span class="keyword">if</span> value == AlreadyExistingPyEnum.Foo <span class="keyword">else</span> <span class="string">'bar'</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><p><code>graphene.Enum</code>内部使用了<code>enum.Enum</code></p>
+<p>在Python中,<code>Enum</code> 初始化后你访问一个成员可以这样</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> enum <span class="keyword">import</span> Enum</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Color</span><span class="params">(Enum)</span>:</span></span><br><span class="line">    RED = <span class="number">1</span></span><br><span class="line">    GREEN = <span class="number">2</span></span><br><span class="line">    BLUE = <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Color(<span class="number">1</span>) == Color.RED</span><br></pre></td></tr></table></figure>
+<p>然而.在Graphene<code>Enum</code>你需要调用get方法来实现同样的效果:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> graphene <span class="keyword">import</span> Enum</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Color</span><span class="params">(Enum)</span>:</span></span><br><span class="line">    RED = <span class="number">1</span></span><br><span class="line">    GREEN = <span class="number">2</span></span><br><span class="line">    BLUE = <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> Color.get(<span class="number">1</span>) == Color.RED</span><br></pre></td></tr></table></figure>
+<h3 id="Scalars类型"><a href="#Scalars类型" class="headerlink" title="Scalars类型"></a>Scalars类型</h3><p>所有Scalar类型允许跟随参数.</p>
+<p>可选项:</p>
+<ul>
+<li><code>name</code>: string</li>
+</ul>
+<p>覆盖字段名</p>
+<ul>
+<li><code>description</code>: string</li>
+</ul>
+<p>类型描述.展示在GraphQL browser</p>
+<ul>
+<li><code>required</code>: boolean</li>
+</ul>
+<p>如果为<code>True</code>则强制要求填写该字段.默认为<code>False</code></p>
+<ul>
+<li><code>deprecation_reason</code>: string</li>
+</ul>
+<p>提供描述该字段反对原因</p>
+<ul>
+<li><code>default_value</code>: any</li>
+</ul>
+<p>提供默认值</p>
+<h4 id="基础scalars"><a href="#基础scalars" class="headerlink" title="基础scalars"></a>基础scalars</h4><p>基本 Scalar类型:</p>
+<ul>
+<li><code>graphene.String</code></li>
+</ul>
+<p>文本数据, UTF-8编码.大多时候使用存储可视的字符.</p>
+<ul>
+<li><code>graphene.Int</code></li>
+</ul>
+<p>±整数,取值范围 -(2^53 - 1) and 2^53 - 1</p>
+<ul>
+<li><code>graphene.Float</code></li>
+</ul>
+<p>有小数点的,取值范围 -(2^53 - 1) and 2^53 - 1</p>
+<ul>
+<li><code>graphene.Boolean</code></li>
+</ul>
+<p>布尔值</p>
+<ul>
+<li><code>graphene.ID</code></li>
+</ul>
+<p>唯一字段,经常用来提取对象或者作为缓存的key. 在json中,返回为string类型.</p>
+<p>输入的数字为字符串类型或者整数型都可以.</p>
+<ul>
+<li><code>graphene.types.datetime.Date</code></li>
+</ul>
+<p>Represents a Date value as specified by <a href="https://en.wikipedia.org/wiki/ISO_8601" target="_blank" rel="noopener">iso8601</a>.</p>
+<ul>
+<li><code>graphene.types.datetime.DateTime</code></li>
+</ul>
+<p>Represents a DateTime value as specified by <a href="https://en.wikipedia.org/wiki/ISO_8601" target="_blank" rel="noopener">iso8601</a>.</p>
+<ul>
+<li><code>graphene.types.datetime.Time</code></li>
+</ul>
+<p>Represents a Time value as specified by <a href="https://en.wikipedia.org/wiki/ISO_8601" target="_blank" rel="noopener">iso8601</a>.</p>
+<ul>
+<li><code>graphene.types.json.JSONString</code></li>
+</ul>
+<p>JSON string.</p>
+<h4 id="自定义scalar"><a href="#自定义scalar" class="headerlink" title="自定义scalar"></a>自定义scalar</h4><p>你可以创建自定义的scalar.以下例子创建一个 Datatime scaler:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">from</span> graphene.types <span class="keyword">import</span> Scalar</span><br><span class="line"><span class="keyword">from</span> graphql.language <span class="keyword">import</span> ast</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DateTime</span><span class="params">(Scalar)</span>:</span></span><br><span class="line">    <span class="string">'''DateTime Scalar Description'''</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">serialize</span><span class="params">(dt)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> dt.isoformat()</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_literal</span><span class="params">(node)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> isinstance(node, ast.StringValue):</span><br><span class="line">            <span class="keyword">return</span> datetime.datetime.strptime(</span><br><span class="line">                node.value, <span class="string">"%Y-%m-%dT%H:%M:%S.%f"</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_value</span><span class="params">(value)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> datetime.datetime.strptime(value, <span class="string">"%Y-%m-%dT%H:%M:%S.%f"</span>)</span><br></pre></td></tr></table></figure></p>
+<h4 id="Mounting-Scalars"><a href="#Mounting-Scalars" class="headerlink" title="Mounting Scalars"></a>Mounting Scalars</h4><p>Scalars挂载<code>objectType</code>,<code>Interface</code> 或者 <code>Mutation</code> 作为 <code>Field</code>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(graphene.ObjectType)</span>:</span></span><br><span class="line">    name = graphene.String()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 等价于:</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(graphene.ObjectType)</span>:</span></span><br><span class="line">    name = graphene.Field(graphene.String)</span><br></pre></td></tr></table></figure>
+<p>Types mounted in a <code>Field</code> act as <code>Arguments</code>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">graphene.Field(graphene.String, to=graphene.String())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 等价于:</span></span><br><span class="line">graphene.Field(graphene.String, to=graphene.Argument(graphene.String))</span><br></pre></td></tr></table></figure>
+<h3 id="Lists-and-Non-Null-类型"><a href="#Lists-and-Non-Null-类型" class="headerlink" title="Lists and Non-Null 类型"></a>Lists and Non-Null 类型</h3><p>Object类型,scalars和enums是你只能在Graphene上定义的类型.但是当你查询变量声明.或者应用这些附加类型修改或者验证这些值.</p>
+<h4 id="NonNull"><a href="#NonNull" class="headerlink" title="NonNull"></a><code>NonNull</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> graphene</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Character</span><span class="params">(graphene.ObjectType)</span>:</span></span><br><span class="line">    name = graphene.NonNull(graphene.String)</span><br></pre></td></tr></table></figure>
+<p>这里我们使用了<code>string</code>类型和标记为 非空(Non-Null),用<code>NonNull</code>类包裹着.这意味着我们的服务器期望这个字段返回一个非空字符串.</p>
+<p>如果最终它获取到的是null值,将触发GraphQL的异常错误.让客户端知道出错了.</p>
+<p>以上提供<code>NonNull</code>代码片段等价于:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> graphene</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Character</span><span class="params">(graphene.ObjectType)</span>:</span></span><br><span class="line">    name = graphene.String(required=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="List"><a href="#List" class="headerlink" title="List"></a><code>List</code></h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> graphene</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Character</span><span class="params">(graphene.ObjectType)</span>:</span></span><br><span class="line">    appears_in = graphene.List(graphene.String)</span><br></pre></td></tr></table></figure>
+<p>标记一个类型为<code>List</code>类型,指示这个字段将返回的是列表类型的数据.</p>
+<h4 id="NonNull-Lists"><a href="#NonNull-Lists" class="headerlink" title="NonNull Lists"></a><code>NonNull Lists</code></h4><p>标记为非空列表</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> graphene</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Character</span><span class="params">(graphene.ObjectType)</span>:</span></span><br><span class="line">    appears_in = graphene.List(graphene.NonNull(graphene.String))</span><br></pre></td></tr></table></figure>
+<p>上文的结果类型定义:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">type Character &#123;</span><br><span class="line">    appearsIn: [String!]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="ObjectTypes-对象类型"><a href="#ObjectTypes-对象类型" class="headerlink" title="ObjectTypes 对象类型"></a>ObjectTypes 对象类型</h3><p>一个ObjectType,限定你源数据的信息,它包含基本字段和你查询数据的行为.</p>
+<ul>
+<li>每个ObjectType都是Python类,继承自<code>graphene.ObjectType</code></li>
+<li>每个ObjectType属性都可以作为字段</li>
+</ul>
+<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><p>这个例子模型定义了一个 Person:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> graphene</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(graphene.ObjectType)</span>:</span></span><br><span class="line">    first_name = graphene.String()</span><br><span class="line">    last_name = graphene.String()</span><br><span class="line">    full_name = graphene.String()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">resolve_full_name</span><span class="params">(self, info)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'&#123;&#125; &#123;&#125;'</span>.format(self.first_name, self.last_name)</span><br></pre></td></tr></table></figure>
+<p>上面的 <code>Person</code> ObjectType 对应的schema:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">type Person &#123;</span><br><span class="line">  firstName: String</span><br><span class="line">  lastName: String</span><br><span class="line">  fullName: String</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Resolvers-解析器"><a href="#Resolvers-解析器" class="headerlink" title="Resolvers (解析器)"></a>Resolvers (解析器)</h4><p>一个resolver对应<code>ObjectType</code>字段的解析方法.</p>
+<p>没有意外的话,一个 <code>ObjectType</code> 字段(field)对应的方法是 <code>resolve_{field_name}</code>.</p>
+<p>resolvers默认接收的参数是 <code>info</code> 和 <code>*args</code>.</p>
+<p>NOTE:</p>
+<p><code>ObjectType</code>中resolvers是被作为 <code>staticmethod</code> 对待的. 所以,第一个参数不必是实际的实例,比如 <code>self</code> 或者 <code>root</code></p>
+<h4 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h4><p>这个模型定义了一个<code>Query</code> 类型,有一个 reverse字段,接收了 <code>word</code>参数,使用 <code>resolve_reverse</code> 方法解析.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> graphene</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Query</span><span class="params">(graphene.ObjectType)</span>:</span></span><br><span class="line">    reverse = graphene.String(word=graphene.String())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">resolve_reverse</span><span class="params">(self, info, word)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> word[::<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://prisma.1wire.com/" target="_blank" rel="noopener">prisma</a></li>
+<li><a href="http://graphql.cn" target="_blank" rel="noopener">http://graphql.cn</a></li>
+<li><a href="https://github.com/chentsulin/awesome-graphql" target="_blank" rel="noopener">awesome-graphql</a></li>
+<li><a href="https://www.howtographql.com/" target="_blank" rel="noopener">The Fullstack Tutorial for GraphQL</a></li>
+<li><a href="https://docs.graphene-python.org/en/latest/types/scalars/" target="_blank" rel="noopener">docs.graphene-python.org</a></li>
+<li><a href="https://haofly.net/python-graphql/" target="_blank" rel="noopener">Python使用graphene-sqlalchemy提供GraphQL接口</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>给作者打一针鸡血</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="//ojz2jzr09.bkt.clouddn.com/profile/wechat-pay.jpg" alt="Onecer WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="//ojz2jzr09.bkt.clouddn.com/profile/alipay--pay.jpg" alt="Onecer Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/graphql/" rel="tag"># graphql</a>
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/article/20190326/consul-error-while-renaming-node-id/" rel="next" title="Consul重启后出现 error while renaming node id">
+                <i class="fa fa-chevron-left"></i> Consul重启后出现 error while renaming node id
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/article/20190329/nginx-cros/" rel="prev" title="nginx对前端跨域(CROS)访问的处理">
+                nginx对前端跨域(CROS)访问的处理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="article/20190326/graphene-python-docs/"
+           data-title="Python的GraphQL库graphene-python的使用" data-url="https://uublog.com/article/20190326/graphene-python-docs/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif"
+               alt="Onecer" />
+          <p class="site-author-name" itemprop="name">Onecer</p>
+          <p class="site-description motion-element" itemprop="description">记录日记之类的</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">105</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/yinyongyou" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/MichaelJScofield" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-codepen"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#开始"><span class="nav-number">1.</span> <span class="nav-text">开始</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是-GraphQL"><span class="nav-number">1.1.</span> <span class="nav-text">什么是 GraphQL?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#依赖"><span class="nav-number">1.2.</span> <span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#项目安装"><span class="nav-number">1.3.</span> <span class="nav-text">项目安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个基础的Schema"><span class="nav-number">1.4.</span> <span class="nav-text">创建一个基础的Schema</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询"><span class="nav-number">1.5.</span> <span class="nav-text">查询</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型参考-Types-Reference"><span class="nav-number">2.</span> <span class="nav-text">类型参考 (Types Reference)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Enums-枚举型"><span class="nav-number">2.1.</span> <span class="nav-text">Enums 枚举型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义"><span class="nav-number">2.1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Value-描述"><span class="nav-number">2.1.2.</span> <span class="nav-text">Value 描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python-Enums-使用"><span class="nav-number">2.1.3.</span> <span class="nav-text">Python Enums 使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#说明"><span class="nav-number">2.1.4.</span> <span class="nav-text">说明</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scalars类型"><span class="nav-number">2.2.</span> <span class="nav-text">Scalars类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基础scalars"><span class="nav-number">2.2.1.</span> <span class="nav-text">基础scalars</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义scalar"><span class="nav-number">2.2.2.</span> <span class="nav-text">自定义scalar</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Mounting-Scalars"><span class="nav-number">2.2.3.</span> <span class="nav-text">Mounting Scalars</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lists-and-Non-Null-类型"><span class="nav-number">2.3.</span> <span class="nav-text">Lists and Non-Null 类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NonNull"><span class="nav-number">2.3.1.</span> <span class="nav-text">NonNull</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#List"><span class="nav-number">2.3.2.</span> <span class="nav-text">List</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NonNull-Lists"><span class="nav-number">2.3.3.</span> <span class="nav-text">NonNull Lists</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ObjectTypes-对象类型"><span class="nav-number">2.4.</span> <span class="nav-text">ObjectTypes 对象类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#例子"><span class="nav-number">2.4.1.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Resolvers-解析器"><span class="nav-number">2.4.2.</span> <span class="nav-text">Resolvers (解析器)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#例子-1"><span class="nav-number">2.4.3.</span> <span class="nav-text">例子</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Onecer</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="powered-by">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+<div class="theme-info">
+ Hosted by <a href="https://app.netlify.com/" style="font-weight: bold">Netlify</a>
+</div>
+
+<div class="theme-info">
+<a href="http://www.miibeian.gov.cn/" style="font-weight: bold">粤ICP备17061759号-1</a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="//apps.bdimg.com/libs/jquery/2.1.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/fastclick/1.0.6/fastclick.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/jquery_lazyload/1.9.7/jquery.lazyload.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/velocity/1.2.1/velocity.min.js"></script>
+
+  
+  <script type="text/javascript" src="//cdn.staticfile.org/velocity/1.2.1/velocity.ui.min.js"></script>
+
+  
+  <script type="text/javascript" src="//apps.bdimg.com/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"uublog"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+      
+      <script src="//cdn.staticfile.org/UAParser.js/0.7.9/ua-parser.min.js"></script>
+      <script src="/js/src/hook-duoshuo.js?v=5.1.0"></script>
+    
+    
+    <script src="//cdn.staticfile.org/UAParser.js/0.7.9/ua-parser.min.js"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.staticfile.org/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

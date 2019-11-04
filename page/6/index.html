@@ -295,7 +295,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170613/git-use-webhook-auto-update-web/">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20171103/python-generator-producer-consumer/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Onecer">
@@ -320,8 +320,8 @@
             
               
                 
-                <a class="post-title-link" href="/article/20170613/git-use-webhook-auto-update-web/" itemprop="url">
-                  Git用webhook实现自动更新网站
+                <a class="post-title-link" href="/article/20171103/python-generator-producer-consumer/" itemprop="url">
+                  Python生成器 生产消费者模型 迭代器
                 </a>
               
             
@@ -337,8 +337,192 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-13T17:26:38+08:00">
-                2017-06-13
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-03T10:44:49+08:00">
+                2017-11-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/foundation/" itemprop="url" rel="index">
+                    <span itemprop="name">foundation</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/article/20171103/python-generator-producer-consumer/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20171103/python-generator-producer-consumer/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+环境： Python 3.5
+
+列表解析和生成器假设要生成一个1到10000的列表a，供其它功能去遍历它的话。
+用Python列表解析的话，如下：
+1a = [ x for x in range(1,10000)]
+但是有这么一个情况。我每次也不是非要遍历完这个列表，而且某些情况我可能根本不会用到这个列表。
+但是一开始就定义好这个列表。它是会即时生成这个列表。如果这个表很大，毫无疑问比较浪费时间，和占用内存。
+应对上述的问题，可以用生成器来解决。
+1a = ( x for x in range(1,10000))
+语法上和列表解析的差别主要就是一个是用[],一个是用()
+同样，可以用for去遍历它
+12for n in a:    print(n)
+另外可以通过next属性去访问它的值。12345678910# python 2.x  属性是 next()# python 3.x  属性是 __next()# 所以建议用next()获取 比较通用点。whlie True:    try:        n = next(a)        print('n:', n)    except StopIteration as e:        print('Generator return value:', e.value)        break
+Generator function现在知道了( x for x in range(1,10000))这种生成器形式。但是我想要生成更复杂点的数据怎么办？
+比如斐波那契数列。这个时候就用到yield了，通过yield去生成生成器的数据。简单点理解，它就是普通函数的return，只不过yield是专门将数据返回给生成器。
+123456# 生成10位fabnacci数列def fab():    a,b=1,1    for i 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/article/20171103/python-generator-producer-consumer/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20171024/add-letsencrypted-certificate/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Onecer">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="UU Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/article/20171024/add-letsencrypted-certificate/" itemprop="url">
+                  使用Let's Encrypted申请SSL证书 实现HTTPS
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-24T10:57:49+08:00">
+                2017-10-24
               </time>
             
 
@@ -378,8 +562,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/article/20170613/git-use-webhook-auto-update-web/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170613/git-use-webhook-auto-update-web/" itemprop="commentCount"></span>
+                <a href="/article/20171024/add-letsencrypted-certificate/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20171024/add-letsencrypted-certificate/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -407,25 +591,20 @@
       
         
           
-          最近公司大部分项目从SVN过渡到Git。所以代码自动化部署也有了更多的想象空间。
-之前使用SVN更新代码到开发环境的时候，都是用crontab定时svn update。间隔是一分钟，虽然一分钟不算长，甚至有时候等待并不需要这么久。
-但是总归是无法做到及时更新。算是自动主动更新，而Git有webhook的存在，就可以做到触发式更新。
-我们代码是放在 git.oschina.net 码云上。
-原理每次git提交的时候，都会触发webhook，webhook会访问我们设置的URL。
-URL触发我们的更新代码。
-所以，我们还需要架一个网站，提供一个webhook访问的URL，访问的时候触发代码。
-实践时间原因，轮子就不自己造了，所以，我找到一份还不错的webhook管理平台。
+          之前的话，一直在阿里云申请免费的赛门铁克的SSL证书。但是如果站点多，又有不同客户的话，全放一个地方其实也不太合适，另外申请时间也稍微慢点，要等个好几分钟，有时候半个小时。管理起来比较麻烦。
+所以再三考虑，使用了let’s encrypted这货也是免费的。更加极客点，相对来讲，权威性没赛门铁克那么高，不过都得到大部分浏览器厂商的认可，所以还是能用的。
+由于开放了申请接口，所以部分工具或者网站源码集成了申请证书的功能。我知道的有 cPanel，宝塔，WordPress之类的。
+let’s encrypted 证书有效期只有60天，还是蛮短的。不过好在它提供了很多好用的脚本或者程序来提供我们续签，整体来说还是比较方便的。
+ACME是它一个提供用来辅助申请的脚本，大大简化了申请流程，有些做到可视化，还算是比较方便的。涵盖了各种语言。
+ACME客户端列表
+我的话用 ACME.sh
+测试SSL强度
+nginx如果有配置限制了 .* 目录的访问的话，要修改确保 web目录下 .well-known 目录下的内容可访问。
 
-git-webhook: https://github.com/NetEaseGame/git-webhook
-
-安装git-webhook环境： Centos7
-这里用docker部署
-123456789101112# 安装启动docker# yum install docker# systemctl restart docker# systemctl enable docker# 安装 Docker Compose# yum install docker-compose# 下载源码# git clone https://github.com/NetEaseGame/git-webhook.git# 修改配置# cd git-webhook# cp app/config_docker_example.py app/config.py# vim app/config.py
-GITHUB: GitHub 登陆配置，可以到 OAuth applications 自行申请，登陆 Callback 地址为： you
-          ...
+          
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/article/20170613/git-use-webhook-auto-update-web/#more" rel="contents">
+            <a class="btn" href="/article/20171024/add-letsencrypted-certificate/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -466,7 +645,7 @@ GITHUB: GitHub 登陆配置，可以到 OAuth applications 自行申请，登陆
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170612/svn-to-git/">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20171017/troubleshooting-php-ln-include-error/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Onecer">
@@ -491,8 +670,8 @@ GITHUB: GitHub 登陆配置，可以到 OAuth applications 自行申请，登陆
             
               
                 
-                <a class="post-title-link" href="/article/20170612/svn-to-git/" itemprop="url">
-                  代码从SVN迁移到GIT
+                <a class="post-title-link" href="/article/20171017/troubleshooting-php-ln-include-error/" itemprop="url">
+                  LN链接文件include路径异常情况。
                 </a>
               
             
@@ -508,517 +687,8 @@ GITHUB: GitHub 登陆配置，可以到 OAuth applications 自行申请，登陆
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-12T14:32:46+08:00">
-                2017-06-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/operations/" itemprop="url" rel="index">
-                    <span itemprop="name">operations</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/article/20170612/svn-to-git/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170612/svn-to-git/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          GIT可以选择有很多，国外有github，国内有coding和git.oschina.net。
-因为不可描述的原因，我们选了国内的。注册和管理其实和github很像。
-我再做了ssh公钥认证后，将远程仓库git clone一份回本地。这样它就会自动生成一个.git目录了。
-其实自己在本地现有的项目下用git remote add 也是可以的，但是感觉要略为麻烦点。
-将SVN仓库代码更新至最新，复制多一份。
-进入SVN代码目录，删除原来SVN的隐藏目录，.svn，这个内容占了很大空间。
-1find . -type d -name &quot;.svn&quot;|xargs rm -rf
-将内容复制的到git目录，并提交去远程仓库。
-123git add -Agit commit -m &quot;first commit&quot;git push origin master
-done.
-
-          
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/article/20170612/svn-to-git/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170607/vim-plugins-k-vim/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Onecer">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="UU Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/article/20170607/vim-plugins-k-vim/" itemprop="url">
-                  VIM配置推荐-K-VIM
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-07T17:43:02+08:00">
-                2017-06-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tools/" itemprop="url" rel="index">
-                    <span itemprop="name">tools</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/article/20170607/vim-plugins-k-vim/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170607/vim-plugins-k-vim/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          归类到工具吧，算是可以提升效率的东西。自己也折腾过，VIM配置插件还是挺麻烦的。直到看到这个，一键配置，这个项目再github居然有3K的star。
-https://github.com/wklken/k-vim
-安装方法不赘述，帮助文档有。
-用来写Python和其它脚步，做些小修改，算是一个好的补充吧。毕竟大部分时候还是专业的IDE比较方便。
-
-          
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/article/20170607/vim-plugins-k-vim/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170527/mariadb-root-password-recovery/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Onecer">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="UU Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/article/20170527/mariadb-root-password-recovery/" itemprop="url">
-                  MariaDB Root密码恢复
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-27T12:49:58+08:00">
-                2017-05-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mysql/" itemprop="url" rel="index">
-                    <span itemprop="name">mysql</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/article/20170527/mariadb-root-password-recovery/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170527/mariadb-root-password-recovery/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          本机装了MariaDB，很久不用，把密码给忘记了。
-然后刚刚把密码恢复了下，记录一份这里方便以后索引。
-
-停止MySQL服务。
-
-# systemctl stop mysql 我是Ubuntu 这里服务名是这个
-
-用无权限管理方式启动
-
-# mysqld_safe --skip-grant-tables &amp;
-
-登录修改密码
-
-# mysql -uroot
-修改密码的SQL1234&gt; use mysql;&gt; update user set password=PASSWORD(&quot;gjdEdufD93J&quot;) where User=&apos;root&apos;;&gt; flush privileges;&gt; quit
-
-停止mysql进程
-
-/etc/init.d/mysql stop
-
-启动服务 systemctl restart mysql
-
-done.
-全部流程记录
-1234567891011121314151617181920212223242526272829303132fate phan # systemctl stop mysqlfate phan # mysqld_safe --skip-grant-tables &amp;[1] 14391fate phan # 170527 11:46:39 mysqld_safe Logging to syslog.170527 11:46:39 mysqld_safe Starting mysqld daemon with databases from /var/lib/mysqlfate phan # mysql -urootWelcome to the MariaDB monitor.  Commands end with ; or \g.Your MariaDB con
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/article/20170527/mariadb-root-password-recovery/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170526/fabric-troubleshooting-1/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Onecer">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="UU Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/article/20170526/fabric-troubleshooting-1/" itemprop="url">
-                  Fabric运行run命令执行nohup异常
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-26T12:05:56+08:00">
-                2017-05-26
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-17T11:40:08+08:00">
+                2017-10-17
               </time>
             
 
@@ -1058,8 +728,8 @@ done.
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/article/20170526/fabric-troubleshooting-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170526/fabric-troubleshooting-1/" itemprop="commentCount"></span>
+                <a href="/article/20171017/troubleshooting-php-ln-include-error/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20171017/troubleshooting-php-ln-include-error/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1087,15 +757,23 @@ done.
       
         
           
-          写了一个脚本用fabric发布和运行java包。需要用到nohup，或者screen -d -m命令。
-我习惯了nohup，但是执行完毕，没有出错，但是程序也压根没有执行。
-最后才找到资料说是fabric执行nohup命令的时候，过早关闭session，导致出问题。
-官方推荐的做法是在命令后面增加一点延迟，比如&amp;&amp; sheep 1或者用screen命令。
+          昨天有开发叫把部署时候，替换配置文件原本用cp换成ln。说是为了修改配置方便。
+但是如果一个目录有很多个配置，含子目录，用ln -r是不行的。逐个ln很是麻烦。
+不过，开发说啥就是啥。。。
+但是今天一些URL访问出现异常。
+大致错误如下。
+1PHP message: PHP Fatal error:  require(): Failed opening required '/wwwroot/resources_do_not_delete/xxxx/frontend/web/../../common/config/bootstrap.php' (include_path='.:/app/php56/lib/php') in /wwwroot/resources_do_not_delete/xxxx/frontend/web/index.php on line 7" while reading response header from upstream, client: 14.xxx.xxx.180, server: qdtest.laoganbu.cn, request: "GET /help-web/index HTTP/1.1", upstream: "fastcgi://127.0.0.1:9000", host: "xxx.xxx.cn"
+发现php文件 require文件的时候，路径跑到被链接的文件目录去了。而我们所需要的是获取链接文件所在的目录下的文件。
+知道问题就好办了。把ln -s改为ln -d硬链接。
+可以自己写个php，然后分别用这两种方式做链接到web目录。
+123&lt;?    echo __DIR__;?&gt;
+usage： ln -[s|d] 源文件 链接文件
+测试结果如下：ln -s : 源文件所在的目录ln -d : 链接文件所在的目录
 
           
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/article/20170526/fabric-troubleshooting-1/#more" rel="contents">
+            <a class="btn" href="/article/20171017/troubleshooting-php-ln-include-error/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1136,7 +814,7 @@ done.
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170525/python-words-counter/">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20171013/php-file-get-contents-errors-troubleshooting/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Onecer">
@@ -1161,8 +839,8 @@ done.
             
               
                 
-                <a class="post-title-link" href="/article/20170525/python-words-counter/" itemprop="url">
-                  Python词频统计
+                <a class="post-title-link" href="/article/20171013/php-file-get-contents-errors-troubleshooting/" itemprop="url">
+                  file_get_contents 获取HTTPS链接内容出错
                 </a>
               
             
@@ -1178,8 +856,522 @@ done.
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-25T16:57:19+08:00">
-                2017-05-25
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-13T09:30:19+08:00">
+                2017-10-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/troubleshooting/" itemprop="url" rel="index">
+                    <span itemprop="name">troubleshooting</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/article/20171013/php-file-get-contents-errors-troubleshooting/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20171013/php-file-get-contents-errors-troubleshooting/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          今天遇到php用 file_get_contents 函数获取 https 链接的数据的时候，遇到如下错误。
+1operation failed with code 1. OpenSSL Error messages:error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed
+我服务器环境是 Centos 7.
+检查已经安装了 openssl包，并在php.ini中开启了 php_openssl 模块。测试发现问题依旧，最后在stackoverflow上找到了答案。
+在php.ini中增加一行
+openssl.cafile=/etc/pki/tls/certs/ca-bundle.crt
+至于如果不确定php的配置文件位置，最好用phpinfo函数打印出来看看。如果机子只有单个环境 直接执行php -i | grep config 找。
+
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/article/20171013/php-file-get-contents-errors-troubleshooting/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170831/tools-rdp-remmina-rdesktop/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Onecer">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="UU Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/article/20170831/tools-rdp-remmina-rdesktop/" itemprop="url">
+                  Linux远程连接Windows桌面工具
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-31T17:11:52+08:00">
+                2017-08-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tools/" itemprop="url" rel="index">
+                    <span itemprop="name">tools</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/article/20170831/tools-rdp-remmina-rdesktop/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170831/tools-rdp-remmina-rdesktop/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          机子Ubuntu，之前一直用的rdesktop连接的远程桌面。
+由于是命令行，加上不常用，总会经常性忘记命令参数，又要查阅帮助，不慎其烦。而且也不能保存密码。
+于是苦苦搜寻，还真找到一款满意的工具。支持 RDP和SSH协议。
+似乎前身就是 csclient
+官网：http://www.remmina.org/
+源码:https://github.com/FreeRDP/Remmina/wiki
+安装 
+123sudo apt-add-repository ppa:remmina-ppa-team/remmina-nextsudo apt-get updatesudo apt-get install remmina remmina-plugin-rdp libfreerdp-plugins-standard
+用法：
+图形简单清晰，不用介绍
+
+
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/article/20170831/tools-rdp-remmina-rdesktop/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170825/python-pygame-fantasyshooter/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Onecer">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="UU Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/article/20170825/python-pygame-fantasyshooter/" itemprop="url">
+                  Pygame实现的太空射击类小游戏
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-25T17:03:10+08:00">
+                2017-08-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/pygame/" itemprop="url" rel="index">
+                    <span itemprop="name">pygame</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/article/20170825/python-pygame-fantasyshooter/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170825/python-pygame-fantasyshooter/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          FantasyShooter入门必搞的太空射击小游戏。
+如果还没安装pygame模块的
+sudo pip install pygame or pip install -r requirements.txt
+安装好模块后直接 python fantasyshooter.py 即可进行激情射击。
+
+目前实现：
+
+敌机
+炸弹
+战机
+子弹
+统计分数和miss数
+
+项目代码下载地址
+
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/article/20170825/python-pygame-fantasyshooter/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170814/python-foundation-more-types/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Onecer">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="UU Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/article/20170814/python-foundation-more-types/" itemprop="url">
+                  Python的常见类型
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-14T14:42:51+08:00">
+                2017-08-14
               </time>
             
 
@@ -1230,8 +1422,8 @@ done.
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/article/20170525/python-words-counter/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170525/python-words-counter/" itemprop="commentCount"></span>
+                <a href="/article/20170814/python-foundation-more-types/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170814/python-foundation-more-types/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1259,13 +1451,24 @@ done.
       
         
           
-          123456789101112131415161718192021222324252627282930313233#!/usr/bin/env python#coding:utf-8from random import randint"""    词的频次统计    统计重复的词的次数，用字典的形式展现"""data = [randint(0,10) for _ in xrange(0,20)]print data## 常规处理# 根据键生成一个字典，赋值0ddata = dict.fromkeys(data,0)print ddata# 迭代统计for x in data:    ddata[x]+=1print ddata## 用collections 的counterfrom collections import Counterddata2 = Counter(data)# 统计最高的4位print ddata2.most_common(4)
-输出：
-1234[1, 0, 5, 6, 6, 4, 8, 7, 3, 1, 2, 10, 9, 5, 9, 3, 10, 9, 5, 4]&#123;0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0&#125;&#123;0: 1, 1: 2, 2: 1, 3: 2, 4: 2, 5: 3, 6: 2, 7: 1, 8: 1, 9: 3, 10: 2&#125;[(5, 3), (9, 3), (1, 2), (3, 2)]
+          NoneNone一句话就是有点类似其它语言的NULL。是个无类型的值。None等于False。
+Dictionaries 字典类型。其实就是常见的 Key =&gt; Value 键值对类型，当索引的key不存在的时候，会抛出KeyError
+类型实例
+1234mydict = &#123;'a':1,'b':2&#125;print(mydict['a'])1
+字典类型的key必须是不可以变的。
+字典的赋值十分简单，无论key存在与否，都可以直接赋值。存在的话就改变值，不存在就自动新建一个。
+判断key是否存在 in 和 not in例子：
+12345678nums = &#123;     1:'a',    2:'b',    3:'c', &#125;print(1 in nums)print(a not in nums)print(3 in nums)
+结果：123TrueTrueTrue
+字典一个比较有用的函数 get当你访问一个不存在的key的时候，它会返回一个特殊值None，还可以自定义缺省值，找不到就返回某个值。
+例子：
+12345678nums = &#123;     1:'a',    2:'b',    3:'c', &#125;print(nums.get(1))print(nums.get(4))print(nums.get(4,"字典里没有4"))
+结果：123aNone字典里没有4
+
           
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/article/20170525/python-words-counter/#more" rel="contents">
+            <a class="btn" href="/article/20170814/python-foundation-more-types/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1306,7 +1509,7 @@ done.
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170525/python-list-dict-filter/">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170814/python-foundation-insert-append/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Onecer">
@@ -1331,8 +1534,8 @@ done.
             
               
                 
-                <a class="post-title-link" href="/article/20170525/python-list-dict-filter/" itemprop="url">
-                  Python列表、字典的筛选
+                <a class="post-title-link" href="/article/20170814/python-foundation-insert-append/" itemprop="url">
+                  Python数组append比insert有效率
                 </a>
               
             
@@ -1348,8 +1551,8 @@ done.
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-25T11:56:03+08:00">
-                2017-05-25
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-14T14:42:26+08:00">
+                2017-08-14
               </time>
             
 
@@ -1400,8 +1603,8 @@ done.
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/article/20170525/python-list-dict-filter/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170525/python-list-dict-filter/" itemprop="commentCount"></span>
+                <a href="/article/20170814/python-foundation-insert-append/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170814/python-foundation-insert-append/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1429,521 +1632,364 @@ done.
       
         
           
-          1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950#!/usr/bin/env python#coding:utf-8from random import randint"""    列表筛选    生成一个有20个随机数的数组 data    从 data 列表中筛选出大于0的数字"""data = [randint(-100,100) for _ in xrange(10)]print data## 迭代def test1(d):    s = []    for x in data:        if x &gt;=0:            s.append(x)    return s## 用filterdef test2(d):    return filter(lambda x:x&gt;=0,d)## 用列表解析def test3(d):    return [x for x in data if x&gt;=0]print test1(data)print test2(data)print test3(data)##  迭代最慢、列表解析最快"""    字典的筛选    生成键值在56-100之间的随机数10个    找出大于90的数"""data = &#123;x:randint(56,100) for x in xrange(1,11)&#125;print datadef test4(d):    return &#123;k:v for k,v in d.iteritems() if v&gt;=90&#125;print test4(data)
-输出：
-123456[61, -31, 2, -45, -1, 1
+          由于list的实现不是传统意义上的链表实现，采用的是在一块连续的内存空间。所以在Insert的时候，经常要将插入的位置右边的数据挪一下。而append并不需要。
+所以能用append的尽量用append。
+
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/article/20170814/python-foundation-insert-append/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170805/centos-install-jenkins-latest-version/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Onecer">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="UU Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/article/20170805/centos-install-jenkins-latest-version/" itemprop="url">
+                  Centos7 安装最新版Jenkins
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-05T20:47:43+08:00">
+                2017-08-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/other/" itemprop="url" rel="index">
+                    <span itemprop="name">other</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/article/20170805/centos-install-jenkins-latest-version/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170805/centos-install-jenkins-latest-version/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          配置jenkins源12sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.reposudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key
+直接 yum  install jenkins是安全版本非最新版。
+可以去 https://pkg.jenkins.io/redhat-stable/下载自己喜欢的版本比如我安装最新版1yum install https://pkg.jenkins.io/redhat-stable/jenkins-2.89.4-1.1.noarch.rpm
+vim /etc/sysconfig/jenkins 编辑下配置文件
+我主要改了端口和home目录
+启动
+1systemctl start/enable jenkins
+http://120.79.138.224:10086/generic-webhook-trigger/invoke?token=offence-reporting-servicehttps://wiki.jenkins.io/display/JENKINS/CloudBees+Docker+Build+and+Publish+plugin
+#参考资料 
+
+Installing Jenkins on Red Hat distributions
+
+
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/article/20170805/centos-install-jenkins-latest-version/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170713/python-supervisor-process-moniter/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Onecer">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="UU Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/article/20170713/python-supervisor-process-moniter/" itemprop="url">
+                  用supervisor来监控进程
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-13T16:59:56+08:00">
+                2017-07-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/tools/" itemprop="url" rel="index">
+                    <span itemprop="name">tools</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/article/20170713/python-supervisor-process-moniter/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170713/python-supervisor-process-moniter/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Supervisor简述关于Java进程监控，一直都是要搞的。至于怎么实现，一直比较纠结，也就拖了很久。
+最近看到supervisor，感觉还不错，打算试试。
+简单简单一句话描述supervisor的作用的话。
+可以把一个命令变成daemon进程管理，可以实现异常重启
+另外还提供了API，这为提供WEB式管理提供了便利，官方有带了一个简陋的web界面，也有一些第三方的似乎看起来也不错。
+通过supervisor运行的，都成为supervisor的子进程，它也是通过这个去管理进程，比通过pid文件管理更稳定。因为有时候进程异常退出，pid存放的数据就是错的，有可能导致其它进程被意外终结。
+支持的平台Supervisor works on just about everything except for Windows.
+准确点说，基本UNIX-Like系统都支持。
+主要组件supervisordsupervisor的服务进程，响应客户端的命令、管理子进程
+使用的时候要读取配置文件。寻找配置文件的优先级如下:
+123456$CWD/supervisord.conf$CWD/etc/supervisord.conf/etc/supervisord.conf/etc/supervisor/supervisord.conf (since Supervisor 3.3.0)../etc/supervisord.conf (Relative to the executable)../supervisord.conf (Relative to the executable)
+不过建议还是启动的时候，制定配置文件所在的绝对路径。
+supervisorctlsupervisor的命令行客户端
+配置项在  [supervisorctl]
+Web Serversupervisor的web服务，we
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/article/20170525/python-list-dict-filter/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170522/python-simply-socket/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Onecer">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="UU Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/article/20170522/python-simply-socket/" itemprop="url">
-                  Python简单的socket通讯例子
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-22T09:39:10+08:00">
-                2017-05-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/foundation/" itemprop="url" rel="index">
-                    <span itemprop="name">foundation</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/article/20170522/python-simply-socket/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170522/python-simply-socket/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          公司有块业务是靠socket提供端口供给业务查询的。
-之前每次测试socket发送数据都略麻烦，所以自己用python搞了一次。
-根据业务之前的逻辑，检测字段包含EOF结束读取。
-12345678910111213141516171819202122232425262728import socket#import codecs#encoder = codecs.getencoder("utf-8")senddata = '&#123;"action":"compute","device":"ios","map":"0","start":"2017-05-19","day":"25","type":"17","orientation":"0","order_total_id":"950","store_id":"12"&#125;EOF\n's = socket.socket(socket.AF_INET, socket.SOCK_STREAM)s.connect(('dev.xxxx.net', 31))s.send(senddata)buffer = []while True:    d = s.recv(65535)    if d:        buffer.append(d)    else:        break    if 'EOF' in d[-5:-1]:        break# while True:#     d = s.recv(1024)#     if d:#         buffer.append(d)#     else:#         breakdata = ''.join(buffer)print datas.close()
-
-          
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/article/20170522/python-simply-socket/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170519/python-algorithms-fibonacci/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Onecer">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="UU Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/article/20170519/python-algorithms-fibonacci/" itemprop="url">
-                  Python递归和迭代实现求斐波那契数
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-19T18:11:37+08:00">
-                2017-05-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/algorithms/" itemprop="url" rel="index">
-                    <span itemprop="name">algorithms</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/article/20170519/python-algorithms-fibonacci/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170519/python-algorithms-fibonacci/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Python实现求第N位斐波那契数。迭代用来队列来保存，用其它也是可以的。
-123456789101112131415161718192021222324252627282930313233#!/bin/env python#coding:utf-8from collections import dequeimport datetime# 递归版def fibonacci(num):    if num&lt;=2:        return 1    else:        return fibonacci(num-1)+fibonacci(num-2)# 迭代版def fibonacci2(num):    s=deque()    result=0    for i in range(1,num+1):        if i&lt;=2:            result=1            s.append(result)        else:            result=s[0]+s[1]            s.append(result)            s.popleft()    return resultn=40print(datetime.datetime.now())print('fibonacci(%d)=%d' % (n, fibonacci(n)))print(datetime.datetime.now())print('fibonacci2(%d)=%d' % (n, fibonacci2(n)))print(datetime.datetime.now())
-结果：
-123452017-05-19 18:00:52.194334fibonacci(40)=1023341552017-05-19 18:01:0
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/article/20170519/python-algorithms-fibonacci/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170519/troubleshooting-walle-profile/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Onecer">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="UU Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/article/20170519/troubleshooting-walle-profile/" itemprop="url">
-                  walle一些莫名其妙的报错
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-19T15:02:36+08:00">
-                2017-05-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/walle/" itemprop="url" rel="index">
-                    <span itemprop="name">walle</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/article/20170519/troubleshooting-walle-profile/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170519/troubleshooting-walle-profile/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          这前天walle部署出现了一些莫名其妙的问题。检测配置是通过的，但是部署的时候遇到前后置任务的时候总是报错。
-开始以为是数据库问题，后来排查了，又以为是php执行函数exec被禁用的问题。但是并不是。
-真是百思不得骑姐啊。
-回想最近的改动，只有我安装过一个运维工具的agent，但是已经卸载了。
-料想应该是修改了哪里的配置。
-最后才定位到 /etc/profile
-多了一条 #ulimit -n 204800 修改了文件符打开数量。最后我把它注释掉就好了。
-至于为什么这个会影响到walle，还没深究，等找到原因再来补充。
-
-          
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/article/20170519/troubleshooting-walle-profile/#more" rel="contents">
+            <a class="btn" href="/article/20170713/python-supervisor-process-moniter/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1979,7 +2025,7 @@ done.
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2022,7 +2068,7 @@ done.
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">87</span>
+                <span class="site-state-item-count">99</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2031,7 +2077,7 @@ done.
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2040,7 +2086,7 @@ done.
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">98</span>
+                <span class="site-state-item-count">105</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2106,7 +2152,7 @@ done.
         <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -2126,8 +2172,13 @@ done.
 </div>
 
 <div class="theme-info">
- Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
+ Hosted by <a href="https://app.netlify.com/" style="font-weight: bold">Netlify</a>
 </div>
+
+<div class="theme-info">
+<a href="http://www.miibeian.gov.cn/" style="font-weight: bold">粤ICP备17061759号-1</a>
+</div>
+
 
         
 

@@ -295,7 +295,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170410/walle-pre-deploy-test/">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170519/python-algorithms-fibonacci/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Onecer">
@@ -320,8 +320,8 @@
             
               
                 
-                <a class="post-title-link" href="/article/20170410/walle-pre-deploy-test/" itemprop="url">
-                  Walle部署高级任务配置测试
+                <a class="post-title-link" href="/article/20170519/python-algorithms-fibonacci/" itemprop="url">
+                  Python递归和迭代实现求斐波那契数
                 </a>
               
             
@@ -337,8 +337,179 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-10T19:23:45+08:00">
-                2017-04-10
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-19T18:11:37+08:00">
+                2017-05-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/algorithms/" itemprop="url" rel="index">
+                    <span itemprop="name">algorithms</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/article/20170519/python-algorithms-fibonacci/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170519/python-algorithms-fibonacci/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Python实现求第N位斐波那契数。迭代用来队列来保存，用其它也是可以的。
+123456789101112131415161718192021222324252627282930313233#!/bin/env python#coding:utf-8from collections import dequeimport datetime# 递归版def fibonacci(num):    if num&lt;=2:        return 1    else:        return fibonacci(num-1)+fibonacci(num-2)# 迭代版def fibonacci2(num):    s=deque()    result=0    for i in range(1,num+1):        if i&lt;=2:            result=1            s.append(result)        else:            result=s[0]+s[1]            s.append(result)            s.popleft()    return resultn=40print(datetime.datetime.now())print('fibonacci(%d)=%d' % (n, fibonacci(n)))print(datetime.datetime.now())print('fibonacci2(%d)=%d' % (n, fibonacci2(n)))print(datetime.datetime.now())
+结果：
+123452017-05-19 18:00:52.194334fibonacci(40)=1023341552017-05-19 18:01:0
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/article/20170519/python-algorithms-fibonacci/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170519/troubleshooting-walle-profile/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Onecer">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="UU Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/article/20170519/troubleshooting-walle-profile/" itemprop="url">
+                  walle一些莫名其妙的报错
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-19T15:02:36+08:00">
+                2017-05-19
               </time>
             
 
@@ -378,8 +549,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/article/20170410/walle-pre-deploy-test/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170410/walle-pre-deploy-test/" itemprop="commentCount"></span>
+                <a href="/article/20170519/troubleshooting-walle-profile/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170519/troubleshooting-walle-profile/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -407,65 +578,19 @@
       
         
           
-          walle高级任务设置所以试试发布自己的线上业务看看。
-理论部署的前后，会触发四个任务。
-pre_deploy、post_deploy、pre_release和post_release
-名字来看，就比较好理解，部署前、部署后，发布前，发布后。
-官方给出的流程如下：
-
-以下是上线任务的发布进度条
-
-很明显，触发的deploy任务是在宿主机。
-我整理了如下表格：
-
-
-
-任务
-执行点
-时间时间
-
-
-
-
-pre_deploy
-宿主机
-代码检出前
-
-
-post_deploy
-宿主机
-代码检出后，传送之前
-
-
-pre_release
-目标机
-创建链接之前
-
-
-post_release
-目标机
-创建链接之后
-
-
-
-使用场景举例我们拉取开发环境的代码部署至宿主机，乃至线上环境的时候。有一些配置是要替换的，比如数据库账户之类的。有一些文件是要删除，一些目录是需要合并的。
-但是，怎么做呢？
-这就用到这些任务了。大多数场景，我想就用pre-deploy或者pre release就够了。
-用法基本都一样，差别就在执行顺序。
-使用任务宿主机要用web执行系统命令，所以需要额外添加一句到sudoers文件里面。
-visudo1Defaults:www    !requiretty
-www 是web执行PHP的用户。
-我们是有几个东西要替换。一个是配置目录、另外两个是用户的上传目录。用户上传的静态内容，开发环境是没有了。
-考虑到每次复制替换，一个是费系统资源。
-所以，我打算在传输之前，先删除掉静态资源。再传去服务器的时候，打上线上的资源的链接。
-如此就能实现动态更新了。
-有个官方没有说明的是。每次执行任务之前，都是进去到当前目录的。所以删除移动项目目录之类的，都用相对路径即可。
-
+          这前天walle部署出现了一些莫名其妙的问题。检测配置是通过的，但是部署的时候遇到前后置任务的时候总是报错。
+开始以为是数据库问题，后来排查了，又以为是php执行函数exec被禁用的问题。但是并不是。
+真是百思不得骑姐啊。
+回想最近的改动，只有我安装过一个运维工具的agent，但是已经卸载了。
+料想应该是修改了哪里的配置。
+最后才定位到 /etc/profile
+多了一条 #ulimit -n 204800 修改了文件符打开数量。最后我把它注释掉就好了。
+至于为什么这个会影响到walle，还没深究，等找到原因再来补充。
 
           
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/article/20170410/walle-pre-deploy-test/#more" rel="contents">
+            <a class="btn" href="/article/20170519/troubleshooting-walle-profile/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -506,7 +631,7 @@ www 是web执行PHP的用户。
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170406/nginx-php-fpm-autorun/">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170516/centos7-nginx10-mariadb-php5-6/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Onecer">
@@ -531,8 +656,8 @@ www 是web执行PHP的用户。
             
               
                 
-                <a class="post-title-link" href="/article/20170406/nginx-php-fpm-autorun/" itemprop="url">
-                  nginx和php-fpm添加到服务 开启开机自启动
+                <a class="post-title-link" href="/article/20170516/centos7-nginx10-mariadb-php5-6/" itemprop="url">
+                  Centos7配置LNMP nginx10+mariadb+php5.6
                 </a>
               
             
@@ -548,8 +673,8 @@ www 是web执行PHP的用户。
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-06T16:01:35+08:00">
-                2017-04-06
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-16T10:09:12+08:00">
+                2017-05-16
               </time>
             
 
@@ -589,8 +714,8 @@ www 是web执行PHP的用户。
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/article/20170406/nginx-php-fpm-autorun/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170406/nginx-php-fpm-autorun/" itemprop="commentCount"></span>
+                <a href="/article/20170516/centos7-nginx10-mariadb-php5-6/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170516/centos7-nginx10-mariadb-php5-6/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -618,20 +743,22 @@ www 是web执行PHP的用户。
       
         
           
-          接手管理某台ERP服务器的生产环境。主要配有LNMP环境，前两天发现，这些服务居然都没有配置自启动。
-这完全不考虑服务器意外重启导致服务未能启动，从而引起长时间的服务中断么？
-所以，今天就特地添加了自启动。
-本来，添加自启动是很简单的。尤其是yum安装出来的服务。
-CentOS 71systemctl enable nginx php-fpm
-CentOS 5/612chkconfig nginx onchkconfig php-fpm on
-然而，这台是自己下载的软件包，还是自己编译的不得而知。反正/etc/init.d/ 完全没这两货的影子。
-没有那就添加吧，两个bash脚本。
-我从网上扒拉了两段自己修改了一下。代码如下：
-nginx123456789101112131415161718192021222324252627282930313233343536373839404142434445464748#!/bin/bash# chkconfig: - 85 15PATH=/app/nginxDESC="nginx daemon"NAME=nginxDAEMON=$PATH/sbin/$NAMECONFIGFILE=$PATH/conf/$NAME.confPIDFILE=$PATH/logs/$NAME.pidscriptNAME=/etc/init.d/$NAMEset -e[ -x "$DAEMON" ] || exit 0do_start() &#123;    $DAEMON -c $CONFIGFILE || echo -n "nginx already running"&#125;do_stop() &#123;    $DAEMON -s stop || echo -n "nginx not running"&#125;do_reload() &#12
+          今天给一台测试机配个环境，顺道记录下，一直觉得webtatic比官方源好用。但是老是容易忘记名字，这次就贴这里了。
+安装环境所需的包mariadb
+yum groupinstall -y mariadb mairadb-client
+php5.6
+Repo 源12345678910CentOS 5.X    rpm -Uvh http://mirror.webtatic.com/yum/el5/latest.rpmCentOS 6.x    rpm -Uvh http://mirror.webtatic.com/yum/el6/latest.rpmCentOS 7.X    # rpm -Uvh https://mirror.webtatic.com/yum/el7/epel-release.rpm    yum install epel-release    rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+yum install php56w.x86_64 php56w-cli.x86_64 php56w-common.x86_64 php56w-gd.x86_64 php56w-ldap.x86_64 php56w-mbstring.x86_64 php56w-mcrypt.x86_64 php56w-mysql.x86_64 php56w-pdo.x86_64
+php-fpm
+yum install php56w-fpm
+nginx 1.10
+yum install -y nginx1w.x86_64
+配置nginx
+/etc/nginx/nginx.conf123456789101112server字段里面，要配置root项，指向你网站的根目录。另外去掉一下注释，让它支持php。里面
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/article/20170406/nginx-php-fpm-autorun/#more" rel="contents">
+            <a class="btn" href="/article/20170516/centos7-nginx10-mariadb-php5-6/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -672,7 +799,7 @@ nginx123456789101112131415161718192021222324252627282930313233343536373839404142
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170329/ubuntu-dockerce-installation/">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170515/python-foundation-exception-handing/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Onecer">
@@ -697,8 +824,8 @@ nginx123456789101112131415161718192021222324252627282930313233343536373839404142
             
               
                 
-                <a class="post-title-link" href="/article/20170329/ubuntu-dockerce-installation/" itemprop="url">
-                  Ubuntu16.04LTS Centos7 安装Docker CE
+                <a class="post-title-link" href="/article/20170515/python-foundation-exception-handing/" itemprop="url">
+                  Python 异常接管/引出
                 </a>
               
             
@@ -714,8 +841,8 @@ nginx123456789101112131415161718192021222324252627282930313233343536373839404142
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-29T14:33:30+08:00">
-                2017-03-29
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-15T16:57:51+08:00">
+                2017-05-15
               </time>
             
 
@@ -737,8 +864,8 @@ nginx123456789101112131415161718192021222324252627282930313233343536373839404142
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/docker/" itemprop="url" rel="index">
-                    <span itemprop="name">docker</span>
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
                   </a>
                 </span>
 
@@ -748,8 +875,8 @@ nginx123456789101112131415161718192021222324252627282930313233343536373839404142
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/docker/installation/" itemprop="url" rel="index">
-                    <span itemprop="name">installation</span>
+                  <a href="/categories/python/foundation/" itemprop="url" rel="index">
+                    <span itemprop="name">foundation</span>
                   </a>
                 </span>
 
@@ -766,8 +893,8 @@ nginx123456789101112131415161718192021222324252627282930313233343536373839404142
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/article/20170329/ubuntu-dockerce-installation/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170329/ubuntu-dockerce-installation/" itemprop="commentCount"></span>
+                <a href="/article/20170515/python-foundation-exception-handing/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170515/python-foundation-exception-handing/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -795,23 +922,17 @@ nginx123456789101112131415161718192021222324252627282930313233343536373839404142
       
         
           
-          近日需要频繁测试各种环境，奔波于各种虚拟机之间，虽然自己制作了诸多虚拟机环境模板，平时直接克隆软连接使用。
-但是还是感受到了世界满满的恶意。
-所以决定安装一下docker 减轻一下工作量。一个人kubernetes就没必要装了吧。
-觉得如果用kubernetes去管理团队各个机器的开发者的环境，减轻他们平时环境搭建的麻烦还是挺不错的。
-不过，还没到时候。
-本文主要参考docker的官方文档。
-安装docker ce  社区版如果之前安装了旧版本的docker，旧版本docker名字是docker或者docker-engine
-sudo apt-get remove docker docker-engine
-因为新版本的docker仓库改为使用https链接，所以，还要运行以下语句，让apt允许使用https方式链接
-1$ sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
-安装官方源的GPG key，关闭GPG check应该也是可以的。1$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-安装docker源如果和我一样是使用linux mint的话，$(lsb_release -cs)并不能获取Ubuntu的版本代号，获取的是自己的。自行修改，比如我的是16.04 那就是 xenial。1234$ sudo add-apt-repository \   &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu \   xenial \   stable&quot;
-更新源12
+          异常处理Python 的异常接管和很多程序的都差不多，尤其是Pascal。
+常见的异常类型有123456ImportError:an import fails 导入失败，一般导入了无效的模块IndexError:a list is indexed with an out of range number 超出列表最大长度NameError:an unknown variable is used 未定义的变量SyntaxError:the code can't be parsed properly 不能匹配的语法TypeError:a funxtion is called on a value of an inappropriate type 错误的类型ValueError:a function is called on a value of the correct type but with an inappropriate value 错误的值
+异常的接管1234try:    # do sthexcept &lt;具体要接管的错误类型，留空则接管所有异常&gt;:    # 异常处理部分
+比如除以0的时候都会抛出一个ZeroDivisionError异常。
+而接管异常处理示例1234try:    result = 1 / 0except ZeroDivisionError:    print('error')
+又或者留空，默认接管所有异常。1234try:    result = 1 / 0except:    print('error')
+又或者使用多个except接管多个不同类型的异常。123456try:    result = 1 / 0except ZeroDivisionError:    print('ZeroDivisionError')except I
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/article/20170329/ubuntu-dockerce-installation/#more" rel="contents">
+            <a class="btn" href="/article/20170515/python-foundation-exception-handing/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -852,7 +973,7 @@ sudo apt-get remove docker docker-engine
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170328/python-scrapy-ipproxy/">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170510/python-algorithms-bubble-sort/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Onecer">
@@ -877,8 +998,8 @@ sudo apt-get remove docker docker-engine
             
               
                 
-                <a class="post-title-link" href="/article/20170328/python-scrapy-ipproxy/" itemprop="url">
-                  Python基于Scrapy框架写个麻雀虽小五脏俱全的爬虫
+                <a class="post-title-link" href="/article/20170510/python-algorithms-bubble-sort/" itemprop="url">
+                  Python冒泡排序算法
                 </a>
               
             
@@ -894,8 +1015,178 @@ sudo apt-get remove docker docker-engine
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-28T00:46:19+08:00">
-                2017-03-28
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-10T09:18:19+08:00">
+                2017-05-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/algorithms/" itemprop="url" rel="index">
+                    <span itemprop="name">algorithms</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/article/20170510/python-algorithms-bubble-sort/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170510/python-algorithms-bubble-sort/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          需要将json的数据，按program属性的数组大小进行排序。Python实现特别轻松，主要在交换值方面轻松，以前用Delphi代码量起码是这个两倍。
+代码如下：
+123456789101112131415#coding:utf-8import jsonjsonraw='[&#123;"scores":0,"program":[&#123;"type_name":"标准间","type_id":"15","orientation_id":"19","orientation_name":"东","map_name":"格局三","start":"2017-05-09","floor_name":"东2楼","number":"2009","map_id":"16","days":"25","end":"2017-06-02","floor_id":"64","id":"104"&#125;]&#125;,&#123;"scores":0,"program":[&#123;"type_name":"标准间","type_id":"15","orientation_id":"21","orientation_name":"西","map_name":"格局三","start":"2017-05-09","floor_name":"东2楼","number":"2011","map_id":"16","days":"25","end":"2017-06-02","floor_id":"64","id":"105"&#125;]&#125;,&#123;"scores":0,"program":[&#123;"type_name":"普通房","type_id":"16","orientation_id":"19","orientation_name":"东","map_name":
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/article/20170510/python-algorithms-bubble-sort/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170506/python-match-symbol-syntax/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Onecer">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="UU Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/article/20170506/python-match-symbol-syntax/" itemprop="url">
+                  Python用栈实现匹配括号对语法是否正确
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-06T17:05:21+08:00">
+                2017-05-06
               </time>
             
 
@@ -935,8 +1226,8 @@ sudo apt-get remove docker docker-engine
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/article/20170328/python-scrapy-ipproxy/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170328/python-scrapy-ipproxy/" itemprop="commentCount"></span>
+                <a href="/article/20170506/python-match-symbol-syntax/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170506/python-match-symbol-syntax/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -964,14 +1255,18 @@ sudo apt-get remove docker docker-engine
       
         
           
-          这个东西写有半个月了，最近工作忙没空理会，看了下数据，跑得还不错。
-用各种框架和开源项目配合，站在巨人的肩膀上，轻轻松松完成一个麻雀虽小五脏俱全的爬虫。
-采集URL，大规模URL去重，分类，入库，反爬虫。而完成这些，只需要寥寥不到三百行代码。
-Scrapy工程目录如下12345678910111213141516171819202122232425262728293031323334353637383940414243./├── crawls # 开启持久化会产生一些记录文件├── sbdspider│   ├── __init__.py│   ├── __init__.pyc│   ├── items.py     # 定义要采集的字段│   ├── items.pyc│   ├── middlewares  # 中间件 主要是随机选择 UserAgent和代理IP 主要用来反爬虫│   │   ├── __init__.py│   │   ├── __init__.pyc│   │   ├── RandomProxy.py│   │   ├── RandomProxy.pyc│   │   ├── RandomUserAgent.py│   │   └── RandomUserAgent.pyc│   ├── middlewares.py│   ├── pipelines.py  # 入库MySQL│   ├── pipelines.pyc│   ├── scrapy_redis  # 用的九茶的模块 用Bloomfilter+redis去重│   │   ├── BloomfilterOnRedis.py│   │   ├── BloomfilterOnRedis.pyc│   │   ├── connection.py│   │   ├── connection.p
+          要实现对括号对的匹配。
+假如不能双双配对，就是不合适的。举个例子
+123456正确&apos;sd&#123;sfsfs&#125;[(s)]&apos;&apos;[&#123;()&#125;]&apos;不正确&apos;[[]&#123;()&#125;&apos;
+思路就是用一个栈存储匹配到的左括号，匹配到右括号的话，就和栈顶的数据对比。因为两个括号的ASCII码，一般右括号总比左括号大1或者2.通过判断差值是否在这个区间，基本可以确定。匹配到一对括号，便消除一个。到最后如果栈为空，就是合格的。反之，不为空就是不合格的。
+实现代码如下：
+1234567891011121314151617181920212223#!/usr/bin/python#coding:utf-8leftChar=['&#123;','[','(']rightChar=['&#125;',']',')']def check_format(sPath):    s=[]    for x in sPath:        if x in leftChar:            s.append(x)        if x in rightChar:            if s:                if abs(ord(x)-ord(s[-1]))&lt;=2:                    s.pop()                else:                    s.append(x)            else:                s.append(x)    if s:        print  u"不合格"    else:        print u"合格"
+结果如下
+1234check_format(&apos;s
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/article/20170328/python-scrapy-ipproxy/#more" rel="contents">
+            <a class="btn" href="/article/20170506/python-match-symbol-syntax/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1012,7 +1307,7 @@ Scrapy工程目录如下12345678910111213141516171819202122232425262728293031323
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170327/nginx-logfile-rotate/">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170505/python-backup-aliyun-rds-instance/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Onecer">
@@ -1037,8 +1332,8 @@ Scrapy工程目录如下12345678910111213141516171819202122232425262728293031323
             
               
                 
-                <a class="post-title-link" href="/article/20170327/nginx-logfile-rotate/" itemprop="url">
-                  nginx日志分割处理
+                <a class="post-title-link" href="/article/20170505/python-backup-aliyun-rds-instance/" itemprop="url">
+                  Python下载阿里云RDS实例备份
                 </a>
               
             
@@ -1054,965 +1349,8 @@ Scrapy工程目录如下12345678910111213141516171819202122232425262728293031323
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-27T11:10:13+08:00">
-                2017-03-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/operations/" itemprop="url" rel="index">
-                    <span itemprop="name">operations</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/article/20170327/nginx-logfile-rotate/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170327/nginx-logfile-rotate/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          nginx现在用yum源安装的话，都自带了logrotate，默认是每天定时分割日志并压缩。
-但是公司目前有一台生产环境的nginx不是用yum安装的。所以就得自己手动分割下日志了。
-目前就是bash脚本+crontab实现，具体代码如下：
-12345678910111213141516171819202122232425262728#!/bin/bash#初始化# 日志路径LOGS_PATH=/app/nginx/logsYESTERDAY=$(date -d "yesterday" +%Y%m%d)# 访问日志路径+名字ACCESS_FILE_NAME=$&#123;LOGS_PATH&#125;/sxyz_erp_nginx_access_$&#123;YESTERDAY&#125;# 错误日志路径+名字ERROR_FILE_NAME=$&#123;LOGS_PATH&#125;/sxyz_erp_nginx_error_$&#123;YESTERDAY&#125;#移动重命名访问日志 压缩并删除源文件mv $&#123;LOGS_PATH&#125;/access.log $&#123;ACCESS_FILE_NAME&#125;.logtar -zcf $&#123;ACCESS_FILE_NAME&#125;.tar.gz $&#123;ACCESS_FILE_NAME&#125;.logrm -rf $&#123;ACCESS_FILE_NAME&#125;.log#移动重命名错误日志 压缩并删除源文件mv $&#123;LOGS_PATH&#125;/error.log $&#123;ERROR_FILE_NAME&#125;.logtar -zcf $&#123;ERROR_FILE_NAME&#125;.tar.gz $&#123;ERROR_FILE_
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/article/20170327/nginx-logfile-rotate/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170326/security-password-level/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Onecer">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="UU Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/article/20170326/security-password-level/" itemprop="url">
-                  密码的管理和使用
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-26T22:56:06+08:00">
-                2017-03-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/security/" itemprop="url" rel="index">
-                    <span itemprop="name">security</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/article/20170326/security-password-level/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170326/security-password-level/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          一个弱口令往往是入侵的突破口之一。拿IT从业者云集的CSDN600多万个密码统计出来的一个使用频次最高的密码列表，绝对是弱口令的佼佼者。
-如下，弱口令不仅限于以下密码：
-
-
-
-重复次数
-密码
-占比
-
-
-
-
-235012
-123456789
-(5.82013097845522)
-
-
-212749
-12345678
-(5.26878221339919)
-
-
-76346
-11111111
-(1.89072779126658)
-
-
-46053
-dearbook
-(1.14051406715741)
-
-
-34952
-00000000
-(0.865595024760297)
-
-
-19986
-123123123
-(0.494958290365624)
-
-
-17790
-1234567890
-(0.440573800940881)
-
-
-15033
-88888888
-(0.372296006157632)
-
-
-6995
-111111111
-(0.173232925102949)
-
-
-5965
-147258369
-(0.14772471740373)
-
-
-5553
-987654321
-(0.137521434324042)
-
-
-5459
-aaaaaaaa
-(0.135193500805861)
-
-
-5145
-1111111111
-(0.127417212245128)
-
-
-5025
-66666666
-(0.124445382221918)
-
-
-4435
-a123456789
-(0.109833884607803)
-
-
-4096
-11223344
-(0.101438464792234)
-
-
-3667
-1qaz2wsx
-(0.0908141724592587)
-
-
-3649
-xiazhili
-(0.0903683979557772)
-
-
-3610
-789456123
-(0.0894025531982
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/article/20170326/security-password-level/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170325/screen-record-on-linux/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Onecer">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="UU Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/article/20170325/screen-record-on-linux/" itemprop="url">
-                  Linux下不错的Gif录制工具推荐
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-25T15:54:57+08:00">
-                2017-03-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tools/" itemprop="url" rel="index">
-                    <span itemprop="name">tools</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/article/20170325/screen-record-on-linux/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170325/screen-record-on-linux/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Windows下有很多优秀的录屏工具，前一天，我为了录个GIF，又开了自己的Windows 10.
-现在的Ubuntu，越来越优秀了，很多Windows的工具，都能在这里找到替代品，我用Windows似乎越来越少了。
-但是两个系统都有自己的优势，都有一些好用到哭的软件。
-录屏这方面，其实我用比较多也就OBS Studio和Camtasia Studio，推荐的也就这两个比较多。
-前者一般我用于录MP4格式的，后者用于录制GIF。录出来的体积小得感人，清晰度也不错。
-OBS现在已经有了for linux版本，提前走向了all platform。Camtasia还没有Linux版本，倒是有了Mac版的。
-这让我很眼红Mac。Gif有时候还是要录制的，Linux下有没有过得去的替代品呢？
-一番查找还是有的。比如byzanz、peek、OBS+ffmepg等等，还有ttyrc这等奇葩。
-byzanz这个工具录制出来体积其实是最小的，但是有个很不方便的地方，就是必须先设定录制时长。
-我特么大多时候怎么知道我录制屏幕要多久。不过这个就作为备选方案吧，毕竟有时候我还是知道我应该录多久的。1sudo apt install byzanz
-peek相对于 byzanz，有好用的GUI界面，简单的操作，可以拖动选定录制区域，自由决定录制时间。
-这个也是我个人的主选方案
-安装：123sudo add-apt-repository ppa:peek-developers/stablesudo apt updatesudo apt install peek
-
-Peek Github项目地址
-
-OBS+ffmepg这个我逗你玩。正常情况下，录制MP4再转GIF体积会比MP4还要大。不过如果用OBS录制的时候，调低速率，和减少每秒的帧数，再转换，还是能有不错的体积的。但是，麻不麻烦？
-
-OBS 官网
-O
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/article/20170325/screen-record-on-linux/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170324/svn-leaking-web-information/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Onecer">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="UU Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/article/20170324/svn-leaking-web-information/" itemprop="url">
-                  svn泄露网站信息
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-24T01:49:02+08:00">
-                2017-03-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/security/" itemprop="url" rel="index">
-                    <span itemprop="name">security</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/article/20170324/svn-leaking-web-information/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170324/svn-leaking-web-information/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          今天老板请团队吃饭，我和小林瞎侃，聊到信息安全。
-突然想到之前上线每次都是整个目录复制发布，很有可能存在svn信息泄露问题。
-最近一直在忙着架构方面的东西，把这茬的测试给忘了。
-一回到家就开了电脑测试，惊出一身冷汗，简直是核弹。
-话不多说，看图，
-
-这里面图片仅仅是展示能够根据这些东西读取出文件目录。这里就发现了一个备份数据库。
-实际危害比图片看到的大得多。
-这件事情也是对我敲响了一个警钟，安全问题，还是刻不容缓。
-怎么修复？
-治标方法，删除所有.svn目录。 
-  进入要发布的目录执行，会将所有.svn目录删除
-  1find . -type d -name &apos;.svn&apos; | xargs rm -rf
-
-治本方法，规范整个代码发布流程。
-  比如walle。如果用svn这类代码版本管理工具，最好用导出功能，别直接复制，.svn是隐藏目录。或者发布的时候，自己过滤掉这类敏感文件。
-
-未雨绸缪, 设置web服务器拒绝访问这类后缀的文件,顺便把sql文件也捎上。
-  nginx -t 可以找到你的nginx配置文件
-  12345        location ~ .*.(svn|git|cvs|sql) &#123;            deny all;        &#125;#nginx -s reload
-
-
-搞定，睡觉，明天估计要修改一大堆东西。
-相关工具下载SVN泄露文件利用工具
-其实工具展示的信息是阉割版的了。有兴趣的自己下载相关文件分析，信息量爆炸。
-
-          
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/article/20170324/svn-leaking-web-information/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170317/ops-log-backup-rsysnc-sersync-inotify-tools/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Onecer">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="UU Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/article/20170317/ops-log-backup-rsysnc-sersync-inotify-tools/" itemprop="url">
-                  运维日志 数据备份同步的几个方案
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-17T22:56:41+08:00">
-                2017-03-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/operations/" itemprop="url" rel="index">
-                    <span itemprop="name">operations</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/article/20170317/ops-log-backup-rsysnc-sersync-inotify-tools/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170317/ops-log-backup-rsysnc-sersync-inotify-tools/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          最近公司有这么一个需求。某ERP并发不高，web数据不大，单台服务器就能满足需求，暂时不需要负载均衡。
-但是有对于服务高可用和数据安全需求比较高。所以想搞多一台服务器做灾备，实现高可用和数据备份。
-选择服务器目前业务主要面向华南地区的店，所以服务器得选华南地区的。
-主服务在阿里云，从服务器也选阿里云，方便管理，内网同步速度略优。缺点就是阿里云出问题，大家一起挂，另外使用同个账户管理的机器，账户泄露两个机子都遭殃。
-选非阿里云的服务器，能更大程度避免单点故障情况发生，缺点是管理略为麻烦，同步可能会稍微慢一点点，占用出口带宽，
-怎么备份目前打算至少存在两份异地备份。一份高频近乎实时同步的备份，一份低频定时备份到运维人员机子本地。
-前面高频备份是高可用的基础，否则单点故障，备份服务器不能提供完整的数据。
-而低频的本地备份可以在出现恶意的攻击，删库等行为后，依然有数据。
-而这次备份的重点也是在线的同步备份。
-昨天尝试使用 inotify-tools +  rsync 用来发现创建修改文件等动作，然后触发 rsync 进行同步。
-业务需求能满足，但是不好的是，每次事件触发都进行一次全局扫描，然后坐差异备份有点耗资源。
-假如一次性通过命令创建几千个命令，那可能会触发几千次同步。
-我想遇到这个问题的肯定不是我一人，度娘之，果然有针对这个问题的解决方案，那就是 sersync + rsync
-根据设想的备份流程做了如下图 (绘图软件 dia 不能输入中文 囧)
-
-ERP服务器上运行 sersync 当inotify发现文件读写相关事件的时候，就向备份服务器发起同步，进行差异备份。
-
-运维定时主动向备份服务器发起同步请求，同步备份数据回本地。
-
-
-服务器配置备份服务器配置
-新建一个账户sync_backup作为同步的专用账户，设置用户shell为/sbin/nologin，直接用root太危
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/article/20170317/ops-log-backup-rsysnc-sersync-inotify-tools/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170308/centos7-install-scrapy/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Onecer">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="UU Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/article/20170308/centos7-install-scrapy/" itemprop="url">
-                  CentOS7安装Scrapy和一些爬虫会用到的服务
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-08T19:59:41+08:00">
-                2017-03-08
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-05T17:40:51+08:00">
+                2017-05-05
               </time>
             
 
@@ -2052,8 +1390,8 @@ ERP服务器上运行 sersync 当inotify发现文件读写相关事件的时候�
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/article/20170308/centos7-install-scrapy/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170308/centos7-install-scrapy/" itemprop="commentCount"></span>
+                <a href="/article/20170505/python-backup-aliyun-rds-instance/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170505/python-backup-aliyun-rds-instance/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -2081,35 +1419,536 @@ ERP服务器上运行 sersync 当inotify发现文件读写相关事件的时候�
       
         
           
-          讯云这几天搞活动，免费领了三个月的免费VPS。所以想把本地虚拟机的scrapy爬虫迁移上去。
-Scrapy是基于Python写的。本来是要安装Python的，但是现在Linux基本都默认安装到Python了，所以这步略过。
-我本地是Ubuntu，服务器我装了CentOS7.2。别问我为啥不用Debian，我瞎选的，没啥特别理由。
-自己私人使用，为了方便，直接是root开干。
+          很多数据都做了备份，而且全都用脚本完成。并定时下载一份回我们本地，等于多多点异地备份了，避免被一锅端了的情况。
+像代码，这个是分发的，而且开发人手一份，这个就不备份了。用户静态数据也都定时做了rsync同步备份，压缩保存。
+连测试环境的数据库都做了自动的MySQL逻辑备份。唯独线上环境，存在RDS中的MySQL数据库，虽然有RDS定时备份实例，但是不经常上去下载一份保存回本地你是不得安心的。
+这万一被盗号了呢。。。岂不是辛辛苦苦几十年，一删回到解放前。
+本来是可以用mysqldump -h 远程IP 这样备份的。但是RDS可能是防止脱裤，搞了限制。所以，往日都是我自己上阿里云官网，手动点击下载备份。
+为了减少这一部分的重复劳动，我决定用阿里云的SDK搞一个自动下载实例。
+以为会遇到很多麻烦，没想到SDK封装得还不错，使用异常简单。
+步骤分为如下几步
 
-安装pip包管理
+安装阿里云API封装的Python SDK 
+ 里面几乎有阿里云所有产品的SDK，这给我们定制自己的工具提供了很大的便利。 这里我们要用的是RDS相关的功能，所以 sudo pip install aliyun-python-sdk-rds就行了。
 
-1yum install -y python-pip
+申请访问API需要用的Access Key。
+ 最好先新建RAM账号，再申请AK。
 
-配置pip安装源为阿里云 http://mirrors.aliyun.com/help/pypi。
+编码
 
-我觉得这是天朝必备的一个步骤，否则安装软件那龟速不忍直视。123456789mkdir ~/.pipvim ~/.pip/pip.conf# 改为如下内容[global]index-url = http://mirrors.aliyun.com/pypi/simple/[install]trusted-host=mirrors.aliyun.com
-3, 安装编译器和开发库之类的，假如你们也没安装的话
-1yum -y install gcc gcc-c++ kernel-devel python-devel libxslt-devel libffi-devel openssl-devel
 
-安装主角Scrapy
-
-1pip install scrapy
-
-安装MySQL-python 
-
-Python连接MySQL的模块
-1easy_install MySQL-python
-如果遇到mysql_config not found之前的博文有提过这个错误，不过是在Ubuntu下的解决方案-安装libmysqlclient-dev然而在CentOS的源中并没有这个包。而安装mysql-devel即可。
-1yum install -y
+整个备份逻辑很简单，就是查看指定日期区间备份列表，获取备份信息。然后下载备份。
+主要用到SDK DescribeBackupsRequest 这个类。
+代码如下：
+123456789101112131415161718192021222324252627282930313233343536373839from aliyunsdkcore import client#from aliyunsdkrds.request.v20140815 import DescribeRegionsReq
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/article/20170308/centos7-install-scrapy/#more" rel="contents">
+            <a class="btn" href="/article/20170505/python-backup-aliyun-rds-instance/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170504/php-bootstrap-treeview-generate-json/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Onecer">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="UU Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/article/20170504/php-bootstrap-treeview-generate-json/" itemprop="url">
+                  php根据路径列表生成bootstrap treeview
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-04T17:20:40+08:00">
+                2017-05-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/php/" itemprop="url" rel="index">
+                    <span itemprop="name">php</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/article/20170504/php-bootstrap-treeview-generate-json/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170504/php-bootstrap-treeview-generate-json/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          有这么一个需求，需要根据svn生成的版本之间差异的文件列表，生成一个treeview。
+数据样本如下：
+1234567891011$defaultStr = [    'Public/images/list/order.png',    'Public/images/list/reverse.png',    'Application/Crm/View/ReturnWork/visitRecord.html',    'Application/Crm/View/ReturnWork/myVisit.html',    'Application/Crm/View/ReturnWork/memberReturn.html',    'Application/Crm/View/ReturnWork/fitReturn.html',    'Application/Crm/View/ReturnWork/emergencReturn.html',    'Application/Crm/View/UserManagement/user_list.html',    'Application/Crm/View/UserManagement/add_maternal.html',    'ver.txt'];
+思路如下，先根据 / 符号拆分路径成数组，拼凑tree数组。最后根据tree数组递归生成json数组。
+生成数组
+12345678910111213141516171819$tree=array();function pushNode($subtree,$name)&#123;    if(!empty($name))&#123;        $tmpname=end($name);        if(!array_key_exists(end($name),$subtree
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/article/20170504/php-bootstrap-treeview-generate-json/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170424/rsyslog7-4-7-nginx-remote-logging/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Onecer">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="UU Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/article/20170424/rsyslog7-4-7-nginx-remote-logging/" itemprop="url">
+                  Rsyslog7.4.7集中管理nginx日志配置实践
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-24T16:04:58+08:00">
+                2017-04-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/operations/" itemprop="url" rel="index">
+                    <span itemprop="name">operations</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/article/20170424/rsyslog7-4-7-nginx-remote-logging/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170424/rsyslog7-4-7-nginx-remote-logging/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          未雨绸缪，考虑到以后可能服务器增多，如果日志不集中管理，单台日志查看，还是显得比较麻烦。
+有常查看nginx日志的需求，所以，打算利用rsyslog对nginx日志做个集中管理。
+这里假设日志中心为center，节点1为node1
+
+
+
+服务器
+IP
+
+
+
+
+Center
+192.168.1.2
+
+
+Node1
+192.168.1.3
+
+
+
+配置都是基于Centos7 默认的rsyslog版本 7.4.7  V5、V7、V8配置差别似乎挺大的，所以尽量用同样的版本吧
+Center配置12345678910111213# vim /etc/rsyslog.conf# 开启端口给node传送数据。这里吧tcp和udp端口都打开了# 配置前面加了$的都代表是全局配置$ModLoad imudp$UDPServerRun 514$ModLoad imtcp$InputTCPServerRun 514# 允许特定IP段才能连接端口$AllowedSender tcp, 192.168.1.0/24# 新建一个模板$template Remote,&quot;/data/log/%fromhost-ip%/%fromhost-ip%_%$YEAR%-%$MONTH%-%$DAY%.log&quot;# 过滤本地消息:fromhost-ip, !isequal, &quot;127.0.0.1&quot; ?Remote
+配置好rsyslog，就可以重启一下服务了。
+#systemctl restart rsyslog
+如果没意外，netstat  -antp | grep rsyslog 就能看到开放的514端口了。
+Node1配置123## 将所有等于或者大于info级别的信息传到Center*.info;mail.none;authpriv.none;cron.none      
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/article/20170424/rsyslog7-4-7-nginx-remote-logging/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20170422/website-slowness-troubleshooting/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Onecer">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="UU Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/article/20170422/website-slowness-troubleshooting/" itemprop="url">
+                  网站访问过慢原因排查几点考虑
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-22T12:03:53+08:00">
+                2017-04-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/article/20170422/website-slowness-troubleshooting/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20170422/website-slowness-troubleshooting/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          基于我们团队现在业务还在处于比较初期的阶段。访问量并不大，性能问题就成了一个重要但是不紧急的任务。
+我而目前主要在发布、监控自动化、可视化。尽可能减少人为操作的问题上努力。
+最近深圳那边同事说服务器有点问题，主要是网站访问缓慢，叫如果有空帮忙看看。
+我09年左右就开始运营自己的小网站，可以说也是经历过很多这类问题的排查。
+也遇过很多奇葩的问题导致网站访问过慢，甚至打不开的情况，但是从未记录下来。
+所以，打算开一篇博文记录一下，一方面当做一种笔记，一方面也帮助自己理清一下整个流程。
+是哪个环节导致的问题？很多时候我们习惯访问一慢，就往服务器上看。看看是不是服务器出什么问题了。
+其实，在访问网站的过程，任何一个环节都可能会出问题。
+但是，最为常见的原因无非以下几种。
+website slowness troubleshooting往大来分类
+自己电脑-&gt;网络运营商-&gt;DNS-&gt;主机服务商-&gt;服务器
+而前面几个大多时候是我们不可控的。除了选择的时候 :D 但是，也得在我们考虑范围内，否则有时候可能白忙碌一场。
+抛开不可控的因素，服务器上发生的所有一切才是我们最为关心的。
+常见外在因素1. 遭受攻击这个问题，其实攻击都是有成本的，如果没有业务冲突，规模不大，很多时候是没人闲的蛋疼跑去攻击你。这个大多情况都是可以被排除的。
+
+常见攻击
+DDoS、RDDoS 拒绝服务攻击
+WebCC
+
+
+
+这两个其实还是比较简单粗暴的。这个的防护，小规模的，现在很多大的云主机商多少都提供了这类的防护。节点少的，尽可能隐藏自己的源IP可以少很多麻烦
+大规模的攻击，基本都是要上升到讨论成本的东西，软硬件防护，多节点，负载均衡等杂七杂八的，增加自己的成本，提高攻击者的攻击成本。
+一些服务器上做的配置防护，在这类分布式多IP的大规模攻击下，效果微乎其微。
+2.访问量过大整个对于大多网站
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/article/20170422/website-slowness-troubleshooting/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -2145,7 +1984,7 @@ Python连接MySQL的模块
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2188,7 +2027,7 @@ Python连接MySQL的模块
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">87</span>
+                <span class="site-state-item-count">99</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2197,7 +2036,7 @@ Python连接MySQL的模块
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2206,7 +2045,7 @@ Python连接MySQL的模块
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">98</span>
+                <span class="site-state-item-count">105</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2272,7 +2111,7 @@ Python连接MySQL的模块
         <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -2292,8 +2131,13 @@ Python连接MySQL的模块
 </div>
 
 <div class="theme-info">
- Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
+ Hosted by <a href="https://app.netlify.com/" style="font-weight: bold">Netlify</a>
 </div>
+
+<div class="theme-info">
+<a href="http://www.miibeian.gov.cn/" style="font-weight: bold">粤ICP备17061759号-1</a>
+</div>
+
 
         
 

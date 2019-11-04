@@ -295,7 +295,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180122/django-authentification-of-user/">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180726/run-rabbitmq-in-docker/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Onecer">
@@ -320,8 +320,8 @@
             
               
                 
-                <a class="post-title-link" href="/article/20180122/django-authentification-of-user/" itemprop="url">
-                  Django用户认证功能
+                <a class="post-title-link" href="/article/20180726/run-rabbitmq-in-docker/" itemprop="url">
+                  以Docker容器方式运行rabbitmq
                 </a>
               
             
@@ -337,8 +337,166 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-22T04:30:43+08:00">
-                2018-01-22
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-26T11:12:30+08:00">
+                2018-07-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/operations/" itemprop="url" rel="index">
+                    <span itemprop="name">operations</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/article/20180726/run-rabbitmq-in-docker/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180726/run-rabbitmq-in-docker/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          主要注意挂载目录以便数据持久化,命名hostname.
+1docker run -d --name rabbitmq -p 4369:4369 -p 8080:15672 -p 5671-5672:5671-5672 --restart=always --hostname my-rabbit  -v /data/rabbitmq:/var/lib/rabbitmq rabbitmq:3-management
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/article/20180726/run-rabbitmq-in-docker/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180725/python-rabbitmq-pika/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Onecer">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="UU Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/article/20180725/python-rabbitmq-pika/" itemprop="url">
+                  Python使用pika连接rabbitmq
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-25T18:18:42+08:00">
+                2018-07-25
               </time>
             
 
@@ -367,17 +525,6 @@
 
                 
                 
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/django/" itemprop="url" rel="index">
-                    <span itemprop="name">django</span>
-                  </a>
-                </span>
-
-                
-                
               
             </span>
           
@@ -389,8 +536,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/article/20180122/django-authentification-of-user/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180122/django-authentification-of-user/" itemprop="commentCount"></span>
+                <a href="/article/20180725/python-rabbitmq-pika/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180725/python-rabbitmq-pika/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -418,17 +565,12 @@
       
         
           
-          Django提供了比较方便的用户认证模块，只要导入它，就可以很方便就完成用户认证。
-用户认证主流有两种写法，一个是直接写成函数，一个写成类，重载get和post方法
-
-用函数实现&lt;path-to-your-app&gt;/views.py主要的函数就两个authenticate()和login()一个是认证登录，一个是保存登录信息。1234567891011121314from django.contrib.auth import authenticate, logindef login_view(request):    if request.method == 'POST':        user_name = request.POST.get('username', '')        pass_word = request.POST.get('password', '')        user = authenticate(request, username=user_name, password=pass_word)        if user is not None:            login(request, user)            return render(request, 'index.html')        else:            return render(request, 'login.html', &#123;"msg": "用户或密码错误"&#125;)    if request.method == 'GET':        return render(request, 'login.html')
-
-
-然后在urls.py12345678from users.views import login
+          一个连接rabbitmq的python例子.
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465# coding: utf-8import jsonimport pika# from selenium.webdriver.common.by import Byfrom house_info import HouseInfo# CONFIG AREAAMQP_CONFIG = &#123;    'host': '127.0.0.1',    'port': 5672,    'username': 'guest',    'password': 'guest'&#125;AMQP_QUEUE_NAME = 'house-inquery'AMQP_FEEDBACK_QUEUE_NAME = 'house-inquery-result'# 因为反馈回去的队列要求在不同队列,所以重新建立了一个新的队列连接def process_feedback(msg):    mq_credential = pika.PlainCredentials(        username=AMQP_CONFIG['username'],        password=AMQP_CONFIG['password']    )    mq_conn = pika.BlockingConnection(pika.ConnectionParameters(        host=AMQP_CONFIG['host'],        credentials=mq_credential    ))    mq_ch
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/article/20180122/django-authentification-of-user/#more" rel="contents">
+            <a class="btn" href="/article/20180725/python-rabbitmq-pika/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -469,7 +611,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180122/django-register-models-on-xadmin/">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180614/python-docker-web-console/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Onecer">
@@ -494,8 +636,8 @@
             
               
                 
-                <a class="post-title-link" href="/article/20180122/django-register-models-on-xadmin/" itemprop="url">
-                  Django 注册模型到xadmin管理和修改展示字段
+                <a class="post-title-link" href="/article/20180614/python-docker-web-console/" itemprop="url">
+                  Python实现通过Web执行Docker容器里面的shell命令
                 </a>
               
             
@@ -511,8 +653,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-22T03:11:28+08:00">
-                2018-01-22
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-14T18:33:56+08:00">
+                2018-06-14
               </time>
             
 
@@ -545,8 +687,8 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/django/" itemprop="url" rel="index">
-                    <span itemprop="name">django</span>
+                  <a href="/categories/python/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
                   </a>
                 </span>
 
@@ -563,8 +705,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/article/20180122/django-register-models-on-xadmin/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180122/django-register-models-on-xadmin/" itemprop="commentCount"></span>
+                <a href="/article/20180614/python-docker-web-console/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180614/python-docker-web-console/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -592,12 +734,13 @@
       
         
           
-          添加了模型，想在后台管理，使用xadmin的话，和django有一点点不一样。
-注册模型到后台在每个app下面新建一个adminx.py,导入相应的模型xadmin.site.register(UserFavorite, UserFavoriteAdmin)1234567891011121314151617181920212223242526272829303132333435363738394041# _*_ coding:utf-8 _*_import xadminfrom .models import UserMessage, UserAsk, UserCourse, UserFavorite, CourseCommetsclass UserMessageAdmin(object):    list_display = ['user', 'message', 'has_read', 'add_time']    list_filter = ['user', 'message', 'has_read', 'add_time']    search_fields = ['user', 'message']class UserAskAdmin(object):    list_display = ['name', 'mobile', 'course_name', 'add_time']    list_filter = ['name', 'mobile', 'course_name', 'add_time']    search_fields = ['name', 'mobile', 'course_name']class UserFavoriteAdmin(object):    list_display = ['user', 'course', 'fav_id', 'f
+          其实就是通过flask接受url传递过来的命令，然后调用SDK相关API执行docker exec命令，然后将结果返回给页面。
+1pip install flask docker
+123456789101112131415161718192021222324# coding: utf-8from flask import Flaskfrom flask import render_templatefrom flask import requestimport dockerapp = Flask(__name__, template_folder='./templates', static_folder="", static_url_path="")client = docker.from_env()@app.route('/cmd', methods=['GET', 'POST'])def exec_cmd():    if request.method == 'GET':        return render_template('cmd.html')    if request.method == 'POST':        container = client.containers.get('gmb-index') # 这里我写死了获取本地这个容器        cmd = request.form.get('cmd')        result = container.exec_run(cmd=cmd)        output = result.output.decode()        return render_template('cmd.html', output=output)if __name__=='__main__':    app.run
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/article/20180122/django-register-models-on-xadmin/#more" rel="contents">
+            <a class="btn" href="/article/20180614/python-docker-web-console/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -638,7 +781,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180121/django-xadmin-settings/">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180611/python-excel-data-deduplication/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Onecer">
@@ -663,8 +806,8 @@
             
               
                 
-                <a class="post-title-link" href="/article/20180121/django-xadmin-settings/" itemprop="url">
-                  Django Xadmin 常用设置
+                <a class="post-title-link" href="/article/20180611/python-excel-data-deduplication/" itemprop="url">
+                  Python给Excel表格去重
                 </a>
               
             
@@ -680,8 +823,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-21T23:18:55+08:00">
-                2018-01-21
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-11T19:44:36+08:00">
+                2018-06-11
               </time>
             
 
@@ -710,17 +853,6 @@
 
                 
                 
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/django/" itemprop="url" rel="index">
-                    <span itemprop="name">django</span>
-                  </a>
-                </span>
-
-                
-                
               
             </span>
           
@@ -732,8 +864,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/article/20180121/django-xadmin-settings/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180121/django-xadmin-settings/" itemprop="commentCount"></span>
+                <a href="/article/20180611/python-excel-data-deduplication/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180611/python-excel-data-deduplication/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -760,20 +892,12 @@
 
       
         
-          
-          xadmin github 地址: https://github.com/sshwsfc/xadmin
-因为在使用的过程中避免不了会对xadmin做一些更改，所以，一般都是建议git clone源码到自己项目中使用。
-替换django原有的admin也比较简单。
-在urls.py中
-12345import xadminurlpatterns = patterns('',    url(r'xadmin/', xadmin.site.urls),)
-即可
-开启主题，后台站名和页脚文字修改在app的adminx.py中重载基础设置和全局设置。1234567891011121314from xadmin import viewsclass BaseSettings(object):    enable_themes = True    use_bootswatch = True # 一个主题插件class GlobalSettings(object):    site_title = '开源课程网'    site_footer = '开源课程网'    menu_style = 'accordion'  # 设置菜单可收缩,手风琴 accordionxadmin.site.register(views.BaseAdminView, BaseSettings)xadmin.site.register(views.CommAdminView, GlobalSettings)
-待持续更新…也可能再也不更新… 2018/01/21
-
-          
+          <p>某日看到妹子整理表格，需要对excel一万多条记录中的重复数据删除处理。</p>
+<p>但是处理两小时没好，耽误了两人看动漫时间，最后帮她搞了这个脚本。</p>
+<p>为了速度，存在很多硬编码，但是应该不影响阅读。<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/article/20180121/django-xadmin-settings/#more" rel="contents">
+            <a class="btn" href="/article/20180611/python-excel-data-deduplication/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -814,7 +938,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180120/django-set-language-timezone/">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180521/docker-clean/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Onecer">
@@ -839,8 +963,8 @@
             
               
                 
-                <a class="post-title-link" href="/article/20180120/django-set-language-timezone/" itemprop="url">
-                  Django设置语言和时区
+                <a class="post-title-link" href="/article/20180521/docker-clean/" itemprop="url">
+                  Docker清理
                 </a>
               
             
@@ -856,8 +980,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-20T04:48:42+08:00">
-                2018-01-20
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-21T15:11:25+08:00">
+                2018-05-21
               </time>
             
 
@@ -879,19 +1003,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/django/" itemprop="url" rel="index">
-                    <span itemprop="name">django</span>
+                  <a href="/categories/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
                   </a>
                 </span>
 
@@ -908,8 +1021,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/article/20180120/django-set-language-timezone/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180120/django-set-language-timezone/" itemprop="commentCount"></span>
+                <a href="/article/20180521/docker-clean/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180521/docker-clean/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -936,15 +1049,25 @@
 
       
         
-          
-          忘记几次，还是打算记下来，虽然就三行。
-123456# Internationalization# https://docs.djangoproject.com/en/1.9/topics/i18n/LANGUAGE_CODE = 'zh-hans'TIME_ZONE = 'Asia/Shanghai'USE_TZ = False
-最后一个才是重点，否则保存时间的时候，还是使用UTC的时间。
-
-          
+          <p>已经经历两次开发环境磁盘占用满的情况的。</p>
+<p>第一次是部署太频繁，然后有很多无用的images没有删除掉。</p>
+<p>第二次是docker容器，某些服务写了很多日志，导致磁盘被写满。</p>
+<p>撇开这些设置不当的问题，怎么清理掉一些“垃圾”，让docker占用空间变得小一点？</p>
+<p>Docker占用磁盘的主要有以下几样东西：</p>
+<ol>
+<li><p>Docker Images</p>
+</li>
+<li><p>Docker Containers</p>
+</li>
+<li><p>Docker Logs</p>
+</li>
+</ol>
+<p>对于输出日志特别多的程序，Logs还是不容小觑的。</p>
+<p>尤其是开发服务器，频繁的部署，会导致产生很多用不上的Images也占用在空间。</p>
+<p>而Container占用空间突然增大，一般也主要是一些异常产生的文件太多，写了太多logs在容器内所致。<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/article/20180120/django-set-language-timezone/#more" rel="contents">
+            <a class="btn" href="/article/20180521/docker-clean/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -985,7 +1108,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180120/django-setup-search-path/">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180402/java-jdk-install-setp/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Onecer">
@@ -1010,8 +1133,8 @@
             
               
                 
-                <a class="post-title-link" href="/article/20180120/django-setup-search-path/" itemprop="url">
-                  Django设置搜索路径
+                <a class="post-title-link" href="/article/20180402/java-jdk-install-setp/" itemprop="url">
+                  Centos java jdk安装和环境配置
                 </a>
               
             
@@ -1027,8 +1150,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-20T04:43:09+08:00">
-                2018-01-20
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-02T10:18:07+08:00">
+                2018-04-02
               </time>
             
 
@@ -1050,19 +1173,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/django/" itemprop="url" rel="index">
-                    <span itemprop="name">django</span>
+                  <a href="/categories/other/" itemprop="url" rel="index">
+                    <span itemprop="name">other</span>
                   </a>
                 </span>
 
@@ -1079,8 +1191,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/article/20180120/django-setup-search-path/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180120/django-setup-search-path/" itemprop="commentCount"></span>
+                <a href="/article/20180402/java-jdk-install-setp/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180402/java-jdk-install-setp/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1107,17 +1219,11 @@
 
       
         
-          
-          总会遇到有些自定义的包或者自己生成的app需要放到一些特定的目录下，方便项目维护，让目录结构更加清晰。
-但是把模块移动到非项目根目录下后，会遇到import错误。
-这个时候需要设置下环境变量，将我们的目录加入到django运行时的环境变量中。
-具体方法是，导入sys模块，插入自己的新目录地址。
-我这里的样例如下：
-123456import sys# Build paths inside the project like this: os.path.join(BASE_DIR, ...)BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
-          
+          <p>环境配置这东西 大多时候用一次找一次 不胜其烦。</p>
+<p>今记录一下Centos Java的jdk直接从源安装。相比编译之类的，已经是极大的幸福感提升。<br>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/article/20180120/django-setup-search-path/#more" rel="contents">
+            <a class="btn" href="/article/20180402/java-jdk-install-setp/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1158,7 +1264,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180120/django-xadmin-source-import-error/">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180309/security-django-mxonline-reset-password/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Onecer">
@@ -1183,8 +1289,8 @@
             
               
                 
-                <a class="post-title-link" href="/article/20180120/django-xadmin-source-import-error/" itemprop="url">
-                  Django导入xadmin源码模块出错
+                <a class="post-title-link" href="/article/20180309/security-django-mxonline-reset-password/" itemprop="url">
+                  慕学网强力Django教程例子存在认证逻辑漏洞 可修改任意用户密码
                 </a>
               
             
@@ -1200,8 +1306,333 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-20T04:14:20+08:00">
-                2018-01-20
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-09T01:53:32+08:00">
+                2018-03-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/security/" itemprop="url" rel="index">
+                    <span itemprop="name">security</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/article/20180309/security-django-mxonline-reset-password/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180309/security-django-mxonline-reset-password/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>最近在看慕学网《强力Django+xadmin打造在线云课堂》这个教程。</p>
+<p>感觉还不错。昨日看到用户模块，修改密码功能的逻辑编写，觉得存在比较大的安全隐患。刚刚按照思路小撸了一下，可以修改任意用户密码。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/article/20180309/security-django-mxonline-reset-password/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180305/troubleshooting-linux-rm-argument-too-long/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Onecer">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="UU Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/article/20180305/troubleshooting-linux-rm-argument-too-long/" itemprop="url">
+                  Linux rm 删除文件 argument too long
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-05T04:49:40+08:00">
+                2018-03-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/troubleshooting/" itemprop="url" rel="index">
+                    <span itemprop="name">troubleshooting</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/article/20180305/troubleshooting-linux-rm-argument-too-long/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180305/troubleshooting-linux-rm-argument-too-long/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          刚登录一台测试服务器,习惯性地ll查看下home目录下的文件.
+结果,我差点卡死了…
+原因是当前目录下居然有6,7万条记录.类似下面这种1index.php?i=361&amp;c=entry&amp;do=cron&amp;m=qidong_saishi.62468
+原因是开发在crontab添加了一个定时每分钟 wget一下某个网址.没用curl.
+每分钟就下载一个网页到home目录.
+然后我改为curl后,想删除掉文件,rm -f index.php?*
+然后报错1argument too long
+也是第一次遇到这个问题.可能是一下子删除的文件太多?
+于是打算用 xargs来逐条删除.
+1ll | grep index | awk &apos;&#123;print $9&#125;&apos;|xargs rm -f
+前面三条主要是想吧路径单独列出来.
+done.
+
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/article/20180305/troubleshooting-linux-rm-argument-too-long/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180304/django-error-list-index-out-of-range/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Onecer">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="UU Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/article/20180304/django-error-list-index-out-of-range/" itemprop="url">
+                  Django出错Xadmin后台报list index out of range
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-04T17:05:40+08:00">
+                2018-03-04
               </time>
             
 
@@ -1252,8 +1683,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/article/20180120/django-xadmin-source-import-error/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180120/django-xadmin-source-import-error/" itemprop="commentCount"></span>
+                <a href="/article/20180304/django-error-list-index-out-of-range/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180304/django-error-list-index-out-of-range/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1281,16 +1712,19 @@
       
         
           
-          因项目需要对xadmin源码做修改，所以，没有直接使用pip安装的xadmin。卸载后，直接从github上下载了一份xadmin的最新版。
-然后复制xadmin到项目当中，运行的时候发现少了一些模块。
-用pip安装以下模块即可
-1pip install future six httplib2 django-import-export
-2018/01/21 更新是我瞎，其实源码路径下有个requestments.txt 安装里面的依赖包即可。
+          闲置一阵没折腾django后,再续上次学习进度捣鼓demo的时候发现了这.1list index out of range
+看看报错和xadmin模块有关,但是我之前没报错,而我又没对它做过改动,一脸懵逼.
+主要是在注册的数据模型中新增数据,都会报这个错.在django原生的admin模块后台是没这个错误的.
+基本锁定和xadmin有关了.
+遂百度 xadmin list index out of range.果然有发现,见参考资料文章.
+说是django升级后出现新标签导致的这个错误.而我之前对django升级过.django 1.11.12.
+文中介绍了如何修改xadmin达到目的.我懒,降级了django回 django 1.11 没毛病老铁.
+参考资料Django2集成xadmin详解-4-list index out of range报错追踪和处理
 
           
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/article/20180120/django-xadmin-source-import-error/#more" rel="contents">
+            <a class="btn" href="/article/20180304/django-error-list-index-out-of-range/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1331,7 +1765,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180119/django-inherit-users-models/">
+  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180304/jieqicms-plugin-hon6-wap-sql-injection/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Onecer">
@@ -1356,8 +1790,8 @@
             
               
                 
-                <a class="post-title-link" href="/article/20180119/django-inherit-users-models/" itemprop="url">
-                  Django继承用户模型，生成自己的用户表
+                <a class="post-title-link" href="/article/20180304/jieqicms-plugin-hon6-wap-sql-injection/" itemprop="url">
+                  杰奇CMS wap插件的两个个SQL注入漏洞0DAY Getshell和提权
                 </a>
               
             
@@ -1373,8 +1807,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-19T19:24:30+08:00">
-                2018-01-19
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-04T16:38:40+08:00">
+                2018-03-04
               </time>
             
 
@@ -1396,19 +1830,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/django/" itemprop="url" rel="index">
-                    <span itemprop="name">django</span>
+                  <a href="/categories/security/" itemprop="url" rel="index">
+                    <span itemprop="name">security</span>
                   </a>
                 </span>
 
@@ -1425,8 +1848,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/article/20180119/django-inherit-users-models/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180119/django-inherit-users-models/" itemprop="commentCount"></span>
+                <a href="/article/20180304/jieqicms-plugin-hon6-wap-sql-injection/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180304/jieqicms-plugin-hon6-wap-sql-injection/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1454,532 +1877,18 @@
       
         
           
-          Django已经给我们提供了一个用户模型，但是它的字段不多，在某些场景下无法满足我们的使用需求，所以我们还要重新定义个数据模型，来描述我们用户数据表。
-原来的auth_user表123456789101112131415+--------------+--------------+------+-----+---------+----------------+| Field        | Type         | Null | Key | Default | Extra          |+--------------+--------------+------+-----+---------+----------------+| id           | int(11)      | NO   | PRI | NULL    | auto_increment || password     | varchar(128) | NO   |     | NULL    |                || last_login   | datetime     | YES  |     | NULL    |                || is_superuser | tinyint(1)   | NO   |     | NULL    |                || username     | varchar(30)  | NO   | UNI | NULL    |                || first_name   | varchar(30)  | NO   |     | NULL    |                || last_name    | varchar(30)  | NO   |     | NULL  
+          百度了一圈，没人发过，算是0day吧。
+近日有朋友发了一个小说站，日流量很可观，几万IP一天。
+后来就留意， 近日得到一套该站用的wap端的源码，看了下信息是个人写的。感觉可能会有漏洞，就瞄了几眼，果然发现点端倪。
+首先是mysql.class.php的类。
+它有个checksql()的方法，每次调用都会获取所有的GET，POST，COOKIE的参数。进行正则匹配，企图发现恶意注入的SQL内容。
+但是SQL过滤不是很严，还是有绕过的空间。比如十六进制，一些注释符，过滤的sql语句比较有限。
+主要内容
+123456789101112131415161718192021private $getfilter = "'|(and|or)\\b.+?(&gt;|&lt;|=|in|like)|\\/\\*.+?\\*\\/|&lt;\\s*script\\b|\\bEXEC\\b|UNION.+?SELECT|UPDATE.+?SET|INSERT\\s+INTO.+?VALUES|(SELECT|DELETE).+?FROM|(CREATE|ALTER|DROP|TRUNCATE)\\s+(TABLE|DATABASE)";private $postfilter = "\\b(and|or)\\b.&#123;1,6&#125;?(=|&gt;|&lt;|\\bin\\b|\\blike\\b)|\\/\\*.+?\\*\\/|&lt;\\s*script\\b|\\bEXEC\\b|UNION.+?SELECT|UPDATE.+?SET|INSERT\\s+INTO.+?VALUES|(SELECT|DELETE).+?FROM|(CREATE|ALTER|DROP|TRUNCATE)\\s+(TABLE|DATABASE)";private $cookiefilter = "\
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/article/20180119/django-inherit-users-models/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180119/django-models-crud/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Onecer">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="UU Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/article/20180119/django-models-crud/" itemprop="url">
-                  Django数据模型增删改查
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-19T03:40:04+08:00">
-                2018-01-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/django/" itemprop="url" rel="index">
-                    <span itemprop="name">django</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/article/20180119/django-models-crud/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180119/django-models-crud/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          先导入自己的数据模型from .models import UserMessage
-增123456user_message = UserMessage()user_message.name = 'bob'user_message.email = 'test@qq.com'user_message.address = 'guangzhou'user_message.message = 'sth.'user_message.save()
-结果：123456MySQL [opencourse]&gt; select * from message_usermessage;+----+------+-------------+-----------+---------+| id | name | email       | address   | message |+----+------+-------------+-----------+---------+|  1 | bob  | test@qq.com | guangzhou | sth.    |+----+------+-------------+-----------+---------+
-删删除的话，调用继承过来的delete()方法即可。下面删除ID为1的结果12345    user_message = UserMessage.objects.filter(id=1)#    user_message = UserMessage.objects.all()#    user_message.delete()    for message in user_message:        message.delete()
-可以直接user_message.delete()所有符合结果的都删除，或者遍历删除，看情况选择
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/article/20180119/django-models-crud/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180119/django-make-models/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Onecer">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="UU Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/article/20180119/django-make-models/" itemprop="url">
-                  Django数据库模型生成数据表
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-19T01:51:54+08:00">
-                2018-01-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/django/" itemprop="url" rel="index">
-                    <span itemprop="name">django</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/article/20180119/django-make-models/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180119/django-make-models/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          django是通过ORM访问数据库的，所以，它需要自己定义数据模型。
-打开相应app/models.py123456789class UserMessage(models.Model):    name = models.CharField(verbose_name=u"名字", max_length=50)    email = models.EmailField(verbose_name=u"邮箱地址")    address = models.CharField(verbose_name=u"联系地址", max_length=100)    message = models.CharField(verbose_name=u"留言", max_length=100)    class Meta:        verbose_name = u'用户记录'        verbose_name_plural = verbose_name
-定义字段，字段类型，长度，描述名。除了上诉的字符类型，还有以下的数据类型可以定义12345678910__all__ = [str(x) for x in (    'AutoField', 'BLANK_CHOICE_DASH', 'BigIntegerField', 'BinaryField',    'BooleanField', 'CharField', 'CommaSeparatedIntegerField', 'DateField',    'DateTimeField', 'DecimalField', 'DurationField', 'EmailField', 'Empty',    'Field', 'FieldDoesNotExist', 'FilePathField', 'FloatField',    'Ge
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/article/20180119/django-make-models/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="https://uublog.com/article/20180118/django-load-templates-files/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Onecer">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="//ojz2jzr09.bkt.clouddn.com/profile/avatar.gif">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="UU Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="UU Blog" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/article/20180118/django-load-templates-files/" itemprop="url">
-                  Django渲染模板文件
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-18T01:08:10+08:00">
-                2018-01-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/django/" itemprop="url" rel="index">
-                    <span itemprop="name">django</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/article/20180118/django-load-templates-files/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="article/20180118/django-load-templates-files/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-编写views方法，渲染模板
-设置静态文件路径
-设置URL规则
-
-编写渲染的方法在相应的app下面找到views.py&lt;path-to-your-app&gt;/views.py12def getform(request):    return render(request,'message_form.html')
-设置静态文件路径因为模板引用了一些静态资源，但是你得告诉django它路径在哪里。新增配置STATICFILES_DIRS，指定静态URL。1234STATIC_URL = '/static/'STATICFILES_DIRS = [    os.path.join(BASE_DIR,'static'),]
-##
-编辑&lt;path-to-your-project&gt;/urls.py先导入自己的app的getform方法，配置URL url(r&#39;^form/$&#39;,getform)12345from &lt;path-to-your-app&gt;.views import getformurlpatterns = [    url(r'^admin/', admin.site.urls),    url(r'^form/$',getform),]
-done.
-
-          
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/article/20180118/django-load-templates-files/#more" rel="contents">
+            <a class="btn" href="/article/20180304/jieqicms-plugin-hon6-wap-sql-injection/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -2015,7 +1924,7 @@ done.
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2058,7 +1967,7 @@ done.
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">87</span>
+                <span class="site-state-item-count">99</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2067,7 +1976,7 @@ done.
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2076,7 +1985,7 @@ done.
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">98</span>
+                <span class="site-state-item-count">105</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2142,7 +2051,7 @@ done.
         <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -2162,8 +2071,13 @@ done.
 </div>
 
 <div class="theme-info">
- Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
+ Hosted by <a href="https://app.netlify.com/" style="font-weight: bold">Netlify</a>
 </div>
+
+<div class="theme-info">
+<a href="http://www.miibeian.gov.cn/" style="font-weight: bold">粤ICP备17061759号-1</a>
+</div>
+
 
         
 

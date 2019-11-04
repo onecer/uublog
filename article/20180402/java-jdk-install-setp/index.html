@@ -96,7 +96,7 @@
 <meta property="og:site_name" content="UU Blog">
 <meta property="og:description" content="环境配置这东西 大多时候用一次找一次 不胜其烦。 今记录一下Centos Java的jdk直接从源安装。相比编译之类的，已经是极大的幸福感提升。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-16T15:04:31.547Z">
+<meta property="og:updated_time" content="2019-09-17T17:56:23.975Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Centos java jdk安装和环境配置">
 <meta name="twitter:description" content="环境配置这东西 大多时候用一次找一次 不胜其烦。 今记录一下Centos Java的jdk直接从源安装。相比编译之类的，已经是极大的幸福感提升。">
@@ -404,8 +404,8 @@
       
         <p>环境配置这东西 大多时候用一次找一次 不胜其烦。</p>
 <p>今记录一下Centos Java的jdk直接从源安装。相比编译之类的，已经是极大的幸福感提升。<br><a id="more"></a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">yum -y list java*</span><br><span class="line">yum -y install java-1.7.0-openjdk*</span><br><span class="line">yum list installed | grep java </span><br><span class="line"># 以上分别查找 安装 确定是否安装</span><br><span class="line">vim /etc/profile</span><br><span class="line">---</span><br><span class="line">JAVA_HOME=/usr/lib/jvm/jre-1.7.0-openjdk-1.7.0.171-2.6.13.0.el7_4.x86_64</span><br><span class="line">PATH=$PATH:$JAVA_HOME/bin</span><br><span class="line">CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">----</span><br><span class="line">export JAVA_HOME  CLASSPATH  PATH</span><br><span class="line">source  /etc/profile</span><br><span class="line">echo $JAVA_HOME</span><br></pre></td></tr></table></figure>
-<p>补充一个，路径我是 <code>rpm -ql java-1.7.0-openjdk.x86_64</code>找出来的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">yum -y list java*</span><br><span class="line">yum -y install java-1.8.0-openjdk*</span><br><span class="line">yum list installed | grep java </span><br><span class="line"># 以上分别查找 安装 确定是否安装</span><br><span class="line">vim /etc/profile</span><br><span class="line">---</span><br><span class="line">JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.201.b09-2.el7_6.x86_64</span><br><span class="line">PATH=$PATH:$JAVA_HOME/bin</span><br><span class="line">CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">----</span><br><span class="line">export JAVA_HOME  CLASSPATH  PATH</span><br><span class="line">source  /etc/profile</span><br><span class="line">echo $JAVA_HOME</span><br></pre></td></tr></table></figure>
+<p>补充一个，路径我是 <code>rpm -ql java-1.8.0-openjdk.x86_64</code>找出来的</p>
 
       
     </div>
@@ -540,7 +540,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">87</span>
+                <span class="site-state-item-count">99</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -549,7 +549,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -558,7 +558,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">98</span>
+                <span class="site-state-item-count">105</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -624,7 +624,7 @@
         <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -644,8 +644,13 @@
 </div>
 
 <div class="theme-info">
- Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
+ Hosted by <a href="https://app.netlify.com/" style="font-weight: bold">Netlify</a>
 </div>
+
+<div class="theme-info">
+<a href="http://www.miibeian.gov.cn/" style="font-weight: bold">粤ICP备17061759号-1</a>
+</div>
+
 
         
 

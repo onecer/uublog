@@ -96,7 +96,7 @@
 <meta property="og:site_name" content="UU Blog">
 <meta property="og:description" content="用&amp;lt;Centos7配置LNMP nginx10+mariadb+php5.6&amp;gt;安装nginx后, 是没有nginx-upsync-module的.如此一来可能还不如直接编译安装, 但是这样安装好处在于,可以方便使用systemtl来管理nginx,不需要自己去添加服务,懒人必备. 然后再找同样版本的nginx,编译安装一遍,加进自己的模块.  安装编译工具全家桶 yum groupin">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-16T15:04:31.547Z">
+<meta property="og:updated_time" content="2018-12-09T03:03:56.527Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用nginx-upsync-module同步consul服务到nginx upstream">
 <meta name="twitter:description" content="用&amp;lt;Centos7配置LNMP nginx10+mariadb+php5.6&amp;gt;安装nginx后, 是没有nginx-upsync-module的.如此一来可能还不如直接编译安装, 但是这样安装好处在于,可以方便使用systemtl来管理nginx,不需要自己去添加服务,懒人必备. 然后再找同样版本的nginx,编译安装一遍,加进自己的模块.  安装编译工具全家桶 yum groupin">
@@ -412,25 +412,26 @@
 <li><p>下载源码</p>
 </li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget http://nginx.org/download/nginx-1.12.1.tar.gz</span><br><span class="line">tar -zxvf nginx-1.12.1.tar.gz</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/weibocom/nginx-upsync-module.git</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget http://nginx.org/download/nginx-1.12.1.tar.gz</span><br><span class="line">tar -zxvf nginx-1.12.1.tar.gz</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/onecer/nginx-upsync-module.git</span><br><span class="line"><span class="comment">#git clone https://github.com/weibocom/nginx-upsync-module.git</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li><p>安装编译依赖组件<code>yum install -y zlib zlib-devel openssl openssl-devel pcre pcre-devel</code></p>
 </li>
 <li><p>编译nginx</p>
 </li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> nginx-1.12.1</span><br><span class="line">./configure --add-module=../nginx-upsync-module</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<p>添加模块 <code>--add-module=../nginx-upsync-module</code> 其它模块有需要的自己加</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> nginx-1.12.1</span><br><span class="line">./configure --with-http_stub_status_module --with-http_ssl_module --with-http_v2_module --with-http_gzip_static_module --with-http_gunzip_module --with-stream --with-stream_ssl_module --with-http_sub_module --with-http_flv_module --with-http_addition_module --with-http_realip_module --with-http_mp4_module --with-stream --with-stream_ssl_module --add-module=../nginx-upsync-module</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <p>注意路径,我这里安装好后,路径是<code>/usr/local/nginx/</code></p>
 <p>添加软连接到常用路径<code>ln -s /usr/local/nginx/sbin/nginx /usr/sbin/nginx</code></p>
-<p>添加服务文件:<br><code>vim /usr/lib/systemd/system/nginx</code></p>
-<p>服务描述文件里面 <code>/run/nginx.pid</code> 一定要和 <code>nginx.conf</code> 地址对应上.不然启动获取不到pid.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=The NGINX HTTP and reverse proxy server</span><br><span class="line">After=syslog.target network.target remote-fs.target nss-lookup.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">PIDFile=/run/nginx.pid</span><br><span class="line">ExecStartPre=/usr/sbin/nginx -t</span><br><span class="line">ExecStart=/usr/sbin/nginx</span><br><span class="line">ExecReload=/usr/sbin/nginx -s reload</span><br><span class="line">ExecStop=/bin/<span class="built_in">kill</span> -s QUIT <span class="variable">$MAINPID</span></span><br><span class="line">PrivateTmp=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<p>添加服务文件:<br><code>vim /usr/lib/systemd/system/nginx.service</code></p>
+<p>服务描述文件里面 <code>/var/run/nginx.pid</code> 一定要和 <code>nginx.conf</code> 地址对应上.不然启动获取不到pid.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=The NGINX HTTP and reverse proxy server</span><br><span class="line">After=syslog.target network.target remote-fs.target nss-lookup.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">PIDFile=/var/run/nginx.pid</span><br><span class="line">ExecStartPre=/usr/sbin/nginx -t</span><br><span class="line">ExecStart=/usr/sbin/nginx</span><br><span class="line">ExecReload=/usr/sbin/nginx -s reload</span><br><span class="line">ExecStop=/bin/<span class="built_in">kill</span> -s QUIT <span class="variable">$MAINPID</span></span><br><span class="line">PrivateTmp=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
 <ul>
 <li>添加nginx配置</li>
 </ul>
 <p>运行nginx</p>
-<p><code>systemctrl enable/start nginx</code></p>
+<p><code>systemctl daemon-reload &amp;&amp; systemctrl enable/start nginx</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">    upstream illstrator-plus-web &#123;</span><br><span class="line">        server 127.0.0.1:11111;</span><br><span class="line">        upsync 127.0.0.1:8500/v1/health/service/illstrator-plus-web upsync_timeout=6m upsync_interval=500ms upsync_type=consul_health strong_dependency=off;</span><br><span class="line">        upsync_dump_path /usr/local/nginx/conf/servers/servers_illstrator-plus-web.conf;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen  80;</span><br><span class="line">    server_name  xxx.com;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://illstrator-plus-web/;</span><br><span class="line">        proxy_read_timeout 300s;</span><br><span class="line">        proxy_set_header Host $host;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>发现行不通,服务我是部署在docker swarm里面的.我获取的服务数据是这样的.[ServiceAddress]里面注册的是内网IP</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">"ID"</span>: <span class="string">"ce711dca-f8fb-f1c3-4043-66a08040255e"</span>,</span><br><span class="line">    <span class="attr">"Node"</span>: <span class="string">"node1"</span>,</span><br><span class="line">    <span class="attr">"Address"</span>: <span class="string">"172.31.93.37"</span>,</span><br><span class="line">    <span class="attr">"Datacenter"</span>: <span class="string">"dc1"</span>,</span><br><span class="line">    <span class="attr">"TaggedAddresses"</span>: &#123;</span><br><span class="line">    <span class="attr">"lan"</span>: <span class="string">"172.31.93.37"</span>,</span><br><span class="line">    <span class="attr">"wan"</span>: <span class="string">"172.31.93.37"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"NodeMeta"</span>: &#123;</span><br><span class="line">     <span class="attr">"consul-network-segment"</span>: <span class="string">""</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"ServiceKind"</span>: <span class="string">""</span>,</span><br><span class="line">    <span class="attr">"ServiceID"</span>: <span class="string">"chahuashi:illstrator-plus-web.1.8gjsduc64vor8runu9dw31m4k:8816"</span>,</span><br><span class="line">    <span class="attr">"ServiceName"</span>: <span class="string">"illstrator-plus-web"</span>,</span><br><span class="line">    <span class="attr">"ServiceTags"</span>: [],</span><br><span class="line">    <span class="attr">"ServiceAddress"</span>: <span class="string">"10.0.0.15"</span>,</span><br><span class="line">    <span class="attr">"ServiceMeta"</span>: &#123;</span><br><span class="line">    <span class="attr">"port"</span>: <span class="string">"8816"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"ServicePort"</span>: <span class="number">8816</span>,</span><br><span class="line">    <span class="attr">"ServiceEnableTagOverride"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">"ServiceProxyDestination"</span>: <span class="string">""</span>,</span><br><span class="line">    <span class="attr">"ServiceConnect"</span>: &#123;</span><br><span class="line">    <span class="attr">"Native"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">"Proxy"</span>: <span class="literal">null</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"CreateIndex"</span>: <span class="number">41480</span>,</span><br><span class="line">    <span class="attr">"ModifyIndex"</span>: <span class="number">41480</span></span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
@@ -445,12 +446,11 @@
 <li><p>nginx装集群内</p>
 </li>
 </ol>
-<p>我选了第二种方法.主要是第一种的话,固然方便点,但是最终还是走routing mesh,性能没有提升.</p>
-<p>第四种麻烦,第三种增加服务会中断服务才能更新.</p>
+<p><del>我选了第二种方法.主要是第一种的话,固然方便点,但是最终还是走routing mesh,性能没有提升.第四种麻烦,第三种增加服务会中断服务才能更新.</del></p>
+<p>最后还是用了第一种，对源码做了些小修改，上面源码已经是改过的，没改的源码地址，是注释掉的那个。</p>
 <p>修改nginx配置</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">upstream</span> illstrator-plus-web &#123;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">127.0.0.1:11111</span>;</span><br><span class="line">    <span class="comment"># upsync 127.0.0.1:8500/v1/health/service/illstrator-plus-web upsync_timeout=6m upsync_interval=500ms upsync_type=consul_health strong_dependency=off;</span></span><br><span class="line">    <span class="attribute">upsync</span> <span class="number">127.0.0.1:8500</span>/v1/kv/upstreams/illstrator-plus-web upsync_timeout=<span class="number">6m</span> upsync_interval=<span class="number">500ms</span> upsync_type=consul strong_dependency=<span class="literal">off</span>;</span><br><span class="line">    <span class="attribute">upsync_dump_path</span> /usr/local/nginx/conf/servers/servers_illstrator-plus-web.conf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然后将节点信息添加到 consul</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -X PUT http://47.52.20.113:8500/v1/kv/upstreams/illstrator-plus-web/172.31.93.37:8816</span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">upstream</span> illstrator-plus-web &#123;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">127.0.0.1:11111</span>;</span><br><span class="line">    <span class="attribute">upsync</span> <span class="number">127.0.0.1:8500</span>/v1/health/service/illstrator-plus-web upsync_timeout=<span class="number">6m</span> upsync_interval=<span class="number">500ms</span> upsync_type=consul_health strong_dependency=<span class="literal">off</span>;</span><br><span class="line">    <span class="comment"># upsync 127.0.0.1:8500/v1/kv/upstreams/illstrator-plus-web upsync_timeout=6m upsync_interval=500ms upsync_type=consul strong_dependency=off;</span></span><br><span class="line">    <span class="attribute">upsync_dump_path</span> /usr/local/nginx/conf/servers/servers_illstrator-plus-web.conf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>nginx server配置<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">   <span class="attribute">listen</span>       <span class="number">80</span>;</span><br><span class="line">   <span class="attribute">server_name</span>  api.xxx.com;</span><br><span class="line">   <span class="attribute">location</span> / &#123;</span><br><span class="line">                <span class="attribute">proxy_pass</span> http://illstrator-plus-web/;</span><br><span class="line">                <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">                <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">                <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">                <span class="attribute">proxy_set_header</span> Host <span class="variable">$http_host</span>;</span><br><span class="line">                <span class="attribute">proxy_set_header</span> X-NginX-Proxy <span class="literal">true</span>;</span><br><span class="line">                <span class="attribute">proxy_redirect</span> <span class="literal">off</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li><a href="https://www.jb51.net/article/98440.htm" target="_blank" rel="noopener">CentOS 7.2安装Nginx 1.10.2</a></li>
 <li><a href="https://github.com/weibocom/nginx-upsync-module" target="_blank" rel="noopener">nginx-upsync-module Github</a></li>
@@ -596,7 +596,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">87</span>
+                <span class="site-state-item-count">99</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -605,7 +605,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -614,7 +614,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">98</span>
+                <span class="site-state-item-count">105</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -696,7 +696,7 @@
         <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -716,8 +716,13 @@
 </div>
 
 <div class="theme-info">
- Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
+ Hosted by <a href="https://app.netlify.com/" style="font-weight: bold">Netlify</a>
 </div>
+
+<div class="theme-info">
+<a href="http://www.miibeian.gov.cn/" style="font-weight: bold">粤ICP备17061759号-1</a>
+</div>
+
 
         
 
